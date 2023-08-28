@@ -1,4 +1,4 @@
 package uniamerica.centralDeAjuda.Repository;
 
-public interface AlunoRepository {
+public interface MarcaRepository {
 }
