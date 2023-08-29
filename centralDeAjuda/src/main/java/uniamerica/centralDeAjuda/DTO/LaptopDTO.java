@@ -1,4 +1,4 @@
 package uniamerica.centralDeAjuda.DTO;
 
-public class Laptop {
+public class LaptopDTO {
 }

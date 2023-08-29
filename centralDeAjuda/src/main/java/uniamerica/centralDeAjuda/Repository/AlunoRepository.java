@@ -1,4 +1,7 @@
 package uniamerica.centralDeAjuda.Repository;
 
-public interface AlunoRepository {
+import org.springframework.data.jpa.repository.JpaRepository;
+import uniamerica.centralDeAjuda.Entity.Aluno;
+
+public interface AlunoRepository extends JpaRepository<Aluno, Long> {
 }
