@@ -13,30 +13,30 @@ import java.util.List;
 public class AlunoController {
 
     @Autowired
-    private AlunoService service;
+    private AlunoService alunoService;
 
     @GetMapping("/lista")
     public List<AlunoDTO> listar(){
-        return service.listar();
+        return alunoService.listar();
     }
     @GetMapping("/{id}")
     public AlunoDTO findById(@PathVariable Long id) {
-        return service.findById(id);
+        return alunoService.findById(id);
     }
 
     @PostMapping
     public AlunoDTO cadastrar(@RequestBody AlunoDTO alunoDTO) {
-        return service.cadastrar(alunoDTO);
+        return alunoService.cadastrar(alunoDTO);
     }
 
     @PutMapping("/{id}")
     public AlunoDTO editar(@PathVariable Long id, @RequestBody AlunoDTO alunoDTO) {
-        return service.editar(id, alunoDTO);
+        return alunoService.editar(id, alunoDTO);
     }
 
     @DeleteMapping("/{id}")
     public ResponseEntity<Void> deletar(@PathVariable Long id) {
-        service.deletar(id);
+        alunoService.deletar(id);
         return ResponseEntity.noContent().build();
     }
 }
