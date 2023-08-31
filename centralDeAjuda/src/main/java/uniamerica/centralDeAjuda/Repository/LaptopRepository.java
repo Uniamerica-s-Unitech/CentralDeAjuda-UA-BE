@@ -1,4 +1,7 @@
 package uniamerica.centralDeAjuda.Repository;
 
-public interface LaptopRepository {
+import org.springframework.data.jpa.repository.JpaRepository;
+import uniamerica.centralDeAjuda.Entity.Laptop;
+
+public interface LaptopRepository extends JpaRepository<Laptop, Long> {
 }
