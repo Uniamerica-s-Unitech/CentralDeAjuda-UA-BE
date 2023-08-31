@@ -2,15 +2,10 @@ package uniamerica.centralDeAjuda.DTO;
 
 import lombok.Getter;
 import lombok.Setter;
-
+@Getter@Setter
 public class AlunoDTO {
-    @Getter@Setter
-    private String nome;
-    @Getter@Setter
-    private Integer RA;
 
-    public AlunoDTO(String nome, Integer RA) {
-        this.nome = nome;
-        this.RA = RA;
-    }
+    private String nome;
+
+    private Integer RA;
 }
