@@ -4,7 +4,7 @@ import lombok.Setter;
 import uniamerica.centralDeAjuda.Entity.Modelo;
 
 @Getter@Setter
-public class LaptopDTO {
+public class NotebookDTO {
 
     private String patrimonio;
 
