@@ -1,4 +1,4 @@
-package uniamerica.centralDeAjuda.Controller;
+/*package uniamerica.centralDeAjuda.Controller;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
@@ -27,4 +27,4 @@ public class MarcaController {
     }
 
 
-}
+}*/

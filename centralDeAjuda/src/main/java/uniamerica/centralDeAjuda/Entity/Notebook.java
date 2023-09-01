@@ -5,9 +5,9 @@ import lombok.Getter;
 import lombok.Setter;
 
 @Entity
-@Table(name = "laptop", schema = "public")
+@Table(name = "notebooks", schema = "public")
 @Getter @Setter
-public class Laptop {
+public class Notebook {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
@@ -16,6 +16,6 @@ public class Laptop {
     private String patrimonio;
 
     @ManyToOne
-    @JoinColumn(nullable = false)
+    @JoinColumn(name = "modelo_id",nullable = false)
     private Modelo modelo_id;
 }

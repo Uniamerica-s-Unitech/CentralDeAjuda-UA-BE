@@ -1,4 +1,4 @@
-package uniamerica.centralDeAjuda.Entity;
+/*package uniamerica.centralDeAjuda.Entity;
 
 import jakarta.persistence.Entity;
 import jakarta.persistence.Table;
@@ -10,4 +10,4 @@ import lombok.Setter;
 @Getter
 @Setter
 public class Ticket {
-}
+}*/
