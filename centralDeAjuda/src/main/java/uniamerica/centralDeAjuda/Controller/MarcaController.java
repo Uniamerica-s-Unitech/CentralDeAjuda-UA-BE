@@ -1,6 +1,7 @@
-/*package uniamerica.centralDeAjuda.Controller;
+package uniamerica.centralDeAjuda.Controller;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import uniamerica.centralDeAjuda.DTO.MarcaDTO;
 import uniamerica.centralDeAjuda.Services.MarcaService;
@@ -23,8 +24,18 @@ public class MarcaController {
     }
     @PostMapping
     public MarcaDTO cadastar(@RequestBody MarcaDTO marcaDTO){
-        return marcaService.cadastar(marcaDTO);
+        return marcaService.cadastrar(marcaDTO);
+    }
+
+    @PutMapping("/{id}")
+    public MarcaDTO editar(@PathVariable Long id, @RequestBody MarcaDTO marcaDTO){
+        return marcaService.editar(id, marcaDTO);
+    }
+    @DeleteMapping("/{id}")
+    public ResponseEntity<Void> deletar(@PathVariable Long id) {
+        marcaService.deletar(id);
+        return ResponseEntity.noContent().build();
     }
 
 
-}*/
+}
