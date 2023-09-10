@@ -17,5 +17,5 @@ public class Notebook {
 
     @ManyToOne
     @JoinColumn(name = "modelo_id",nullable = false)
-    private Modelo modelo_id;
+    private Modelo modeloId;
 }

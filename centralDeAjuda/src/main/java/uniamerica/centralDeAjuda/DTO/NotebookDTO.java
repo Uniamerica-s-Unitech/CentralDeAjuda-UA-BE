@@ -8,5 +8,5 @@ public class NotebookDTO {
 
     private String patrimonio;
 
-    private Modelo modelo_id;
+    private Modelo modeloId;
 }

@@ -19,10 +19,6 @@ public class AlunoController {
     public List<AlunoDTO> listar(){
         return alunoService.listar();
     }
-    @GetMapping("/{id}")
-    public AlunoDTO findById(@PathVariable Long id) {
-        return alunoService.findById(id);
-    }
 
     @PostMapping
     public AlunoDTO cadastrar(@RequestBody AlunoDTO alunoDTO) {

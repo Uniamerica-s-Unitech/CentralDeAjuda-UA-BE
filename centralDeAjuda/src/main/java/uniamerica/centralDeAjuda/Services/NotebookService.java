@@ -27,17 +27,19 @@ public class NotebookService {
                 .collect(Collectors.toList());
     }
 
-    public NotebookDTO findById(Long id) {
-        Notebook notebook = notebookRepository.findById(id).orElse(null);
-        return convertToDTO(notebook);
-    }
-
     public NotebookDTO cadastrar(NotebookDTO notebookDTO) {
         Notebook notebook = new Notebook();
         BeanUtils.copyProperties(notebookDTO, notebook);
-        Assert.isTrue(notebook.getPatrimonio() != null, "Id patrimonio invalido");
-        Assert.isTrue(this.notebookRepository.findByIdPatrimonio(notebook.getPatrimonio()).isEmpty(),"Já existe esse id");
-        Assert.isTrue(this.modeloRepository.findById(notebook.getModelo_id().getId()).isEmpty(),"Modelo não existe");
+
+        Assert.notNull(notebook.getPatrimonio(),"Notebook inválido");
+        if (!notebookRepository.findByIdPatrimonio(notebook.getPatrimonio()).isEmpty()){
+            throw new IllegalArgumentException("Esse patrimonio ja existe");
+        }
+
+        if (modeloRepository.findById(notebook.getModeloId().getId()).isEmpty()) {
+            throw new IllegalArgumentException("Modelo não existe");
+        }
+
         notebook = notebookRepository.save(notebook);
         return convertToDTO(notebook);
     }
@@ -46,7 +48,16 @@ public class NotebookService {
         if (notebookRepository.existsById(id)) {
             Notebook notebook = new Notebook();
             BeanUtils.copyProperties(notebookDTO, notebook);
-            notebook.setId(id);
+
+            Assert.notNull(notebook.getPatrimonio(),"Notebook inválido");
+            if (!notebookRepository.findByIdPatrimonio(notebook.getPatrimonio()).isEmpty()){
+                throw new IllegalArgumentException("Esse patrimonio ja existe");
+            }
+
+            if (modeloRepository.findById(notebook.getModeloId().getId()).isEmpty()) {
+                throw new IllegalArgumentException("Modelo não existe");
+            }
+
             notebook = notebookRepository.save(notebook);
             return convertToDTO(notebook);
         }
@@ -54,7 +65,9 @@ public class NotebookService {
     }
 
     public void deletar(Long id) {
-        notebookRepository.deleteById(id);
+        if (notebookRepository.existsById(id)) {
+                notebookRepository.deleteById(id);
+        }
     }
 
     private NotebookDTO convertToDTO(Notebook notebook) {

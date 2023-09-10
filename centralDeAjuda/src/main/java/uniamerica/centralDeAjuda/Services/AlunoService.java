@@ -3,6 +3,7 @@ package uniamerica.centralDeAjuda.Services;
 import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.util.Assert;
 import uniamerica.centralDeAjuda.DTO.AlunoDTO;
 import uniamerica.centralDeAjuda.Entity.Aluno;
 import uniamerica.centralDeAjuda.Repository.AlunoRepository;
@@ -22,14 +23,24 @@ public class AlunoService {
                 .collect(Collectors.toList());
     }
 
-    public AlunoDTO findById(Long id) {
-        Aluno aluno = alunoRepository.findById(id).orElse(null);
-        return convertToDTO(aluno);
-    }
-
     public AlunoDTO cadastrar(AlunoDTO alunoDTO) {
         Aluno aluno = new Aluno();
         BeanUtils.copyProperties(alunoDTO, aluno);
+
+        Assert.notNull(aluno.getNome(),"Nome invalido");
+        if (!alunoRepository.findByNome(aluno.getNome()).isEmpty()){
+            throw new IllegalArgumentException("Esse nome ja existe");
+        }
+
+        /*Assert.notNull(aluno.getRA(),"RA invalido");
+        if (!aluno.getRA().matches("\\d{6}")) {
+            throw new IllegalArgumentException("Formato do RA inválido. Deve conter 6 dígitos numéricos.");
+        }*/
+
+        if (!alunoRepository.findByRA(aluno.getRA()).isEmpty()){
+            throw new IllegalArgumentException("Esse RA ja existe");
+        }
+
         aluno = alunoRepository.save(aluno);
         return convertToDTO(aluno);
     }
@@ -38,7 +49,21 @@ public class AlunoService {
         if (alunoRepository.existsById(id)) {
             Aluno aluno = new Aluno();
             BeanUtils.copyProperties(alunoDTO, aluno);
-            aluno.setId(id);
+
+            Assert.notNull(aluno.getNome(),"Nome invalido");
+            if (!alunoRepository.findByNome(aluno.getNome()).isEmpty()){
+                throw new IllegalArgumentException("Esse nome ja existe");
+            }
+
+            Assert.notNull(aluno.getRA(),"RA invalido");
+            if (!aluno.getRA().matches("\\d{6}")) {
+                throw new IllegalArgumentException("Formato do RA inválido. Deve conter 6 dígitos numéricos.");
+            }
+
+            if (!alunoRepository.findByRA(aluno.getRA()).isEmpty()){
+                throw new IllegalArgumentException("Esse RA ja existe");
+            }
+
             aluno = alunoRepository.save(aluno);
             return convertToDTO(aluno);
         }

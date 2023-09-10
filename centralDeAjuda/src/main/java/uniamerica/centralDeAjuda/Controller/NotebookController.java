@@ -8,7 +8,7 @@ import uniamerica.centralDeAjuda.Services.NotebookService;
 
 import java.util.List;
 @RestController
-@RequestMapping("/laptop")
+@RequestMapping("/notebook")
 public class NotebookController {
 
     @Autowired
@@ -17,10 +17,6 @@ public class NotebookController {
     @GetMapping("/lista")
     public List<NotebookDTO> listar(){
         return notebookService.listar();
-    }
-    @GetMapping("/{id}")
-    public NotebookDTO findById(@PathVariable Long id) {
-        return notebookService.findById(id);
     }
 
     @PostMapping

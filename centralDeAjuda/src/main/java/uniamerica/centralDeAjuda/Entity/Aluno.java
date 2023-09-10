@@ -13,7 +13,6 @@ public class Aluno {
     private Long id;
     @Column(length = 100, nullable = false)
     private String nome;
-    @Column(length = 6,nullable = false,unique = true)
-    private Integer RA;
-
+    @Column(name = "ra",length = 8,nullable = false,unique = true)
+    private String RA;
 }

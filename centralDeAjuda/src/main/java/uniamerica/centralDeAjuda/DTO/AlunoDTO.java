@@ -7,5 +7,5 @@ public class AlunoDTO {
 
     private String nome;
 
-    private Integer RA;
+    private String RA;
 }
