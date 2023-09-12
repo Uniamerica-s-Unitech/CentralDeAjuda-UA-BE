@@ -18,7 +18,7 @@ create table notebooks (
 create table aluno (
 	id serial primary key,
 	nome varchar(100),
-	RA integer unique
+	RA varchar(6) unique
 )
 
 create table ticket(
