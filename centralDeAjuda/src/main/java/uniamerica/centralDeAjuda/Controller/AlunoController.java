@@ -4,6 +4,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import uniamerica.centralDeAjuda.DTO.AlunoDTO;
+import uniamerica.centralDeAjuda.Entity.Aluno;
 import uniamerica.centralDeAjuda.Services.AlunoService;
 
 import java.util.List;
@@ -32,7 +33,12 @@ public class AlunoController {
 
     @DeleteMapping("/{id}")
     public ResponseEntity<Void> deletar(@PathVariable Long id) {
-        alunoService.deletar(id);
-        return ResponseEntity.noContent().build();
+        Aluno aluno = alunoService.buscarPorId(id);
+        if (aluno != null) {
+            alunoService.deletar(aluno);
+            return ResponseEntity.noContent().build();
+        } else {
+            return ResponseEntity.notFound().build();
+        }
     }
 }

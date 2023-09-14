@@ -5,7 +5,6 @@ import org.springframework.web.bind.annotation.*;
 import uniamerica.centralDeAjuda.DTO.TicketDTO;
 import uniamerica.centralDeAjuda.Services.TicketService;
 
-import java.time.LocalDateTime;
 import java.util.List;
 
 @RestController
@@ -20,9 +19,14 @@ public class TicketController {
         return ticketService.listar();
     }
 
+    @GetMapping("/abertos")
+    public List<TicketDTO> buscarTicketsAbertos() {
+        return ticketService.buscarTicketsAbertos();
+    }
+
     @GetMapping("/historico")
-    public List<TicketDTO> buscarHistoricoPorDataDevolucao(@RequestParam("dataDevolucao") LocalDateTime dataDevolucao) {
-        return ticketService.buscarHistoricoPorDataDevolucao(dataDevolucao);
+    public List<TicketDTO> buscarHistoricoPorDataDevolucao() {
+        return ticketService.buscarHistoricoPorDataDevolucao();
     }
 
     @PostMapping
@@ -31,7 +35,7 @@ public class TicketController {
     }
 
     @PutMapping("/{id}")
-    public TicketDTO editar(@PathVariable Long id, @RequestBody TicketDTO ticketDTO) {
+    public TicketDTO editar(@RequestBody TicketDTO ticketDTO,@PathVariable Long id) {
         return ticketService.editar(id, ticketDTO);
     }
 }

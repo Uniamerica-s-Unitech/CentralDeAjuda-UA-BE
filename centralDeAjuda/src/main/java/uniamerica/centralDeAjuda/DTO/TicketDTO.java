@@ -8,7 +8,7 @@ import uniamerica.centralDeAjuda.Entity.Notebook;
 import java.time.LocalDateTime;
 
 @Getter@Setter
-public class TicketDTO {
+public class TicketDTO extends AbstractEntityDTO{
     private Aluno alunoId;
 
     private Notebook notebookId;

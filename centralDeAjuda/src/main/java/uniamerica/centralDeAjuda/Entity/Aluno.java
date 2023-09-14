@@ -7,12 +7,9 @@ import lombok.Setter;
 @Entity
 @Table(name = "aluno", schema = "public")
 @Getter@Setter
-public class Aluno {
-    @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Long id;
+public class Aluno extends AbstractEntity{
     @Column(length = 100, nullable = false)
     private String nome;
-    @Column(name = "ra",length = 8,nullable = false,unique = true)
-    private String RA;
+    @Column(length = 8,nullable = false,unique = true)
+    private String ra;
 }

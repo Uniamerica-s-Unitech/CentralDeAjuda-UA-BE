@@ -6,13 +6,8 @@ import lombok.Setter;
 
 @Entity
 @Table(name = "modelo", schema = "public")
-@Getter
-@Setter
-public class Modelo {
-
-    @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Long id;
+@Getter @Setter
+public class Modelo extends AbstractEntity{
     @Column(length = 50, nullable = false)
     private String nome;
     @ManyToOne

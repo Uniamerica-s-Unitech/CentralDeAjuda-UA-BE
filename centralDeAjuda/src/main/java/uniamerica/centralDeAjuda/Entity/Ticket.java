@@ -8,18 +8,13 @@ import java.time.LocalDateTime;
 
 @Entity
 @Table(name = "ticket", schema = "public")
-@Getter
-@Setter
-public class Ticket {
-    @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Long id;
-
-    @OneToOne(fetch = FetchType.LAZY)
+@Getter @Setter
+public class Ticket extends AbstractEntity{
+    @OneToOne
     @JoinColumn(name = "aluno_id",nullable = false,unique = true)
     private Aluno alunoId;
 
-    @OneToOne(fetch = FetchType.LAZY)
+    @OneToOne
     @JoinColumn(name = "patrimonio_id",nullable = false,unique = true)
     private Notebook notebookId;
 
@@ -28,5 +23,4 @@ public class Ticket {
 
     @Column(name = "data_de_devolucao")
     private LocalDateTime dataDevolucao;
-
 }

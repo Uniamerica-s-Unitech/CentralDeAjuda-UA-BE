@@ -46,20 +46,24 @@ public class NotebookService {
 
     public NotebookDTO editar(Long id, NotebookDTO notebookDTO) {
         if (notebookRepository.existsById(id)) {
-            Notebook notebook = new Notebook();
-            BeanUtils.copyProperties(notebookDTO, notebook);
+            Notebook notebook = notebookRepository.findById(id).orElse(null);
+            if (notebook != null){
+                BeanUtils.copyProperties(notebookDTO, notebook,"id");
 
-            Assert.notNull(notebook.getPatrimonio(),"Notebook inválido");
-            if (!notebookRepository.findByIdPatrimonio(notebook.getPatrimonio()).isEmpty()){
-                throw new IllegalArgumentException("Esse patrimonio ja existe");
+                Assert.notNull(notebook.getPatrimonio(),"Notebook inválido");
+                if (!notebookRepository.findByIdPatrimonioPut(notebook.getPatrimonio(),id).isEmpty()){
+                    throw new IllegalArgumentException("Esse patrimonio ja existe");
+                }
+
+                if (modeloRepository.findById(notebook.getModeloId().getId()).isEmpty()) {
+                    throw new IllegalArgumentException("Modelo não existe");
+                }
+
+                notebook = notebookRepository.save(notebook);
+                return convertToDTO(notebook);
             }
-
-            if (modeloRepository.findById(notebook.getModeloId().getId()).isEmpty()) {
-                throw new IllegalArgumentException("Modelo não existe");
-            }
-
-            notebook = notebookRepository.save(notebook);
-            return convertToDTO(notebook);
+        }else {
+            throw new IllegalArgumentException("Notebook não encontrado com o ID fornecido: " + id);
         }
         return null;
     }

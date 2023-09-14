@@ -6,7 +6,9 @@ import org.springframework.stereotype.Service;
 import org.springframework.util.Assert;
 import uniamerica.centralDeAjuda.DTO.AlunoDTO;
 import uniamerica.centralDeAjuda.Entity.Aluno;
+import uniamerica.centralDeAjuda.Entity.Ticket;
 import uniamerica.centralDeAjuda.Repository.AlunoRepository;
+import uniamerica.centralDeAjuda.Repository.TicketRepository;
 
 import java.util.List;
 import java.util.stream.Collectors;
@@ -15,6 +17,12 @@ import java.util.stream.Collectors;
 public class AlunoService {
     @Autowired
     private AlunoRepository alunoRepository;
+    @Autowired
+    private TicketRepository ticketRepository;
+
+    public Aluno buscarPorId(Long id) {
+        return alunoRepository.findById(id).orElse(null);
+    }
 
     public List<AlunoDTO> listar() {
         List<Aluno> alunos = alunoRepository.findAll();
@@ -32,12 +40,12 @@ public class AlunoService {
             throw new IllegalArgumentException("Esse nome ja existe");
         }
 
-        /*Assert.notNull(aluno.getRA(),"RA invalido");
-        if (!aluno.getRA().matches("\\d{6}")) {
+        Assert.notNull(aluno.getRa(),"RA invalido");
+        if (!aluno.getRa().matches("\\d{6}")) {
             throw new IllegalArgumentException("Formato do RA inválido. Deve conter 6 dígitos numéricos.");
-        }*/
+        }
 
-        if (!alunoRepository.findByRA(aluno.getRA()).isEmpty()){
+        if (!alunoRepository.findByRA(aluno.getRa()).isEmpty()){
             throw new IllegalArgumentException("Esse RA ja existe");
         }
 
@@ -47,31 +55,53 @@ public class AlunoService {
 
     public AlunoDTO editar(Long id, AlunoDTO alunoDTO) {
         if (alunoRepository.existsById(id)) {
-            Aluno aluno = new Aluno();
-            BeanUtils.copyProperties(alunoDTO, aluno);
+            Aluno aluno = alunoRepository.findById(id).orElse(null);
+            if (aluno != null) {
+                BeanUtils.copyProperties(alunoDTO, aluno,"id");
 
-            Assert.notNull(aluno.getNome(),"Nome invalido");
-            if (!alunoRepository.findByNome(aluno.getNome()).isEmpty()){
-                throw new IllegalArgumentException("Esse nome ja existe");
+
+                Assert.notNull(aluno.getNome(), "Nome invalido");
+                if (!alunoRepository.findByNomePut(aluno.getNome(), id).isEmpty()) {
+                    throw new IllegalArgumentException("Esse nome ja existe");
+                }
+
+                Assert.notNull(aluno.getRa(), "RA invalido");
+                if (!aluno.getRa().matches("\\d{6}")) {
+                    throw new IllegalArgumentException("Formato do RA inválido. Deve conter 6 dígitos numéricos.");
+                }
+
+                if (!alunoRepository.findByRaPut(aluno.getRa(),id).isEmpty()){
+                    throw new IllegalArgumentException("Esse RA ja existe");
+                }
+
+                aluno = alunoRepository.save(aluno);
+                return convertToDTO(aluno);
             }
-
-            Assert.notNull(aluno.getRA(),"RA invalido");
-            if (!aluno.getRA().matches("\\d{6}")) {
-                throw new IllegalArgumentException("Formato do RA inválido. Deve conter 6 dígitos numéricos.");
-            }
-
-            if (!alunoRepository.findByRA(aluno.getRA()).isEmpty()){
-                throw new IllegalArgumentException("Esse RA ja existe");
-            }
-
-            aluno = alunoRepository.save(aluno);
-            return convertToDTO(aluno);
+        }else {
+            throw new IllegalArgumentException("Aluno não encontrado com o ID fornecido: " + id);
         }
         return null;
     }
 
-    public void deletar(Long id) {
-        alunoRepository.deleteById(id);
+    public void deletar(Aluno aluno) {
+        Aluno alunoBanco = alunoRepository.findById(aluno.getId()).orElse(null);
+        if (alunoBanco != null) {
+
+            List<Ticket> ticketsAtivos = ticketRepository.findByAluno(alunoBanco);
+
+            if (ticketsAtivos.isEmpty()) {
+                alunoRepository.delete(alunoBanco);
+            } else {
+
+                if (ticketsAtivos.stream().allMatch(ticket -> ticket.getDataDevolucao() != null)) {
+                    alunoRepository.delete(alunoBanco);
+                } else {
+                    throw new IllegalArgumentException("Não é possível excluir o aluno, pois ele está associado a tickets ativos.");
+                }
+            }
+        } else {
+            throw new IllegalArgumentException("Aluno não encontrado com o ID fornecido: " + aluno.getId());
+        }
     }
 
     private AlunoDTO convertToDTO(Aluno aluno) {

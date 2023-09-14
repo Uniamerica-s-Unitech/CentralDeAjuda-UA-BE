@@ -4,8 +4,7 @@ import lombok.Setter;
 import uniamerica.centralDeAjuda.Entity.Modelo;
 
 @Getter@Setter
-public class NotebookDTO {
-
+public class NotebookDTO extends AbstractEntityDTO{
     private String patrimonio;
 
     private Modelo modeloId;

@@ -3,9 +3,8 @@ package uniamerica.centralDeAjuda.DTO;
 import lombok.Getter;
 import lombok.Setter;
 @Getter@Setter
-public class AlunoDTO {
-
+public class AlunoDTO extends AbstractEntityDTO{
     private String nome;
 
-    private String RA;
+    private String ra;
 }

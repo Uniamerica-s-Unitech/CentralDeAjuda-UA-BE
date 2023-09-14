@@ -7,11 +7,7 @@ import lombok.Setter;
 @Entity
 @Table(name = "notebooks", schema = "public")
 @Getter @Setter
-public class Notebook {
-    @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Long id;
-
+public class Notebook extends AbstractEntity{
     @Column(nullable = false,unique = true)
     private String patrimonio;
 
