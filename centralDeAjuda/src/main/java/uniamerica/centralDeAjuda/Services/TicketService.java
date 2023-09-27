@@ -1,20 +1,19 @@
 package uniamerica.centralDeAjuda.Services;
 
-import org.springframework.beans.BeanUtils;
+import jakarta.persistence.EntityNotFoundException;
+import jakarta.transaction.Transactional;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
-import org.springframework.util.Assert;
+import uniamerica.centralDeAjuda.DTO.AlunoDTO;
+import uniamerica.centralDeAjuda.DTO.ModeloDTO;
+import uniamerica.centralDeAjuda.DTO.NotebookDTO;
 import uniamerica.centralDeAjuda.DTO.TicketDTO;
 import uniamerica.centralDeAjuda.Entity.Aluno;
 import uniamerica.centralDeAjuda.Entity.Notebook;
 import uniamerica.centralDeAjuda.Entity.Ticket;
-import uniamerica.centralDeAjuda.Repository.AlunoRepository;
-import uniamerica.centralDeAjuda.Repository.NotebookRepository;
 import uniamerica.centralDeAjuda.Repository.TicketRepository;
 
-import java.time.LocalDateTime;
 import java.util.List;
-import java.util.stream.Collectors;
 
 @Service
 public class
@@ -22,100 +21,104 @@ TicketService {
     @Autowired
     private TicketRepository ticketRepository;
 
-    @Autowired
-    private AlunoRepository alunoRepository;
-
-    @Autowired
-    private NotebookRepository notebookRepository;
-
-    public List<TicketDTO> listar(){
-        List<Ticket> tickets = ticketRepository.findAll();
-        return tickets.stream()
-                .map(this::convertToDTO)
-                .collect(Collectors.toList());
+    public TicketDTO findTicketByid(Long id) {
+        Ticket ticket = ticketRepository.findById(id)
+                .orElseThrow(() -> new EntityNotFoundException("Ticket não encontrado!"));
+        return ticketToDTO(ticket);
     }
 
     public List<TicketDTO> buscarTicketsAbertos() {
-        List<Ticket> ticketsAbertos = ticketRepository.findTicketsAbertos();
-        return ticketsAbertos.stream()
-                .map(this::convertToDTO)
-                .collect(Collectors.toList());
+        return ticketRepository.findTicketsAbertos().stream().map(this::ticketToDTO).toList();
     }
 
     public List<TicketDTO> buscarHistoricoPorDataDevolucao() {
-        LocalDateTime dataDevolucao = LocalDateTime.now(); // Ajuste isso conforme necessário
-        List<Ticket> tickets = ticketRepository.findHistoricoByDataDevolucao(dataDevolucao);
-        return tickets.stream()
-                .map(this::convertToDTO)
-                .collect(Collectors.toList());
+        return ticketRepository.findHistoricoByDataDevolucao().stream().map(this::ticketToDTO).toList();
     }
 
+    @Transactional
+    public String cadastrarTicket(TicketDTO ticketDTO) {
+        Ticket ticket = toTicket(ticketDTO);
 
-    public TicketDTO cadastrar(TicketDTO ticketDTO){
-        Ticket ticket = new Ticket();
-        BeanUtils.copyProperties(ticketDTO,ticket);
+        //BUSCAR NO BANCO DE DADOS TICKETS ATIVOS DESSE ALUNO
 
-        if (ticket.getDataDevolucao() != null) {
-            ticket.setAtivo(false);
+        List<Ticket> alunoTicketsAtivos = ticketRepository.findTicketsAbertosPorAluno(ticket.getAlunoId());
+
+        List<Ticket> notebookTicketsAtivos = ticketRepository.findTicketsAbertosPorNotebook(ticket.getNotebookId());
+
+        if (!alunoTicketsAtivos.isEmpty()){
+            return "O aluno posui um tickey ativo";
+        }else if(!notebookTicketsAtivos.isEmpty()){
+            return "O notebook posui um tickey ativo";
+        }else
+        {
+            ticketRepository.save(ticket);
+            return "Ticket cadastrado com sucesso!";
         }
-
-        Assert.notNull(ticket.getAlunoId(), "Aluno inválido");
-        Aluno aluno = alunoRepository.findById(ticketDTO.getAlunoId().getId())
-                .orElseThrow(() -> new IllegalArgumentException("Aluno não encontrado"));
-        if (!ticketRepository.findByAluno(aluno).isEmpty()) {
-            throw new IllegalArgumentException("O aluno já possui um ticket ativo");
-        }
-
-        Assert.notNull(ticket.getAlunoId(), "Notebook invalido");
-        Notebook notebook = notebookRepository.findById(ticketDTO.getNotebookId().getId())
-                .orElseThrow(()-> new IllegalArgumentException("Notebook não encontrado"));
-        if (!ticketRepository.findByNotebook(notebook).isEmpty()) {
-            throw new IllegalArgumentException("O notebook já possui um ticket ativo");
-        }
-
-        Assert.notNull(ticket.getDataEntrega(),"Data de entrega invalida");
-
-        ticket = ticketRepository.save(ticket);
-        return convertToDTO(ticket);
     }
 
-    public TicketDTO editar(Long id,TicketDTO ticketDTO){
-        if (ticketRepository.existsById(id)){
-            Ticket ticket = ticketRepository.findById(id).orElse(null);
-            if (ticket != null){
-                BeanUtils.copyProperties(ticketDTO,ticket);
+    public String editarTicket(Long id, TicketDTO ticketDTO) {
+        if (ticketRepository.existsById(id)) {
+            Ticket ticket = toTicket(ticketDTO);
 
-                if (ticket.getDataDevolucao() != null) {
-                    ticket.setAtivo(false);
-                }
+            ticketRepository.save(ticket);
+            return "Ticket atualizado com sucesso!";
 
-                Assert.notNull(ticket.getAlunoId(), "Aluno inválido");
-                Aluno aluno = alunoRepository.findById(ticketDTO.getAlunoId().getId())
-                        .orElseThrow(() -> new IllegalArgumentException("Aluno não encontrado"));
-                if (!ticketRepository.findByAlunoPut(aluno,id).isEmpty()) {
-                    throw new IllegalArgumentException("O aluno já possui um ticket ativo");
-                }
-
-                Assert.notNull(ticket.getAlunoId(), "Notebook invalido");
-                Notebook notebook = notebookRepository.findById(ticketDTO.getNotebookId().getId())
-                        .orElseThrow(()-> new IllegalArgumentException("Notebook não encontrado"));
-                if (!ticketRepository.findByNotebookPut(notebook,id).isEmpty()) {
-                    throw new IllegalArgumentException("O notebook já possui um ticket ativo");
-                }
-
-                Assert.notNull(ticket.getDataEntrega(),"Data de entrega invalida");
-
-                ticket = ticketRepository.save(ticket);
-                return convertToDTO(ticket);
-            }
         }else {
             throw new IllegalArgumentException("Ticket não encontrado com o ID fornecido: " + id);
         }
-        return null;
     }
-    private TicketDTO convertToDTO(Ticket ticket){
+
+    public TicketDTO ticketToDTO(Ticket ticket){
         TicketDTO ticketDTO = new TicketDTO();
-        BeanUtils.copyProperties(ticket, ticketDTO);
+
+        ticketDTO.setId(ticket.getId());
+        ticketDTO.setAtivo(ticket.getAtivo());
+        ticketDTO.setDataDevolucao(ticket.getDataDevolucao());
+        ticketDTO.setDataEntrega(ticket.getDataEntrega());
+
+            AlunoDTO alunoDTO = new AlunoDTO();
+
+            alunoDTO.setId(ticket.getAlunoId().getId());
+            alunoDTO.setAtivo(ticket.getAlunoId().getAtivo());
+            alunoDTO.setNome(ticket.getAlunoId().getNome());
+            alunoDTO.setRa(ticket.getAlunoId().getRa());
+
+
+            NotebookDTO notebookDTO = new NotebookDTO();
+            notebookDTO.setId(ticket.getNotebookId().getId());
+            notebookDTO.setAtivo(ticket.getNotebookId().getAtivo());
+            notebookDTO.setPatrimonio(ticket.getNotebookId().getPatrimonio());
+
+                ModeloDTO modeloDTO = new ModeloDTO();
+
+                modeloDTO.setId(ticket.getNotebookId().getModeloId().getId());
+
+                notebookDTO.setModeloId(modeloDTO);
+
+            notebookDTO.setModeloId(modeloDTO);
+
+
+        ticketDTO.setAlunoId(alunoDTO);
+        ticketDTO.setNotebookId(notebookDTO);
         return ticketDTO;
+    }
+
+    public Ticket toTicket(TicketDTO ticketDTO){
+        Ticket novoTicket = new Ticket();
+
+        novoTicket.setId(ticketDTO.getId());
+        novoTicket.setAtivo(ticketDTO.getAtivo());
+        novoTicket.setDataDevolucao(ticketDTO.getDataDevolucao());
+        novoTicket.setDataEntrega(ticketDTO.getDataEntrega());
+
+        Aluno aluno = new Aluno();
+        aluno.setId(ticketDTO.getAlunoId().getId());
+
+        Notebook notebook = new Notebook();
+        notebook.setId(ticketDTO.getNotebookId().getId());
+        novoTicket.setAlunoId(aluno);
+        novoTicket.setNotebookId(notebook);
+
+        return novoTicket;
     }
 }

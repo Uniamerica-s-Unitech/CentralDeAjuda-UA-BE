@@ -1,11 +1,14 @@
 package uniamerica.centralDeAjuda.DTO;
 import lombok.Getter;
 import lombok.Setter;
-import uniamerica.centralDeAjuda.Entity.Modelo;
 
 @Getter@Setter
-public class NotebookDTO extends AbstractEntityDTO{
+public class NotebookDTO{
+    private Long id;
+
+    private Boolean ativo = true;
+
     private String patrimonio;
 
-    private Modelo modeloId;
+    private ModeloDTO modeloId;
 }

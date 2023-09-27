@@ -1,8 +1,11 @@
 package uniamerica.centralDeAjuda.Controller;
 
+import jakarta.persistence.EntityNotFoundException;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.server.ResponseStatusException;
 import uniamerica.centralDeAjuda.DTO.NotebookDTO;
 import uniamerica.centralDeAjuda.Services.NotebookService;
 
@@ -20,19 +23,43 @@ public class NotebookController {
     }
 
     @PostMapping
-    public NotebookDTO cadastrar(@RequestBody NotebookDTO notebookDTO) {
-        return notebookService.cadastrar(notebookDTO);
+    public ResponseEntity<String> cadastrarAluno(@RequestBody NotebookDTO notebookDTO) {
+        try{
+            return ResponseEntity.ok(notebookService.cadastrarNotebook(notebookDTO));
+        } catch (IllegalArgumentException e) {
+            return ResponseEntity.badRequest().body(e.getMessage());
+        } catch (EntityNotFoundException e) {
+            return ResponseEntity.notFound().build();
+        } catch(Exception e){
+            throw new ResponseStatusException(HttpStatus.BAD_REQUEST, e.getMessage());
+        }
     }
 
     @PutMapping("/{id}")
-    public NotebookDTO editar(@PathVariable Long id, @RequestBody NotebookDTO notebookDTO) {
-        return notebookService.editar(id, notebookDTO);
+    public ResponseEntity<String> editarAluno(@PathVariable Long id, @RequestBody NotebookDTO notebookDTO) {
+        try {
+            return ResponseEntity.ok(notebookService.editarNotebook(id, notebookDTO));
+        } catch (IllegalArgumentException e) {
+            return ResponseEntity.badRequest().body(e.getMessage());
+        } catch (EntityNotFoundException e) {
+            return ResponseEntity.notFound().build();
+        } catch(Exception e){
+            throw new ResponseStatusException(HttpStatus.BAD_REQUEST, e.getMessage());
+        }
     }
 
     @DeleteMapping("/{id}")
-    public ResponseEntity<Void> deletar(@PathVariable Long id) {
-        notebookService.deletar(id);
-        return ResponseEntity.noContent().build();
+    public ResponseEntity<String> deletar(@PathVariable Long id) {
+        try {
+            notebookService.deletar(id);
+            return ResponseEntity.ok("Notebook deletado com sucesso!");
+        }catch (IllegalArgumentException e) {
+            return ResponseEntity.badRequest().body(e.getMessage());
+        } catch (EntityNotFoundException e) {
+            return ResponseEntity.notFound().build();
+        } catch(Exception e){
+            throw new ResponseStatusException(HttpStatus.BAD_REQUEST, e.getMessage());
+        }
     }
 
 }

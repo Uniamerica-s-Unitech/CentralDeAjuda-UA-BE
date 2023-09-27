@@ -1,55 +1,94 @@
 package uniamerica.centralDeAjuda.Services;
 
 
-import org.springframework.beans.BeanUtils;
+import jakarta.persistence.EntityNotFoundException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.util.Assert;
 import uniamerica.centralDeAjuda.DTO.MarcaDTO;
 import uniamerica.centralDeAjuda.Entity.Marca;
+import uniamerica.centralDeAjuda.Entity.Modelo;
 import uniamerica.centralDeAjuda.Repository.MarcaRepository;
+import uniamerica.centralDeAjuda.Repository.ModeloRepository;
 
 import java.util.List;
-import java.util.stream.Collectors;
 
 @Service
 public class MarcaService {
 
     @Autowired
     private MarcaRepository marcaRepository;
+    @Autowired
+    private ModeloRepository modeloRepository;
 
-    public List<MarcaDTO> listar(){
-        List<Marca> marcas = marcaRepository.findAll();
-        return marcas.stream()
-                .map(this::convertToDTO)
-                .collect(Collectors.toList());
+    public MarcaDTO findMarcaByid(Long id) {
+        Marca marca = marcaRepository.findById(id).orElseThrow(() -> new EntityNotFoundException("Marca não encontrada!"));
+        return marcaToDTO(marca);
     }
-    public MarcaDTO findById(Long id){
-        Marca marca = marcaRepository.findById(id).orElse(null);
-        return convertToDTO(marca);
+
+    public List<MarcaDTO> listar() {
+        return marcaRepository.findMarcaByAtivo().stream().map(this::marcaToDTO).toList();
     }
-    public MarcaDTO cadastrar(MarcaDTO marcaDTO){
-        Marca marca = new Marca();
-        BeanUtils.copyProperties(marcaDTO, marca);
-        marca = marcaRepository.save(marca);
-        return convertToDTO(marca);
+
+    public String cadastrarMarca(MarcaDTO marcaDTO) {
+        Marca marca = toMarca(marcaDTO);
+
+        Assert.notNull(marca.getNome(),"Nome invalido");
+
+        marcaRepository.save(marca);
+        return "Marca cadastrado com sucesso!";
     }
-    public MarcaDTO editar(Long id , MarcaDTO marcaDTO){
-        if(marcaRepository.existsById(id)){
-            Marca marca = new Marca();
-            BeanUtils.copyProperties(marcaDTO , marca);
-            marca.setId(id);
-            marca = marcaRepository. save(marca);
-            return convertToDTO(marca);
+
+    public String editarMarca(Long id, MarcaDTO marcaDTO) {
+        if (marcaRepository.existsById(id)) {
+            Marca marca = toMarca(marcaDTO);
+
+            Assert.notNull(marca.getNome(), "Nome invalido");
+
+            marcaRepository.save(marca);
+            return "Marca atualizado com sucesso!";
+
+        }else {
+            throw new IllegalArgumentException("Marca não encontrado com o ID fornecido: " + id);
         }
-        return null;
-    }
-    public void deletar(Long id) {
-        marcaRepository.deleteById(id);
     }
 
-    private  MarcaDTO convertToDTO(Marca marca){
+    public void deletar(Long id) {
+        Marca marcaBanco = marcaRepository.findById(id)
+                .orElseThrow(()->
+                        new EntityNotFoundException("Marca com ID "+id+" nao existe"));
+
+        List<Modelo> marcaModeloAtivo = modeloRepository.findModeloByMarcaAtiva(marcaBanco);
+
+        if (!marcaModeloAtivo.isEmpty()){
+            throw new IllegalArgumentException("Não é possível excluir essa marca tem modelo ativo.");
+        } else {
+            desativarMarca(marcaBanco);
+        }
+    }
+
+    private void desativarMarca(Marca marca) {
+        marca.setAtivo(false);
+        marcaRepository.save(marca);
+    }
+
+    public MarcaDTO marcaToDTO(Marca marca){
         MarcaDTO marcaDTO = new MarcaDTO();
-        BeanUtils.copyProperties(marca,marcaDTO);
+
+        marcaDTO.setId(marca.getId());
+        marcaDTO.setAtivo(marca.getAtivo());
+        marcaDTO.setNome(marca.getNome());
+
         return marcaDTO;
+    }
+
+    public Marca toMarca(MarcaDTO marcaDTO){
+        Marca novoMarca = new Marca();
+
+        novoMarca.setId(marcaDTO.getId());
+        novoMarca.setAtivo(marcaDTO.getAtivo());
+        novoMarca.setNome(marcaDTO.getNome());
+
+        return novoMarca;
     }
 }

@@ -1,10 +1,12 @@
 package uniamerica.centralDeAjuda.Controller;
 
 
+import jakarta.persistence.EntityNotFoundException;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
-import uniamerica.centralDeAjuda.DTO.MarcaDTO;
+import org.springframework.web.server.ResponseStatusException;
 import uniamerica.centralDeAjuda.DTO.ModeloDTO;
 import uniamerica.centralDeAjuda.Services.ModeloService;
 
@@ -21,24 +23,44 @@ public class ModeloController {
     public List<ModeloDTO> listar(){
         return modeloService.listar();
     }
-    @GetMapping("/{id}")
-    public ModeloDTO findById(@PathVariable Long id){
-        return modeloService.findById(id);
-    }
-    @PostMapping
-    public ModeloDTO cadastar(@RequestBody ModeloDTO modeloDTO){
 
-        return modeloService.cadastrar(modeloDTO);
+    @PostMapping
+    public ResponseEntity<String> cadastrarAluno(@RequestBody ModeloDTO modeloDTO) {
+        try{
+            return ResponseEntity.ok(modeloService.cadastrarModelo(modeloDTO));
+        } catch (IllegalArgumentException e) {
+            return ResponseEntity.badRequest().body(e.getMessage());
+        } catch (EntityNotFoundException e) {
+            return ResponseEntity.notFound().build();
+        } catch(Exception e){
+            throw new ResponseStatusException(HttpStatus.BAD_REQUEST, e.getMessage());
+        }
     }
 
     @PutMapping("/{id}")
-    public ModeloDTO editar(@PathVariable Long id, @RequestBody ModeloDTO modeloDTO){
-        return modeloService.editar(id, modeloDTO);
-    }
-    @DeleteMapping("/{id}")
-    public ResponseEntity<Void> deletar(@PathVariable Long id) {
-        modeloService.deletar(id);
-        return ResponseEntity.noContent().build();
+    public ResponseEntity<String> editarAluno(@PathVariable Long id, @RequestBody ModeloDTO modeloDTO) {
+        try {
+            return ResponseEntity.ok(modeloService.editarModelo(id, modeloDTO));
+        } catch (IllegalArgumentException e) {
+            return ResponseEntity.badRequest().body(e.getMessage());
+        } catch (EntityNotFoundException e) {
+            return ResponseEntity.notFound().build();
+        } catch(Exception e){
+            throw new ResponseStatusException(HttpStatus.BAD_REQUEST, e.getMessage());
+        }
     }
 
+    @DeleteMapping("/{id}")
+    public ResponseEntity<String> deletar(@PathVariable Long id) {
+        try {
+            modeloService.deletar(id);
+            return ResponseEntity.ok("Modelo deletado com sucesso!");
+        }catch (IllegalArgumentException e) {
+            return ResponseEntity.badRequest().body(e.getMessage());
+        } catch (EntityNotFoundException e) {
+            return ResponseEntity.notFound().build();
+        } catch(Exception e){
+            throw new ResponseStatusException(HttpStatus.BAD_REQUEST, e.getMessage());
+        }
+    }
 }

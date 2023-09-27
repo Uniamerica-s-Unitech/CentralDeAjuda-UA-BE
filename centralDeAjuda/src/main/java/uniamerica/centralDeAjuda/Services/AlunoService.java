@@ -1,6 +1,6 @@
 package uniamerica.centralDeAjuda.Services;
 
-import org.springframework.beans.BeanUtils;
+import jakarta.persistence.EntityNotFoundException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.util.Assert;
@@ -11,34 +11,29 @@ import uniamerica.centralDeAjuda.Repository.AlunoRepository;
 import uniamerica.centralDeAjuda.Repository.TicketRepository;
 
 import java.util.List;
-import java.util.stream.Collectors;
 
 @Service
 public class AlunoService {
     @Autowired
     private AlunoRepository alunoRepository;
+
     @Autowired
     private TicketRepository ticketRepository;
 
-    public Aluno buscarPorId(Long id) {
-        return alunoRepository.findById(id).orElse(null);
+    public AlunoDTO findAlunoByid(Long id) {
+        Aluno aluno = alunoRepository.findById(id)
+                .orElseThrow(() -> new EntityNotFoundException("Aluno não encontrado!"));
+        return alunoToDTO(aluno);
     }
 
     public List<AlunoDTO> listar() {
-        List<Aluno> alunos = alunoRepository.findAll();
-        return alunos.stream()
-                .map(this::convertToDTO)
-                .collect(Collectors.toList());
+        return alunoRepository.findAlunoByAtivo().stream().map(this::alunoToDTO).toList();
     }
 
-    public AlunoDTO cadastrar(AlunoDTO alunoDTO) {
-        Aluno aluno = new Aluno();
-        BeanUtils.copyProperties(alunoDTO, aluno);
+    public String cadastrarAluno(AlunoDTO alunoDTO) {
+        Aluno aluno = toAluno(alunoDTO);
 
         Assert.notNull(aluno.getNome(),"Nome invalido");
-        if (!alunoRepository.findByNome(aluno.getNome()).isEmpty()){
-            throw new IllegalArgumentException("Esse nome ja existe");
-        }
 
         Assert.notNull(aluno.getRa(),"RA invalido");
         if (!aluno.getRa().matches("\\d{6}")) {
@@ -49,64 +44,70 @@ public class AlunoService {
             throw new IllegalArgumentException("Esse RA ja existe");
         }
 
-        aluno = alunoRepository.save(aluno);
-        return convertToDTO(aluno);
+        alunoRepository.save(aluno);
+        return "Aluno cadastrado com sucesso!";
     }
 
-    public AlunoDTO editar(Long id, AlunoDTO alunoDTO) {
+    public String editarAluno(Long id, AlunoDTO alunoDTO) {
         if (alunoRepository.existsById(id)) {
-            Aluno aluno = alunoRepository.findById(id).orElse(null);
-            if (aluno != null) {
-                BeanUtils.copyProperties(alunoDTO, aluno,"id");
+            Aluno aluno = toAluno(alunoDTO);
 
+            Assert.notNull(aluno.getNome(), "Nome invalido");
 
-                Assert.notNull(aluno.getNome(), "Nome invalido");
-                if (!alunoRepository.findByNomePut(aluno.getNome(), id).isEmpty()) {
-                    throw new IllegalArgumentException("Esse nome ja existe");
-                }
-
-                Assert.notNull(aluno.getRa(), "RA invalido");
-                if (!aluno.getRa().matches("\\d{6}")) {
-                    throw new IllegalArgumentException("Formato do RA inválido. Deve conter 6 dígitos numéricos.");
-                }
-
-                if (!alunoRepository.findByRaPut(aluno.getRa(),id).isEmpty()){
-                    throw new IllegalArgumentException("Esse RA ja existe");
-                }
-
-                aluno = alunoRepository.save(aluno);
-                return convertToDTO(aluno);
+            Assert.notNull(aluno.getRa(), "RA invalido");
+            if (!aluno.getRa().matches("\\d{6}")) {
+                throw new IllegalArgumentException("Formato do RA inválido. Deve conter 6 dígitos numéricos.");
             }
+
+            if (!alunoRepository.findByRaPut(aluno.getRa(),id).isEmpty()){
+                throw new IllegalArgumentException("Esse RA ja existe");
+            }
+
+            alunoRepository.save(aluno);
+            return "Aluno atualizado com sucesso!";
+
         }else {
             throw new IllegalArgumentException("Aluno não encontrado com o ID fornecido: " + id);
         }
-        return null;
     }
 
-    public void deletar(Aluno aluno) {
-        Aluno alunoBanco = alunoRepository.findById(aluno.getId()).orElse(null);
-        if (alunoBanco != null) {
+    public void deletar(Long id) {
+        Aluno alunoBanco = alunoRepository.findById(id)
+                .orElseThrow(()-> new EntityNotFoundException("Aluno com ID "+id+" nao existe"));
 
-            List<Ticket> ticketsAtivos = ticketRepository.findByAluno(alunoBanco);
+        List<Ticket> alunoTicketsAtivos = ticketRepository.findTicketsAbertosPorAluno(alunoBanco);
 
-            if (ticketsAtivos.isEmpty()) {
-                alunoRepository.delete(alunoBanco);
-            } else {
-
-                if (ticketsAtivos.stream().allMatch(ticket -> ticket.getDataDevolucao() != null)) {
-                    alunoRepository.delete(alunoBanco);
-                } else {
-                    throw new IllegalArgumentException("Não é possível excluir o aluno, pois ele está associado a tickets ativos.");
-                }
-            }
+        if (!alunoTicketsAtivos.isEmpty()){
+            throw new IllegalArgumentException("Não é possível excluir esse aluno tem ticket ativo.");
         } else {
-            throw new IllegalArgumentException("Aluno não encontrado com o ID fornecido: " + aluno.getId());
+            desativarAluno(alunoBanco);
         }
     }
 
-    private AlunoDTO convertToDTO(Aluno aluno) {
+    private void desativarAluno(Aluno aluno) {
+        aluno.setAtivo(false);
+        alunoRepository.save(aluno);
+    }
+
+        public AlunoDTO alunoToDTO(Aluno aluno){
         AlunoDTO alunoDTO = new AlunoDTO();
-        BeanUtils.copyProperties(aluno, alunoDTO);
+
+        alunoDTO.setId(aluno.getId());
+        alunoDTO.setAtivo(aluno.getAtivo());
+        alunoDTO.setNome(aluno.getNome());
+        alunoDTO.setRa(aluno.getRa());
+
         return alunoDTO;
+    }
+
+    public Aluno toAluno(AlunoDTO alunoDTO){
+        Aluno novoAluno = new Aluno();
+
+        novoAluno.setId(alunoDTO.getId());
+        novoAluno.setAtivo(alunoDTO.getAtivo());
+        novoAluno.setNome(alunoDTO.getNome());
+        novoAluno.setRa(alunoDTO.getRa());
+
+        return novoAluno;
     }
 }

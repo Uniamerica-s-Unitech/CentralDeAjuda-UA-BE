@@ -1,8 +1,11 @@
 package uniamerica.centralDeAjuda.Controller;
 
+import jakarta.persistence.EntityNotFoundException;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.server.ResponseStatusException;
 import uniamerica.centralDeAjuda.DTO.MarcaDTO;
 import uniamerica.centralDeAjuda.Services.MarcaService;
 
@@ -18,24 +21,44 @@ public class MarcaController {
     public List<MarcaDTO> listar(){
         return marcaService.listar();
     }
-    @GetMapping("/{id}")
-    public MarcaDTO findById(@PathVariable Long id){
-        return marcaService.findById(id);
-    }
+
     @PostMapping
-    public MarcaDTO cadastar(@RequestBody MarcaDTO marcaDTO){
-        return marcaService.cadastrar(marcaDTO);
+    public ResponseEntity<String> cadastrarMarca(@RequestBody MarcaDTO marcaDTO) {
+        try{
+            return ResponseEntity.ok(marcaService.cadastrarMarca(marcaDTO));
+        }catch (IllegalArgumentException e) {
+            return ResponseEntity.badRequest().body(e.getMessage());
+        } catch (EntityNotFoundException e) {
+            return ResponseEntity.notFound().build();
+        } catch(Exception e){
+            throw new ResponseStatusException(HttpStatus.BAD_REQUEST, e.getMessage());
+        }
     }
 
     @PutMapping("/{id}")
-    public MarcaDTO editar(@PathVariable Long id, @RequestBody MarcaDTO marcaDTO){
-        return marcaService.editar(id, marcaDTO);
+    public ResponseEntity<String> editarMarca(@PathVariable Long id, @RequestBody MarcaDTO marcaDTO) {
+        try {
+            return ResponseEntity.ok(marcaService.editarMarca(id, marcaDTO));
+        } catch (IllegalArgumentException e) {
+            return ResponseEntity.badRequest().body(e.getMessage());
+        } catch (EntityNotFoundException e) {
+            return ResponseEntity.notFound().build();
+        } catch(Exception e){
+            throw new ResponseStatusException(HttpStatus.BAD_REQUEST, e.getMessage());
+        }
     }
+
     @DeleteMapping("/{id}")
-    public ResponseEntity<Void> deletar(@PathVariable Long id) {
-        marcaService.deletar(id);
-        return ResponseEntity.noContent().build();
+    public ResponseEntity<String> deletar(@PathVariable Long id) {
+        try {
+            marcaService.deletar(id);
+            return ResponseEntity.ok("Marca deletado mcom sucesso!");
+        }catch (IllegalArgumentException e) {
+            return ResponseEntity.badRequest().body(e.getMessage());
+        } catch (EntityNotFoundException e) {
+            return ResponseEntity.notFound().build();
+        } catch(Exception e){
+            throw new ResponseStatusException(HttpStatus.BAD_REQUEST, e.getMessage());
+        }
     }
-
-
 }

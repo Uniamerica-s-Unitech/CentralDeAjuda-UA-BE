@@ -1,16 +1,18 @@
 package uniamerica.centralDeAjuda.Services;
 
-import org.springframework.beans.BeanUtils;
+import jakarta.persistence.EntityNotFoundException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
-import org.springframework.util.Assert;
+import uniamerica.centralDeAjuda.DTO.MarcaDTO;
+import uniamerica.centralDeAjuda.DTO.ModeloDTO;
 import uniamerica.centralDeAjuda.DTO.NotebookDTO;
+import uniamerica.centralDeAjuda.Entity.Modelo;
 import uniamerica.centralDeAjuda.Entity.Notebook;
-import uniamerica.centralDeAjuda.Repository.ModeloRepository;
+import uniamerica.centralDeAjuda.Entity.Ticket;
 import uniamerica.centralDeAjuda.Repository.NotebookRepository;
+import uniamerica.centralDeAjuda.Repository.TicketRepository;
 
 import java.util.List;
-import java.util.stream.Collectors;
 
 @Service
 public class NotebookService {
@@ -18,65 +20,94 @@ public class NotebookService {
     private NotebookRepository notebookRepository;
 
     @Autowired
-    private ModeloRepository modeloRepository;
+    private TicketRepository ticketRepository;
+
+    public NotebookDTO findNotebookByid(Long id) {
+        Notebook notebook = notebookRepository.findById(id)
+                .orElseThrow(() -> new EntityNotFoundException("Notebook não encontrado!"));
+        return modeloToDTO(notebook);
+    }
 
     public List<NotebookDTO> listar() {
-        List<Notebook> notebooks = notebookRepository.findAll();
-        return notebooks.stream()
-                .map(this::convertToDTO)
-                .collect(Collectors.toList());
+        return notebookRepository.findNotebookByAtivo().stream().map(this::modeloToDTO).toList();
     }
 
-    public NotebookDTO cadastrar(NotebookDTO notebookDTO) {
-        Notebook notebook = new Notebook();
-        BeanUtils.copyProperties(notebookDTO, notebook);
+    public String cadastrarNotebook(NotebookDTO notebookDTO) {
+        Notebook notebook = toNotebook(notebookDTO);
 
-        Assert.notNull(notebook.getPatrimonio(),"Notebook inválido");
-        if (!notebookRepository.findByIdPatrimonio(notebook.getPatrimonio()).isEmpty()){
-            throw new IllegalArgumentException("Esse patrimonio ja existe");
-        }
-
-        if (modeloRepository.findById(notebook.getModeloId().getId()).isEmpty()) {
-            throw new IllegalArgumentException("Modelo não existe");
-        }
-
-        notebook = notebookRepository.save(notebook);
-        return convertToDTO(notebook);
+        notebookRepository.save(notebook);
+        return "Notebook cadastrado com sucesso!";
     }
 
-    public NotebookDTO editar(Long id, NotebookDTO notebookDTO) {
+    public String editarNotebook(Long id, NotebookDTO notebookDTO) {
         if (notebookRepository.existsById(id)) {
-            Notebook notebook = notebookRepository.findById(id).orElse(null);
-            if (notebook != null){
-                BeanUtils.copyProperties(notebookDTO, notebook,"id");
+            Notebook notebook = toNotebook(notebookDTO);
 
-                Assert.notNull(notebook.getPatrimonio(),"Notebook inválido");
-                if (!notebookRepository.findByIdPatrimonioPut(notebook.getPatrimonio(),id).isEmpty()){
-                    throw new IllegalArgumentException("Esse patrimonio ja existe");
-                }
+            notebookRepository.save(notebook);
+            return "Notebook atualizado com sucesso!";
 
-                if (modeloRepository.findById(notebook.getModeloId().getId()).isEmpty()) {
-                    throw new IllegalArgumentException("Modelo não existe");
-                }
-
-                notebook = notebookRepository.save(notebook);
-                return convertToDTO(notebook);
-            }
         }else {
             throw new IllegalArgumentException("Notebook não encontrado com o ID fornecido: " + id);
         }
-        return null;
     }
 
     public void deletar(Long id) {
-        if (notebookRepository.existsById(id)) {
-                notebookRepository.deleteById(id);
+        Notebook notebookBanco = notebookRepository.findById(id)
+                .orElseThrow(()-> new EntityNotFoundException("Notebook com ID "+id+" nao existe"));
+
+        List<Ticket> notebookTicketsAtivos = ticketRepository.findTicketsAbertosPorNotebook(notebookBanco);
+
+
+        if (!notebookTicketsAtivos.isEmpty()){
+            throw new IllegalArgumentException("Não é possível excluir esse notebook tem ticket ativo.");
+        } else {
+            desativarNotebook(notebookBanco);
         }
     }
 
-    private NotebookDTO convertToDTO(Notebook notebook) {
+    private void desativarNotebook(Notebook notebook) {
+        notebook.setAtivo(false);
+        notebookRepository.save(notebook);
+    }
+
+    public NotebookDTO modeloToDTO(Notebook notebook){
         NotebookDTO notebookDTO = new NotebookDTO();
-        BeanUtils.copyProperties(notebook, notebookDTO);
+
+        notebookDTO.setId(notebook.getId());
+        notebookDTO.setAtivo(notebook.getAtivo());
+        notebookDTO.setPatrimonio(notebook.getPatrimonio());
+
+        ModeloDTO modeloDTO = new ModeloDTO();
+
+        modeloDTO.setId(notebook.getModeloId().getId());
+        modeloDTO.setAtivo(notebook.getModeloId().getAtivo());
+        modeloDTO.setNome(notebook.getModeloId().getNome());
+
+        MarcaDTO marcaDTO = new MarcaDTO();
+        marcaDTO.setId(notebook.getModeloId().getMarcaId().getId());
+        marcaDTO.setAtivo(notebook.getModeloId().getMarcaId().getAtivo());
+        marcaDTO.setNome(notebook.getModeloId().getMarcaId().getNome());
+
+        modeloDTO.setMarcaId(marcaDTO);
+
+        modeloDTO.setMarcaId(modeloDTO.getMarcaId());
+
+        notebookDTO.setModeloId(modeloDTO);
         return notebookDTO;
+    }
+
+    public Notebook toNotebook(NotebookDTO notebookDTO){
+        Notebook novoNotebook = new Notebook();
+
+        novoNotebook.setId(notebookDTO.getId());
+        novoNotebook.setAtivo(notebookDTO.getAtivo());
+        novoNotebook.setPatrimonio(notebookDTO.getPatrimonio());
+
+        Modelo modelo = new Modelo();
+        modelo.setId(notebookDTO.getModeloId().getId());
+
+        novoNotebook.setModeloId(modelo);
+
+        return novoNotebook;
     }
 }

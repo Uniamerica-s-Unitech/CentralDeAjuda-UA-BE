@@ -2,11 +2,14 @@ package uniamerica.centralDeAjuda.DTO;
 
 import lombok.Getter;
 import lombok.Setter;
-import uniamerica.centralDeAjuda.Entity.Marca;
 
 @Getter@Setter
-public class ModeloDTO extends AbstractEntityDTO{
+public class ModeloDTO{
+    private Long id;
+
+    private Boolean ativo = true;
+
     private String nome;
 
-    private Marca marca_id;
+    private MarcaDTO marcaId;
 }
