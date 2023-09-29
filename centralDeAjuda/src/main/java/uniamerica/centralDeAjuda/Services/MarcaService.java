@@ -33,7 +33,11 @@ public class MarcaService {
     public String cadastrarMarca(MarcaDTO marcaDTO) {
         Marca marca = toMarca(marcaDTO);
 
-        Assert.notNull(marca.getNome(),"Nome invalido");
+        Assert.notNull(marca.getNome(),"Nome inválido!");
+
+        if (!marcaRepository.findByNomeMarca(marca.getNome()).isEmpty()){
+            throw new IllegalArgumentException("Esse RA ja existe!");
+        }
 
         marcaRepository.save(marca);
         return "Marca cadastrado com sucesso!";
@@ -43,7 +47,11 @@ public class MarcaService {
         if (marcaRepository.existsById(id)) {
             Marca marca = toMarca(marcaDTO);
 
-            Assert.notNull(marca.getNome(), "Nome invalido");
+            Assert.notNull(marca.getNome(), "Nome inválido!");
+
+            if (!marcaRepository.findByNomeMarca(marca.getNome()).isEmpty()){
+                throw new IllegalArgumentException("Esse RA ja existe!");
+            }
 
             marcaRepository.save(marca);
             return "Marca atualizado com sucesso!";
@@ -56,7 +64,7 @@ public class MarcaService {
     public void deletar(Long id) {
         Marca marcaBanco = marcaRepository.findById(id)
                 .orElseThrow(()->
-                        new EntityNotFoundException("Marca com ID "+id+" nao existe"));
+                        new EntityNotFoundException("Marca com ID "+id+" nao existe!"));
 
         List<Modelo> marcaModeloAtivo = modeloRepository.findModeloByMarcaAtiva(marcaBanco);
 

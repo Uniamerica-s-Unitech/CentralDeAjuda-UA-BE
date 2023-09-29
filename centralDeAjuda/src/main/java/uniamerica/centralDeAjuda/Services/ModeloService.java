@@ -10,6 +10,7 @@ import uniamerica.centralDeAjuda.DTO.ModeloDTO;
 import uniamerica.centralDeAjuda.Entity.Marca;
 import uniamerica.centralDeAjuda.Entity.Modelo;
 import uniamerica.centralDeAjuda.Entity.Notebook;
+import uniamerica.centralDeAjuda.Repository.MarcaRepository;
 import uniamerica.centralDeAjuda.Repository.ModeloRepository;
 import uniamerica.centralDeAjuda.Repository.NotebookRepository;
 
@@ -19,6 +20,8 @@ import java.util.List;
 public class ModeloService {
     @Autowired
     private ModeloRepository modeloRepository;
+    @Autowired
+    private MarcaRepository marcaRepository;
     @Autowired
     private NotebookRepository notebookRepository;
 
@@ -35,7 +38,11 @@ public class ModeloService {
     public String cadastrarModelo(ModeloDTO modeloDTO) {
         Modelo modelo = toModelo(modeloDTO);
 
-        Assert.notNull(modelo.getNome(),"Nome invalido");
+        Assert.notNull(modelo.getNome(),"Nome inválido!");
+
+        Assert.notNull(modelo.getMarcaId(),"Marca invalida!");
+        Assert.isTrue(!marcaRepository.findById
+                (modelo.getMarcaId().getId()).isEmpty(),"Marca não existe!");
 
         modeloRepository.save(modelo);
         return "Modelo cadastrado com sucesso!";
@@ -45,7 +52,11 @@ public class ModeloService {
         if (modeloRepository.existsById(id)) {
             Modelo modelo = toModelo(modeloDTO);
 
-            Assert.notNull(modelo.getNome(), "Nome invalido");
+            Assert.notNull(modelo.getNome(), "Nome inválido!");
+
+            Assert.notNull(modelo.getMarcaId(),"Marca invalida!");
+            Assert.isTrue(!marcaRepository.findById
+                            (modelo.getMarcaId().getId()).isEmpty(),"Marca não existe!");
 
             modeloRepository.save(modelo);
             return "Modelo atualizado com sucesso!";
@@ -58,12 +69,12 @@ public class ModeloService {
     public void deletar(Long id) {
         Modelo modeloBanco = modeloRepository.findById(id)
                 .orElseThrow(()->
-                        new EntityNotFoundException("Modelo com ID "+id+" nao existe"));
+                        new EntityNotFoundException("Modelo com ID "+id+" nao existe!"));
 
         List<Notebook> modeloNotebookAtivo = notebookRepository.findNotebookByModeloAtivo(modeloBanco);
 
         if (!modeloNotebookAtivo.isEmpty()){
-            throw new IllegalArgumentException("Não é possível excluir esse modelo tem notebook ativo.");
+            throw new IllegalArgumentException("Não é possível excluir esse modelo tem notebook ativo!");
         } else {
             desativarModelo(modeloBanco);
         }

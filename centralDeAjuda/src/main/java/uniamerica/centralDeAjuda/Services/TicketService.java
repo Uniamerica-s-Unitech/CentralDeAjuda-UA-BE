@@ -4,6 +4,7 @@ import jakarta.persistence.EntityNotFoundException;
 import jakarta.transaction.Transactional;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.util.Assert;
 import uniamerica.centralDeAjuda.DTO.AlunoDTO;
 import uniamerica.centralDeAjuda.DTO.ModeloDTO;
 import uniamerica.centralDeAjuda.DTO.NotebookDTO;
@@ -11,6 +12,8 @@ import uniamerica.centralDeAjuda.DTO.TicketDTO;
 import uniamerica.centralDeAjuda.Entity.Aluno;
 import uniamerica.centralDeAjuda.Entity.Notebook;
 import uniamerica.centralDeAjuda.Entity.Ticket;
+import uniamerica.centralDeAjuda.Repository.AlunoRepository;
+import uniamerica.centralDeAjuda.Repository.NotebookRepository;
 import uniamerica.centralDeAjuda.Repository.TicketRepository;
 
 import java.util.List;
@@ -20,6 +23,13 @@ public class
 TicketService {
     @Autowired
     private TicketRepository ticketRepository;
+
+    @Autowired
+    private AlunoRepository alunoRepository;
+
+    @Autowired
+    private NotebookRepository notebookRepository;
+
 
     public TicketDTO findTicketByid(Long id) {
         Ticket ticket = ticketRepository.findById(id)
@@ -39,16 +49,24 @@ TicketService {
     public String cadastrarTicket(TicketDTO ticketDTO) {
         Ticket ticket = toTicket(ticketDTO);
 
-        //BUSCAR NO BANCO DE DADOS TICKETS ATIVOS DESSE ALUNO
+        Assert.notNull(ticket.getAlunoId(),"Aluno inválido!");
+        Assert.isTrue(!alunoRepository.findById
+                (ticket.getAlunoId().getId()).isEmpty(),"Aluno não existe!");
+
+        Assert.notNull(ticket.getNotebookId(),"Notebook inválido!");
+        Assert.isTrue(!notebookRepository.findById
+                (ticket.getNotebookId().getId()).isEmpty(),"Notebook não existe!");
+
+        Assert.notNull(ticket.getDataEntrega(),"Data de entrega inválida!");
 
         List<Ticket> alunoTicketsAtivos = ticketRepository.findTicketsAbertosPorAluno(ticket.getAlunoId());
 
         List<Ticket> notebookTicketsAtivos = ticketRepository.findTicketsAbertosPorNotebook(ticket.getNotebookId());
 
         if (!alunoTicketsAtivos.isEmpty()){
-            return "O aluno posui um tickey ativo";
+            return "O aluno possui um tickey ativo";
         }else if(!notebookTicketsAtivos.isEmpty()){
-            return "O notebook posui um tickey ativo";
+            return "O notebook possui um tickey ativo";
         }else
         {
             ticketRepository.save(ticket);
@@ -59,6 +77,30 @@ TicketService {
     public String editarTicket(Long id, TicketDTO ticketDTO) {
         if (ticketRepository.existsById(id)) {
             Ticket ticket = toTicket(ticketDTO);
+
+            Assert.notNull(ticket.getAlunoId(),"Aluno inválido!");
+            Assert.isTrue(!alunoRepository.findById
+                    (ticket.getAlunoId().getId()).isEmpty(),"Aluno não existe!");
+
+            Assert.notNull(ticket.getNotebookId(),"Notebook inválido!");
+            Assert.isTrue(!notebookRepository.findById
+                    (ticket.getNotebookId().getId()).isEmpty(),"Notebook não existe!");
+
+            Assert.notNull(ticket.getDataEntrega(),"Data de entrega inválida!");
+
+            /*List<Ticket> alunoTicketsAtivos = ticketRepository.findTicketsAbertosPorAluno(ticket.getAlunoId());
+
+            List<Ticket> notebookTicketsAtivos = ticketRepository.findTicketsAbertosPorNotebook(ticket.getNotebookId());
+
+            if (!alunoTicketsAtivos.isEmpty()){
+                return "O aluno possui um tickey ativo";
+            }else if(!notebookTicketsAtivos.isEmpty()){
+                return "O notebook possui um tickey ativo";
+            }else
+            {
+                ticketRepository.save(ticket);
+                return "Ticket cadastrado com sucesso!";
+            }*/
 
             ticketRepository.save(ticket);
             return "Ticket atualizado com sucesso!";

@@ -33,15 +33,15 @@ public class AlunoService {
     public String cadastrarAluno(AlunoDTO alunoDTO) {
         Aluno aluno = toAluno(alunoDTO);
 
-        Assert.notNull(aluno.getNome(),"Nome invalido");
+        Assert.notNull(aluno.getNome(),"Nome inválido!");
 
-        Assert.notNull(aluno.getRa(),"RA invalido");
+        Assert.notNull(aluno.getRa(),"RA inválido!");
         if (!aluno.getRa().matches("\\d{6}")) {
-            throw new IllegalArgumentException("Formato do RA inválido. Deve conter 6 dígitos numéricos.");
+            throw new IllegalArgumentException("Formato do RA inválido. Deve conter 6 dígitos numéricos!");
         }
 
         if (!alunoRepository.findByRA(aluno.getRa()).isEmpty()){
-            throw new IllegalArgumentException("Esse RA ja existe");
+            throw new IllegalArgumentException("Esse RA ja existe!");
         }
 
         alunoRepository.save(aluno);
@@ -52,15 +52,15 @@ public class AlunoService {
         if (alunoRepository.existsById(id)) {
             Aluno aluno = toAluno(alunoDTO);
 
-            Assert.notNull(aluno.getNome(), "Nome invalido");
+            Assert.notNull(aluno.getNome(), "Nome inválido!");
 
-            Assert.notNull(aluno.getRa(), "RA invalido");
+            Assert.notNull(aluno.getRa(), "RA inválido!");
             if (!aluno.getRa().matches("\\d{6}")) {
-                throw new IllegalArgumentException("Formato do RA inválido. Deve conter 6 dígitos numéricos.");
+                throw new IllegalArgumentException("Formato do RA inválido. Deve conter 6 dígitos numéricos!");
             }
 
-            if (!alunoRepository.findByRaPut(aluno.getRa(),id).isEmpty()){
-                throw new IllegalArgumentException("Esse RA ja existe");
+            if (!alunoRepository.findByRA(aluno.getRa()).isEmpty()){
+                throw new IllegalArgumentException("Esse RA ja existe!");
             }
 
             alunoRepository.save(aluno);
@@ -73,7 +73,7 @@ public class AlunoService {
 
     public void deletar(Long id) {
         Aluno alunoBanco = alunoRepository.findById(id)
-                .orElseThrow(()-> new EntityNotFoundException("Aluno com ID "+id+" nao existe"));
+                .orElseThrow(()-> new EntityNotFoundException("Aluno com ID "+id+" nao existe!"));
 
         List<Ticket> alunoTicketsAtivos = ticketRepository.findTicketsAbertosPorAluno(alunoBanco);
 

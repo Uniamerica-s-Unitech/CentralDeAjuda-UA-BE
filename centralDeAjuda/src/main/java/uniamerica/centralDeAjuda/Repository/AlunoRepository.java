@@ -12,6 +12,4 @@ public interface AlunoRepository extends JpaRepository<Aluno, Long> {
     List<Aluno> findAlunoByAtivo();
     @Query("FROM Aluno WHERE ra = :ra")
     List<Aluno> findByRA(@Param("ra") final String ra);
-    @Query("FROM Aluno WHERE ra = :ra AND id != :id")
-    List<Aluno> findByRaPut(@Param("ra") final String ra, @Param("id") final Long id);
 }
