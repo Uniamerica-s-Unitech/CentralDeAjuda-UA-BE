@@ -20,7 +20,7 @@ public class AlunoService {
     @Autowired
     private TicketRepository ticketRepository;
 
-    public AlunoDTO findAlunoById(Long id) {
+    public AlunoDTO findAlunoById(Long id) {/**/
         Aluno aluno = alunoRepository.findById(id)
                 .orElseThrow(() -> new EntityNotFoundException("Aluno não encontrado!"));
         return alunoToDTO(aluno);
