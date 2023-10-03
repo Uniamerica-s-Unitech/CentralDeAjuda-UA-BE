@@ -20,7 +20,7 @@ public class AlunoService {
     @Autowired
     private TicketRepository ticketRepository;
 
-    public AlunoDTO findAlunoByid(Long id) {
+    public AlunoDTO findAlunoById(Long id) {
         Aluno aluno = alunoRepository.findById(id)
                 .orElseThrow(() -> new EntityNotFoundException("Aluno não encontrado!"));
         return alunoToDTO(aluno);
@@ -89,15 +89,15 @@ public class AlunoService {
         alunoRepository.save(aluno);
     }
 
-        public AlunoDTO alunoToDTO(Aluno aluno){
-        AlunoDTO alunoDTO = new AlunoDTO();
+    public AlunoDTO alunoToDTO(Aluno aluno){
+    AlunoDTO alunoDTO = new AlunoDTO();
 
-        alunoDTO.setId(aluno.getId());
-        alunoDTO.setAtivo(aluno.getAtivo());
-        alunoDTO.setNome(aluno.getNome());
-        alunoDTO.setRa(aluno.getRa());
+    alunoDTO.setId(aluno.getId());
+    alunoDTO.setAtivo(aluno.getAtivo());
+    alunoDTO.setNome(aluno.getNome());
+    alunoDTO.setRa(aluno.getRa());
 
-        return alunoDTO;
+    return alunoDTO;
     }
 
     public Aluno toAluno(AlunoDTO alunoDTO){
