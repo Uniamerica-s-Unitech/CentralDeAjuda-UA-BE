@@ -19,13 +19,23 @@ public class ModeloController {
     @Autowired
     private ModeloService modeloService;
 
+    @GetMapping("/{id}")
+    public ResponseEntity<ModeloDTO> buscarPorId(@PathVariable Long id) {
+        ModeloDTO modeloDTO = modeloService.findModeloById(id);
+        if (modeloDTO != null) {
+            return ResponseEntity.ok(modeloDTO);
+        } else {
+            return ResponseEntity.notFound().build();
+        }
+    }
+
     @GetMapping("/lista")
     public List<ModeloDTO> listar(){
         return modeloService.listar();
     }
 
     @PostMapping
-    public ResponseEntity<String> cadastrarAluno(@RequestBody ModeloDTO modeloDTO) {
+    public ResponseEntity<String> cadastrarModelo(@RequestBody ModeloDTO modeloDTO) {
         try{
             return ResponseEntity.ok(modeloService.cadastrarModelo(modeloDTO));
         } catch (IllegalArgumentException e) {
@@ -38,7 +48,7 @@ public class ModeloController {
     }
 
     @PutMapping("/{id}")
-    public ResponseEntity<String> editarAluno(@PathVariable Long id, @RequestBody ModeloDTO modeloDTO) {
+    public ResponseEntity<String> editarModelo(@PathVariable Long id, @RequestBody ModeloDTO modeloDTO) {
         try {
             return ResponseEntity.ok(modeloService.editarModelo(id, modeloDTO));
         } catch (IllegalArgumentException e) {

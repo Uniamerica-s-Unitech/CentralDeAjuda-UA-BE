@@ -17,6 +17,16 @@ public class MarcaController {
     @Autowired
     private MarcaService marcaService;
 
+    @GetMapping("/{id}")
+    public ResponseEntity<MarcaDTO> buscarPorId(@PathVariable Long id) {
+        MarcaDTO marcaDTO = marcaService.findMarcaById(id);
+        if (marcaDTO != null) {
+            return ResponseEntity.ok(marcaDTO);
+        } else {
+            return ResponseEntity.notFound().build();
+        }
+    }
+
     @GetMapping("/lista")
     public List<MarcaDTO> listar(){
         return marcaService.listar();
@@ -52,7 +62,7 @@ public class MarcaController {
     public ResponseEntity<String> deletar(@PathVariable Long id) {
         try {
             marcaService.deletar(id);
-            return ResponseEntity.ok("Marca deletado mcom sucesso!");
+            return ResponseEntity.ok("Marca deletado com sucesso!");
         }catch (IllegalArgumentException e) {
             return ResponseEntity.badRequest().body(e.getMessage());
         } catch (EntityNotFoundException e) {

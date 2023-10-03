@@ -17,13 +17,23 @@ public class NotebookController {
     @Autowired
     private NotebookService notebookService;
 
+    @GetMapping("/{id}")
+    public ResponseEntity<NotebookDTO> buscarPorId(@PathVariable Long id) {
+        NotebookDTO notebookDTO = notebookService.findNotebookById(id);
+        if (notebookDTO != null) {
+            return ResponseEntity.ok(notebookDTO);
+        } else {
+            return ResponseEntity.notFound().build();
+        }
+    }
+
     @GetMapping("/lista")
     public List<NotebookDTO> listar(){
         return notebookService.listar();
     }
 
     @PostMapping
-    public ResponseEntity<String> cadastrarAluno(@RequestBody NotebookDTO notebookDTO) {
+    public ResponseEntity<String> cadastrarNotebook(@RequestBody NotebookDTO notebookDTO) {
         try{
             return ResponseEntity.ok(notebookService.cadastrarNotebook(notebookDTO));
         } catch (IllegalArgumentException e) {
@@ -36,7 +46,7 @@ public class NotebookController {
     }
 
     @PutMapping("/{id}")
-    public ResponseEntity<String> editarAluno(@PathVariable Long id, @RequestBody NotebookDTO notebookDTO) {
+    public ResponseEntity<String> editarNotebook(@PathVariable Long id, @RequestBody NotebookDTO notebookDTO) {
         try {
             return ResponseEntity.ok(notebookService.editarNotebook(id, notebookDTO));
         } catch (IllegalArgumentException e) {

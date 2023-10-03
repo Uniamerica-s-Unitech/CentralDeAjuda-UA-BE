@@ -18,6 +18,16 @@ public class TicketController {
     @Autowired
     private TicketService ticketService;
 
+    @GetMapping("/{id}")
+    public ResponseEntity<TicketDTO> buscarPorId(@PathVariable Long id) {
+        TicketDTO ticketDTO = ticketService.findTicketById(id);
+        if (ticketDTO != null) {
+            return ResponseEntity.ok(ticketDTO);
+        } else {
+            return ResponseEntity.notFound().build();
+        }
+    }
+
     @GetMapping("/abertos")
     public List<TicketDTO> buscarTicketsAbertos(){
         return ticketService.buscarTicketsAbertos();
@@ -29,7 +39,7 @@ public class TicketController {
     }
 
         @PostMapping
-        public ResponseEntity<String> cadastrarAluno(@RequestBody TicketDTO ticketDTO) {
+        public ResponseEntity<String> cadastrarTicket(@RequestBody TicketDTO ticketDTO) {
             try{
                 return ResponseEntity.ok(ticketService.cadastrarTicket(ticketDTO));
             } catch (IllegalArgumentException e) {
@@ -42,7 +52,7 @@ public class TicketController {
         }
 
         @PutMapping("/{id}")
-        public ResponseEntity<String> editarAluno(@PathVariable Long id, @RequestBody TicketDTO ticketDTO) {
+        public ResponseEntity<String> editarTicket(@PathVariable Long id, @RequestBody TicketDTO ticketDTO) {
             try {
                 return ResponseEntity.ok(ticketService.editarTicket(id, ticketDTO));
             } catch (IllegalArgumentException e) {

@@ -2,7 +2,9 @@ package uniamerica.centralDeAjuda.Entity;
 
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import jakarta.persistence.*;
+import lombok.AllArgsConstructor;
 import lombok.Getter;
+import lombok.NoArgsConstructor;
 import lombok.Setter;
 
 import java.time.LocalDateTime;
@@ -10,6 +12,8 @@ import java.time.LocalDateTime;
 @Entity
 @Table(name = "ticket", schema = "public")
 @Getter @Setter
+@AllArgsConstructor
+@NoArgsConstructor
 public class Ticket{
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)

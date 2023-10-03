@@ -27,7 +27,7 @@ public class NotebookService {
     @Autowired
     private TicketRepository ticketRepository;
 
-    public NotebookDTO findNotebookByid(Long id) {
+    public NotebookDTO findNotebookById(Long id) {
         Notebook notebook = notebookRepository.findById(id)
                 .orElseThrow(() -> new EntityNotFoundException("Notebook não encontrado!"));
         return notebookToDTO(notebook);

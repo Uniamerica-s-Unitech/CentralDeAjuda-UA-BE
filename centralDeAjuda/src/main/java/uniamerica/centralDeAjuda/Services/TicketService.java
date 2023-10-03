@@ -31,7 +31,7 @@ TicketService {
     private NotebookRepository notebookRepository;
 
 
-    public TicketDTO findTicketByid(Long id) {
+    public TicketDTO findTicketById(Long id) {
         Ticket ticket = ticketRepository.findById(id)
                 .orElseThrow(() -> new EntityNotFoundException("Ticket não encontrado!"));
         return ticketToDTO(ticket);

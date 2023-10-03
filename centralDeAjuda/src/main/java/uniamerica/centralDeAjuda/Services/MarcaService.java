@@ -21,7 +21,7 @@ public class MarcaService {
     @Autowired
     private ModeloRepository modeloRepository;
 
-    public MarcaDTO findMarcaByid(Long id) {
+    public MarcaDTO findMarcaById(Long id) {
         Marca marca = marcaRepository.findById(id).orElseThrow(() -> new EntityNotFoundException("Marca não encontrada!"));
         return marcaToDTO(marca);
     }
@@ -40,7 +40,7 @@ public class MarcaService {
         }
 
         marcaRepository.save(marca);
-        return "Marca cadastrado com sucesso!";
+        return "Marca cadastrada com sucesso!";
     }
 
     public String editarMarca(Long id, MarcaDTO marcaDTO) {
@@ -54,7 +54,7 @@ public class MarcaService {
             }
 
             marcaRepository.save(marca);
-            return "Marca atualizado com sucesso!";
+            return "Marca atualizada com sucesso!";
 
         }else {
             throw new IllegalArgumentException("Marca não encontrado com o ID fornecido: " + id);

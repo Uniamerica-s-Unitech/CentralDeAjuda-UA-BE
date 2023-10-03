@@ -25,7 +25,7 @@ public class ModeloService {
     @Autowired
     private NotebookRepository notebookRepository;
 
-    public ModeloDTO findModeloByid(Long id) {
+    public ModeloDTO findModeloById(Long id) {
         Modelo modelo = modeloRepository.findById(id)
                 .orElseThrow(() -> new EntityNotFoundException("Modelo não encontrado!"));
         return modeloToDTO(modelo);

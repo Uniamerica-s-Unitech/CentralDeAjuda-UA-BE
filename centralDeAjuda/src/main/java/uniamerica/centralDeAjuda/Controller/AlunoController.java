@@ -18,6 +18,16 @@ public class AlunoController {
     @Autowired
     private AlunoService alunoService;
 
+    @GetMapping("/{id}")
+    public ResponseEntity<AlunoDTO> buscarPorId(@PathVariable Long id) {
+        AlunoDTO alunoDTO = alunoService.findAlunoById(id);
+        if (alunoDTO != null) {
+            return ResponseEntity.ok(alunoDTO);
+        } else {
+            return ResponseEntity.notFound().build();
+        }
+    }
+
     @GetMapping("/lista")
     public List<AlunoDTO> listar(){
         return alunoService.listar();
@@ -53,7 +63,7 @@ public class AlunoController {
     public ResponseEntity<String> deletar(@PathVariable Long id) {
         try {
             alunoService.deletar(id);
-            return ResponseEntity.ok("Aluno deletado mcom sucesso!");
+            return ResponseEntity.ok("Aluno deletado com sucesso!");
         }catch (IllegalArgumentException e) {
             return ResponseEntity.badRequest().body(e.getMessage());
         } catch (EntityNotFoundException e) {
