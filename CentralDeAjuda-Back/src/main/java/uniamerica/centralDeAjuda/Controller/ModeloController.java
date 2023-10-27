@@ -7,6 +7,7 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.server.ResponseStatusException;
+import uniamerica.centralDeAjuda.DTO.MensagemDTO;
 import uniamerica.centralDeAjuda.DTO.ModeloDTO;
 import uniamerica.centralDeAjuda.Services.ModeloService;
 
@@ -35,42 +36,32 @@ public class ModeloController {
     }
 
     @PostMapping
-    public ResponseEntity<String> cadastrarModelo(@RequestBody ModeloDTO modeloDTO) {
+    public ResponseEntity<MensagemDTO> cadastrarModelo(@RequestBody ModeloDTO modeloDTO) {
         try{
             return ResponseEntity.ok(modeloService.cadastrarModelo(modeloDTO));
-        } catch (IllegalArgumentException e) {
-            return ResponseEntity.badRequest().body(e.getMessage());
-        } catch (EntityNotFoundException e) {
-            return ResponseEntity.notFound().build();
         } catch(Exception e){
-            throw new ResponseStatusException(HttpStatus.BAD_REQUEST, e.getMessage());
+            MensagemDTO mensagem = new MensagemDTO(e.getMessage(),HttpStatus.BAD_REQUEST);
+            return ResponseEntity.badRequest().body(mensagem);
         }
     }
 
     @PutMapping("/{id}")
-    public ResponseEntity<String> editarModelo(@PathVariable Long id, @RequestBody ModeloDTO modeloDTO) {
+    public ResponseEntity<MensagemDTO> editarModelo(@PathVariable Long id, @RequestBody ModeloDTO modeloDTO) {
         try {
             return ResponseEntity.ok(modeloService.editarModelo(id, modeloDTO));
-        } catch (IllegalArgumentException e) {
-            return ResponseEntity.badRequest().body(e.getMessage());
-        } catch (EntityNotFoundException e) {
-            return ResponseEntity.notFound().build();
         } catch(Exception e){
-            throw new ResponseStatusException(HttpStatus.BAD_REQUEST, e.getMessage());
+            MensagemDTO mensagem = new MensagemDTO(e.getMessage(),HttpStatus.BAD_REQUEST);
+            return ResponseEntity.badRequest().body(mensagem);
         }
     }
 
     @DeleteMapping("/{id}")
-    public ResponseEntity<String> deletar(@PathVariable Long id) {
+    public ResponseEntity<MensagemDTO> deletar(@PathVariable Long id) {
         try {
-            modeloService.deletar(id);
-            return ResponseEntity.ok("Modelo deletado com sucesso!");
-        }catch (IllegalArgumentException e) {
-            return ResponseEntity.badRequest().body(e.getMessage());
-        } catch (EntityNotFoundException e) {
-            return ResponseEntity.notFound().build();
+            return ResponseEntity.ok(modeloService.deletar(id));
         } catch(Exception e){
-            throw new ResponseStatusException(HttpStatus.BAD_REQUEST, e.getMessage());
+            MensagemDTO mensagem = new MensagemDTO(e.getMessage(),HttpStatus.BAD_REQUEST);
+            return ResponseEntity.badRequest().body(mensagem);
         }
     }
 }

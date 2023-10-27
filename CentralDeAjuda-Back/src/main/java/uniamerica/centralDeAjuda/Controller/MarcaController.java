@@ -7,6 +7,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.server.ResponseStatusException;
 import uniamerica.centralDeAjuda.DTO.MarcaDTO;
+import uniamerica.centralDeAjuda.DTO.MensagemDTO;
 import uniamerica.centralDeAjuda.Services.MarcaService;
 
 import java.util.List;
@@ -33,42 +34,32 @@ public class MarcaController {
     }
 
     @PostMapping
-    public ResponseEntity<String> cadastrarMarca(@RequestBody MarcaDTO marcaDTO) {
+    public ResponseEntity<MensagemDTO> cadastrarMarca(@RequestBody MarcaDTO marcaDTO) {
         try{
             return ResponseEntity.ok(marcaService.cadastrarMarca(marcaDTO));
-        }catch (IllegalArgumentException e) {
-            return ResponseEntity.badRequest().body(e.getMessage());
-        } catch (EntityNotFoundException e) {
-            return ResponseEntity.notFound().build();
         } catch(Exception e){
-            throw new ResponseStatusException(HttpStatus.BAD_REQUEST, e.getMessage());
+            MensagemDTO mensagem = new MensagemDTO(e.getMessage(),HttpStatus.BAD_REQUEST);
+            return ResponseEntity.badRequest().body(mensagem);
         }
     }
 
     @PutMapping("/{id}")
-    public ResponseEntity<String> editarMarca(@PathVariable Long id, @RequestBody MarcaDTO marcaDTO) {
+    public ResponseEntity<MensagemDTO> editarMarca(@PathVariable Long id, @RequestBody MarcaDTO marcaDTO) {
         try {
             return ResponseEntity.ok(marcaService.editarMarca(id, marcaDTO));
-        } catch (IllegalArgumentException e) {
-            return ResponseEntity.badRequest().body(e.getMessage());
-        } catch (EntityNotFoundException e) {
-            return ResponseEntity.notFound().build();
         } catch(Exception e){
-            throw new ResponseStatusException(HttpStatus.BAD_REQUEST, e.getMessage());
+            MensagemDTO mensagem = new MensagemDTO(e.getMessage(),HttpStatus.BAD_REQUEST);
+            return ResponseEntity.badRequest().body(mensagem);
         }
     }
 
     @DeleteMapping("/{id}")
-    public ResponseEntity<String> deletar(@PathVariable Long id) {
+    public ResponseEntity<MensagemDTO> deletar(@PathVariable Long id) {
         try {
-            marcaService.deletar(id);
-            return ResponseEntity.ok("Marca deletado com sucesso!");
-        }catch (IllegalArgumentException e) {
-            return ResponseEntity.badRequest().body(e.getMessage());
-        } catch (EntityNotFoundException e) {
-            return ResponseEntity.notFound().build();
+            return ResponseEntity.ok(marcaService.deletar(id));
         } catch(Exception e){
-            throw new ResponseStatusException(HttpStatus.BAD_REQUEST, e.getMessage());
+            MensagemDTO mensagem = new MensagemDTO(e.getMessage(),HttpStatus.BAD_REQUEST);
+            return ResponseEntity.badRequest().body(mensagem);
         }
     }
 }

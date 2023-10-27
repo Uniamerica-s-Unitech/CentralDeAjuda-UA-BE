@@ -3,9 +3,11 @@ package uniamerica.centralDeAjuda.Services;
 
 import jakarta.persistence.EntityNotFoundException;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
 import org.springframework.util.Assert;
 import uniamerica.centralDeAjuda.DTO.MarcaDTO;
+import uniamerica.centralDeAjuda.DTO.MensagemDTO;
 import uniamerica.centralDeAjuda.Entity.Marca;
 import uniamerica.centralDeAjuda.Entity.Modelo;
 import uniamerica.centralDeAjuda.Repository.MarcaRepository;
@@ -30,7 +32,7 @@ public class MarcaService {
         return marcaRepository.findMarcaByAtivo().stream().map(this::marcaToDTO).toList();
     }
 
-    public String cadastrarMarca(MarcaDTO marcaDTO) {
+    public MensagemDTO cadastrarMarca(MarcaDTO marcaDTO) {
         Marca marca = toMarca(marcaDTO);
 
         Assert.notNull(marca.getNome(),"Nome inválido!");
@@ -40,28 +42,23 @@ public class MarcaService {
         }
 
         marcaRepository.save(marca);
-        return "Marca cadastrada com sucesso!";
+        return new MensagemDTO("Marca cadastrada com sucesso!", HttpStatus.CREATED);
     }
 
-    public String editarMarca(Long id, MarcaDTO marcaDTO) {
-        if (marcaRepository.existsById(id)) {
-            Marca marca = toMarca(marcaDTO);
+    public MensagemDTO editarMarca(Long id, MarcaDTO marcaDTO) {
+        Marca marca = toMarca(marcaDTO);
 
-            Assert.notNull(marca.getNome(), "Nome inválido!");
+        Assert.notNull(marca.getNome(), "Nome inválido!");
 
-            if (!marcaRepository.findByNomeMarca(marca.getNome()).isEmpty()){
-                throw new IllegalArgumentException("Esse RA ja existe!");
-            }
-
-            marcaRepository.save(marca);
-            return "Marca atualizada com sucesso!";
-
-        }else {
-            throw new IllegalArgumentException("Marca não encontrado com o ID fornecido: " + id);
+        if (!marcaRepository.findByNomeMarca(marca.getNome()).isEmpty()){
+            throw new IllegalArgumentException("Esse RA ja existe!");
         }
+
+        marcaRepository.save(marca);
+        return new MensagemDTO("Marca atualizada com sucesso!", HttpStatus.CREATED);
     }
 
-    public void deletar(Long id) {
+    public MensagemDTO deletar(Long id) {
         Marca marcaBanco = marcaRepository.findById(id)
                 .orElseThrow(()->
                         new EntityNotFoundException("Marca com ID "+id+" nao existe!"));
@@ -69,10 +66,11 @@ public class MarcaService {
         List<Modelo> marcaModeloAtivo = modeloRepository.findModeloByMarcaAtiva(marcaBanco);
 
         if (!marcaModeloAtivo.isEmpty()){
-            throw new IllegalArgumentException("Não é possível excluir essa marca tem modelo ativo.");
+            return new MensagemDTO("Não é possível excluir essa marca, pois existem modelos ativos associados a ela.", HttpStatus.CREATED);
         } else {
             desativarMarca(marcaBanco);
         }
+        return new MensagemDTO("Marca deletada com sucesso!", HttpStatus.CREATED);
     }
 
     private void desativarMarca(Marca marca) {

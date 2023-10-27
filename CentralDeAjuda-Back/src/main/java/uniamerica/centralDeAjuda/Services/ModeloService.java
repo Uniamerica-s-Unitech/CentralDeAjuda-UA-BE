@@ -3,9 +3,11 @@ package uniamerica.centralDeAjuda.Services;
 
 import jakarta.persistence.EntityNotFoundException;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
 import org.springframework.util.Assert;
 import uniamerica.centralDeAjuda.DTO.MarcaDTO;
+import uniamerica.centralDeAjuda.DTO.MensagemDTO;
 import uniamerica.centralDeAjuda.DTO.ModeloDTO;
 import uniamerica.centralDeAjuda.Entity.Marca;
 import uniamerica.centralDeAjuda.Entity.Modelo;
@@ -35,7 +37,7 @@ public class ModeloService {
         return modeloRepository.findModeloByAtivo().stream().map(this::modeloToDTO).toList();
     }
 
-    public String cadastrarModelo(ModeloDTO modeloDTO) {
+    public MensagemDTO cadastrarModelo(ModeloDTO modeloDTO) {
         Modelo modelo = toModelo(modeloDTO);
 
         Assert.notNull(modelo.getNome(),"Nome inválido!");
@@ -45,28 +47,23 @@ public class ModeloService {
                 (modelo.getMarcaId().getId()).isEmpty(),"Marca não existe!");
 
         modeloRepository.save(modelo);
-        return "Modelo cadastrado com sucesso!";
+        return new MensagemDTO("Modelo cadastrado com sucesso!", HttpStatus.CREATED);
     }
 
-    public String editarModelo(Long id, ModeloDTO modeloDTO) {
-        if (modeloRepository.existsById(id)) {
-            Modelo modelo = toModelo(modeloDTO);
+    public MensagemDTO editarModelo(Long id, ModeloDTO modeloDTO) {
+        Modelo modelo = toModelo(modeloDTO);
 
-            Assert.notNull(modelo.getNome(), "Nome inválido!");
+        Assert.notNull(modelo.getNome(), "Nome inválido!");
 
-            Assert.notNull(modelo.getMarcaId(),"Marca invalida!");
-            Assert.isTrue(!marcaRepository.findById
-                            (modelo.getMarcaId().getId()).isEmpty(),"Marca não existe!");
+        Assert.notNull(modelo.getMarcaId(),"Marca invalida!");
+        Assert.isTrue(!marcaRepository.findById
+                        (modelo.getMarcaId().getId()).isEmpty(),"Marca não existe!");
 
-            modeloRepository.save(modelo);
-            return "Modelo atualizado com sucesso!";
-
-        }else {
-            throw new IllegalArgumentException("Modelo não encontrado com o ID fornecido: " + id);
-        }
+        modeloRepository.save(modelo);
+        return new MensagemDTO("Modelo atualizado com sucesso!", HttpStatus.CREATED);
     }
 
-    public void deletar(Long id) {
+    public MensagemDTO deletar(Long id) {
         Modelo modeloBanco = modeloRepository.findById(id)
                 .orElseThrow(()->
                         new EntityNotFoundException("Modelo com ID "+id+" nao existe!"));
@@ -74,10 +71,11 @@ public class ModeloService {
         List<Notebook> modeloNotebookAtivo = notebookRepository.findNotebookByModeloAtivo(modeloBanco);
 
         if (!modeloNotebookAtivo.isEmpty()){
-            throw new IllegalArgumentException("Não é possível excluir esse modelo tem notebook ativo!");
+            return new MensagemDTO("Não é possível excluir esse modelo, pois existem notebooks ativos associados a ele.", HttpStatus.CREATED);
         } else {
             desativarModelo(modeloBanco);
         }
+        return new MensagemDTO("Modelo deletado com sucesso!", HttpStatus.CREATED);
     }
 
     private void desativarModelo(Modelo modelo) {

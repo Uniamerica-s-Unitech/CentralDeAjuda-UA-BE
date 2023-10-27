@@ -2,9 +2,11 @@ package uniamerica.centralDeAjuda.Services;
 
 import jakarta.persistence.EntityNotFoundException;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
 import org.springframework.util.Assert;
 import uniamerica.centralDeAjuda.DTO.MarcaDTO;
+import uniamerica.centralDeAjuda.DTO.MensagemDTO;
 import uniamerica.centralDeAjuda.DTO.ModeloDTO;
 import uniamerica.centralDeAjuda.DTO.NotebookDTO;
 import uniamerica.centralDeAjuda.Entity.Modelo;
@@ -37,7 +39,7 @@ public class NotebookService {
         return notebookRepository.findNotebookByAtivo().stream().map(this::notebookToDTO).toList();
     }
 
-    public String cadastrarNotebook(NotebookDTO notebookDTO) {
+    public MensagemDTO cadastrarNotebook(NotebookDTO notebookDTO) {
         Notebook notebook = toNotebook(notebookDTO);
 
         Assert.notNull(notebook.getPatrimonio(),"Patrimonio inválido!");
@@ -49,30 +51,25 @@ public class NotebookService {
                 (notebook.getModeloId().getId()).isEmpty(),"Modelo não existe!");
 
         notebookRepository.save(notebook);
-        return "Notebook cadastrado com sucesso!";
+        return new MensagemDTO("Notebook cadastrado com sucesso!", HttpStatus.CREATED);
     }
 
-    public String editarNotebook(Long id, NotebookDTO notebookDTO) {
-        if (notebookRepository.existsById(id)) {
-            Notebook notebook = toNotebook(notebookDTO);
+    public MensagemDTO editarNotebook(Long id, NotebookDTO notebookDTO) {
+        Notebook notebook = toNotebook(notebookDTO);
 
-            Assert.notNull(notebook.getPatrimonio(),"Patrimonio inválido!");
-            if (!notebookRepository.findByIdPatrimonio(notebook.getPatrimonio()).isEmpty()){
-                throw new IllegalArgumentException("Esse Patrimonio ja existe!");
-            }
-            Assert.notNull(notebook.getModeloId(),"Modelo inválido!");
-            Assert.isTrue(!modeloRepository.findById
-                    (notebook.getModeloId().getId()).isEmpty(),"Modelo não existe!");
-
-            notebookRepository.save(notebook);
-            return "Notebook atualizado com sucesso!";
-
-        }else {
-            throw new IllegalArgumentException("Notebook não encontrado com o ID fornecido: " + id);
+        Assert.notNull(notebook.getPatrimonio(),"Patrimonio inválido!");
+        if (!notebookRepository.findByIdPatrimonio(notebook.getPatrimonio()).isEmpty()){
+            throw new IllegalArgumentException("Esse Patrimonio ja existe!");
         }
+        Assert.notNull(notebook.getModeloId(),"Modelo inválido!");
+        Assert.isTrue(!modeloRepository.findById
+                (notebook.getModeloId().getId()).isEmpty(),"Modelo não existe!");
+
+        notebookRepository.save(notebook);
+        return new MensagemDTO("Notebook atualizado com sucesso!", HttpStatus.CREATED);
     }
 
-    public void deletar(Long id) {
+    public MensagemDTO deletar(Long id) {
         Notebook notebookBanco = notebookRepository.findById(id)
                 .orElseThrow(()-> new EntityNotFoundException("Notebook com ID "+id+" nao existe!"));
 
@@ -80,10 +77,11 @@ public class NotebookService {
 
 
         if (!notebookTicketsAtivos.isEmpty()){
-            throw new IllegalArgumentException("Não é possível excluir esse notebook tem ticket ativo.");
+            return new MensagemDTO("Não é possível excluir esse notebook, pois existem ticket ativos associados a ele.", HttpStatus.CREATED);
         } else {
             desativarNotebook(notebookBanco);
         }
+        return new MensagemDTO("Notebook deletado com sucesso!", HttpStatus.CREATED);
     }
 
     private void desativarNotebook(Notebook notebook) {

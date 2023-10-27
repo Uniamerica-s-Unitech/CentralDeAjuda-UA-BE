@@ -7,6 +7,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.server.ResponseStatusException;
 import uniamerica.centralDeAjuda.DTO.AlunoDTO;
+import uniamerica.centralDeAjuda.DTO.MensagemDTO;
 import uniamerica.centralDeAjuda.Services.AlunoService;
 
 import java.util.List;
@@ -34,42 +35,32 @@ public class AlunoController {
     }
 
     @PostMapping
-    public ResponseEntity<String> cadastrarAluno(@RequestBody AlunoDTO alunoDTO) {
+    public ResponseEntity<MensagemDTO> cadastrarAluno(@RequestBody AlunoDTO alunoDTO) {
         try{
             return ResponseEntity.ok(alunoService.cadastrarAluno(alunoDTO));
-        }catch (IllegalArgumentException e) {
-            return ResponseEntity.badRequest().body(e.getMessage());
-        } catch (EntityNotFoundException e) {
-            return ResponseEntity.notFound().build();
-        } catch(Exception e){
-            throw new ResponseStatusException(HttpStatus.BAD_REQUEST, e.getMessage());
+        }catch(Exception e){
+            MensagemDTO mensagem = new MensagemDTO(e.getMessage(),HttpStatus.BAD_REQUEST);
+            return ResponseEntity.badRequest().body(mensagem);
         }
     }
 
     @PutMapping("/{id}")
-    public ResponseEntity<String> editarAluno(@PathVariable Long id, @RequestBody AlunoDTO alunoDTO) {
+    public ResponseEntity<MensagemDTO> editarAluno(@PathVariable Long id, @RequestBody AlunoDTO alunoDTO) {
         try {
             return ResponseEntity.ok(alunoService.editarAluno(id, alunoDTO));
-        }catch (IllegalArgumentException e) {
-            return ResponseEntity.badRequest().body(e.getMessage());
-        } catch (EntityNotFoundException e) {
-            return ResponseEntity.notFound().build();
-        } catch(Exception e){
-            throw new ResponseStatusException(HttpStatus.BAD_REQUEST, e.getMessage());
+        }catch(Exception e){
+            MensagemDTO mensagem = new MensagemDTO(e.getMessage(),HttpStatus.BAD_REQUEST);
+            return ResponseEntity.badRequest().body(mensagem);
         }
     }
 
     @DeleteMapping("/{id}")
-    public ResponseEntity<String> deletar(@PathVariable Long id) {
+    public ResponseEntity<MensagemDTO> deletar(@PathVariable Long id) {
         try {
-            alunoService.deletar(id);
-            return ResponseEntity.ok("Aluno deletado com sucesso!");
-        }catch (IllegalArgumentException e) {
-            return ResponseEntity.badRequest().body(e.getMessage());
-        } catch (EntityNotFoundException e) {
-            return ResponseEntity.notFound().build();
-        } catch(Exception e){
-            throw new ResponseStatusException(HttpStatus.BAD_REQUEST, e.getMessage());
+            return ResponseEntity.ok(alunoService.deletar(id));
+        }catch(Exception e){
+            MensagemDTO mensagem = new MensagemDTO(e.getMessage(),HttpStatus.BAD_REQUEST);
+            return ResponseEntity.badRequest().body(mensagem);
         }
     }
 }

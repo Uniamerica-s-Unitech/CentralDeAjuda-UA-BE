@@ -2,9 +2,11 @@ package uniamerica.centralDeAjuda.Services;
 
 import jakarta.persistence.EntityNotFoundException;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
 import org.springframework.util.Assert;
 import uniamerica.centralDeAjuda.DTO.AlunoDTO;
+import uniamerica.centralDeAjuda.DTO.MensagemDTO;
 import uniamerica.centralDeAjuda.Entity.Aluno;
 import uniamerica.centralDeAjuda.Entity.Ticket;
 import uniamerica.centralDeAjuda.Repository.AlunoRepository;
@@ -30,7 +32,7 @@ public class AlunoService {
         return alunoRepository.findAlunoByAtivo().stream().map(this::alunoToDTO).toList();
     }
 
-    public String cadastrarAluno(AlunoDTO alunoDTO) {
+    public MensagemDTO cadastrarAluno(AlunoDTO alunoDTO) {
         Aluno aluno = toAluno(alunoDTO);
 
         Assert.notNull(aluno.getNome(),"Nome inválido!");
@@ -45,43 +47,39 @@ public class AlunoService {
         }
 
         alunoRepository.save(aluno);
-        return "Aluno cadastrado com sucesso!";
+        return new MensagemDTO("Aluno cadastrado com sucesso!", HttpStatus.CREATED);
     }
 
-    public String editarAluno(Long id, AlunoDTO alunoDTO) {
-        if (alunoRepository.existsById(id)) {
-            Aluno aluno = toAluno(alunoDTO);
+    public MensagemDTO editarAluno(Long id, AlunoDTO alunoDTO) {
+        Aluno aluno = toAluno(alunoDTO);
 
-            Assert.notNull(aluno.getNome(), "Nome inválido!");
+        Assert.notNull(aluno.getNome(), "Nome inválido!");
 
-            Assert.notNull(aluno.getRa(), "RA inválido!");
-            if (!aluno.getRa().matches("\\d{6}")) {
-                throw new IllegalArgumentException("Formato do RA inválido. Deve conter 6 dígitos numéricos!");
-            }
-
-            if (!alunoRepository.findByRA(aluno.getRa()).isEmpty()){
-                throw new IllegalArgumentException("Esse RA ja existe!");
-            }
-
-            alunoRepository.save(aluno);
-            return "Aluno atualizado com sucesso!";
-
-        }else {
-            throw new IllegalArgumentException("Aluno não encontrado com o ID fornecido: " + id);
+        Assert.notNull(aluno.getRa(), "RA inválido!");
+        if (!aluno.getRa().matches("\\d{6}")) {
+            throw new IllegalArgumentException("Formato do RA inválido. Deve conter 6 dígitos numéricos!");
         }
+
+        if (!alunoRepository.findByRA(aluno.getRa()).isEmpty()){
+            throw new IllegalArgumentException("Esse RA ja existe!");
+        }
+
+        alunoRepository.save(aluno);
+        return new MensagemDTO("Aluno atualizado com sucesso!", HttpStatus.CREATED);
     }
 
-    public void deletar(Long id) {
+    public MensagemDTO deletar(Long id) {
         Aluno alunoBanco = alunoRepository.findById(id)
                 .orElseThrow(()-> new EntityNotFoundException("Aluno com ID "+id+" nao existe!"));
 
         List<Ticket> alunoTicketsAtivos = ticketRepository.findTicketsAbertosPorAluno(alunoBanco);
 
         if (!alunoTicketsAtivos.isEmpty()){
-            throw new IllegalArgumentException("Não é possível excluir esse aluno tem ticket ativo.");
+            return new MensagemDTO("Não é possível excluir esse aluno, pois existem ticket ativos associados a ele.", HttpStatus.CREATED);
         } else {
             desativarAluno(alunoBanco);
         }
+        return new MensagemDTO("Aluno deletado com sucesso!", HttpStatus.CREATED);
     }
 
     private void desativarAluno(Aluno aluno) {

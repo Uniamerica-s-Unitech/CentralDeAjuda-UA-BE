@@ -6,6 +6,7 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.server.ResponseStatusException;
+import uniamerica.centralDeAjuda.DTO.MensagemDTO;
 import uniamerica.centralDeAjuda.DTO.TicketDTO;
 import uniamerica.centralDeAjuda.Services.TicketService;
 
@@ -39,28 +40,22 @@ public class TicketController {
     }
 
         @PostMapping
-        public ResponseEntity<String> cadastrarTicket(@RequestBody TicketDTO ticketDTO) {
+        public ResponseEntity<MensagemDTO> cadastrarTicket(@RequestBody TicketDTO ticketDTO) {
             try{
                 return ResponseEntity.ok(ticketService.cadastrarTicket(ticketDTO));
-            } catch (IllegalArgumentException e) {
-                return ResponseEntity.badRequest().body(e.getMessage());
-            } catch (EntityNotFoundException e) {
-                return ResponseEntity.notFound().build();
-            } catch(Exception e){
-                throw new ResponseStatusException(HttpStatus.BAD_REQUEST, e.getMessage());
+            }catch(Exception e){
+                MensagemDTO mensagem = new MensagemDTO(e.getMessage(),HttpStatus.BAD_REQUEST);
+                return ResponseEntity.badRequest().body(mensagem);
             }
         }
 
         @PutMapping("/{id}")
-        public ResponseEntity<String> editarTicket(@PathVariable Long id, @RequestBody TicketDTO ticketDTO) {
+        public ResponseEntity<MensagemDTO> editarTicket(@PathVariable Long id, @RequestBody TicketDTO ticketDTO) {
             try {
                 return ResponseEntity.ok(ticketService.editarTicket(id, ticketDTO));
-            } catch (IllegalArgumentException e) {
-                return ResponseEntity.badRequest().body(e.getMessage());
-            } catch (EntityNotFoundException e) {
-                return ResponseEntity.notFound().build();
             } catch(Exception e){
-                throw new ResponseStatusException(HttpStatus.BAD_REQUEST, e.getMessage());
+                MensagemDTO mensagem = new MensagemDTO(e.getMessage(),HttpStatus.BAD_REQUEST);
+                return ResponseEntity.badRequest().body(mensagem);
             }
         }
 }

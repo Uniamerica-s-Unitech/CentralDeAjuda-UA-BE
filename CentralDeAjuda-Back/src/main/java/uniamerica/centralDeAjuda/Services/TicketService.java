@@ -1,14 +1,11 @@
 package uniamerica.centralDeAjuda.Services;
 
 import jakarta.persistence.EntityNotFoundException;
-import jakarta.transaction.Transactional;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
 import org.springframework.util.Assert;
-import uniamerica.centralDeAjuda.DTO.AlunoDTO;
-import uniamerica.centralDeAjuda.DTO.ModeloDTO;
-import uniamerica.centralDeAjuda.DTO.NotebookDTO;
-import uniamerica.centralDeAjuda.DTO.TicketDTO;
+import uniamerica.centralDeAjuda.DTO.*;
 import uniamerica.centralDeAjuda.Entity.Aluno;
 import uniamerica.centralDeAjuda.Entity.Notebook;
 import uniamerica.centralDeAjuda.Entity.Ticket;
@@ -45,8 +42,7 @@ TicketService {
         return ticketRepository.findHistoricoByDataDevolucao().stream().map(this::ticketToDTO).toList();
     }
 
-    @Transactional
-    public String cadastrarTicket(TicketDTO ticketDTO) {
+    public MensagemDTO cadastrarTicket(TicketDTO ticketDTO) {
         Ticket ticket = toTicket(ticketDTO);
 
         Assert.notNull(ticket.getAlunoId(),"Aluno inválido!");
@@ -64,6 +60,33 @@ TicketService {
         List<Ticket> notebookTicketsAtivos = ticketRepository.findTicketsAbertosPorNotebook(ticket.getNotebookId());
 
         if (!alunoTicketsAtivos.isEmpty()){
+            return new MensagemDTO("O aluno possui um tickey ativo", HttpStatus.CREATED);
+        }else if(!notebookTicketsAtivos.isEmpty()){
+            return new MensagemDTO("O notebook possui um tickey ativo", HttpStatus.CREATED);
+        }else {
+            ticketRepository.save(ticket);
+            return new MensagemDTO("Ticket cadastrado com sucesso!", HttpStatus.CREATED);
+        }
+    }
+
+    public MensagemDTO editarTicket(Long id, TicketDTO ticketDTO) {
+        Ticket ticket = toTicket(ticketDTO);
+
+        Assert.notNull(ticket.getAlunoId(),"Aluno inválido!");
+        Assert.isTrue(!alunoRepository.findById
+                (ticket.getAlunoId().getId()).isEmpty(),"Aluno não existe!");
+
+        Assert.notNull(ticket.getNotebookId(),"Notebook inválido!");
+        Assert.isTrue(!notebookRepository.findById
+                (ticket.getNotebookId().getId()).isEmpty(),"Notebook não existe!");
+
+        Assert.notNull(ticket.getDataEntrega(),"Data de entrega inválida!");
+
+        /*List<Ticket> alunoTicketsAtivos = ticketRepository.findTicketsAbertosPorAluno(ticket.getAlunoId());
+
+        List<Ticket> notebookTicketsAtivos = ticketRepository.findTicketsAbertosPorNotebook(ticket.getNotebookId());
+
+        if (!alunoTicketsAtivos.isEmpty()){
             return "O aluno possui um tickey ativo";
         }else if(!notebookTicketsAtivos.isEmpty()){
             return "O notebook possui um tickey ativo";
@@ -71,43 +94,10 @@ TicketService {
         {
             ticketRepository.save(ticket);
             return "Ticket cadastrado com sucesso!";
-        }
-    }
+        }*/
 
-    public String editarTicket(Long id, TicketDTO ticketDTO) {
-        if (ticketRepository.existsById(id)) {
-            Ticket ticket = toTicket(ticketDTO);
-
-            Assert.notNull(ticket.getAlunoId(),"Aluno inválido!");
-            Assert.isTrue(!alunoRepository.findById
-                    (ticket.getAlunoId().getId()).isEmpty(),"Aluno não existe!");
-
-            Assert.notNull(ticket.getNotebookId(),"Notebook inválido!");
-            Assert.isTrue(!notebookRepository.findById
-                    (ticket.getNotebookId().getId()).isEmpty(),"Notebook não existe!");
-
-            Assert.notNull(ticket.getDataEntrega(),"Data de entrega inválida!");
-
-            /*List<Ticket> alunoTicketsAtivos = ticketRepository.findTicketsAbertosPorAluno(ticket.getAlunoId());
-
-            List<Ticket> notebookTicketsAtivos = ticketRepository.findTicketsAbertosPorNotebook(ticket.getNotebookId());
-
-            if (!alunoTicketsAtivos.isEmpty()){
-                return "O aluno possui um tickey ativo";
-            }else if(!notebookTicketsAtivos.isEmpty()){
-                return "O notebook possui um tickey ativo";
-            }else
-            {
-                ticketRepository.save(ticket);
-                return "Ticket cadastrado com sucesso!";
-            }*/
-
-            ticketRepository.save(ticket);
-            return "Ticket atualizado com sucesso!";
-
-        }else {
-            throw new IllegalArgumentException("Ticket não encontrado com o ID fornecido: " + id);
-        }
+        ticketRepository.save(ticket);
+        return new MensagemDTO("Ticket atualizado com sucesso!", HttpStatus.CREATED);
     }
 
     public TicketDTO ticketToDTO(Ticket ticket){

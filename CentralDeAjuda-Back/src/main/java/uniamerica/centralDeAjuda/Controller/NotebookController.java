@@ -6,6 +6,7 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.server.ResponseStatusException;
+import uniamerica.centralDeAjuda.DTO.MensagemDTO;
 import uniamerica.centralDeAjuda.DTO.NotebookDTO;
 import uniamerica.centralDeAjuda.Services.NotebookService;
 
@@ -33,42 +34,32 @@ public class NotebookController {
     }
 
     @PostMapping
-    public ResponseEntity<String> cadastrarNotebook(@RequestBody NotebookDTO notebookDTO) {
+    public ResponseEntity<MensagemDTO> cadastrarNotebook(@RequestBody NotebookDTO notebookDTO) {
         try{
             return ResponseEntity.ok(notebookService.cadastrarNotebook(notebookDTO));
-        } catch (IllegalArgumentException e) {
-            return ResponseEntity.badRequest().body(e.getMessage());
-        } catch (EntityNotFoundException e) {
-            return ResponseEntity.notFound().build();
         } catch(Exception e){
-            throw new ResponseStatusException(HttpStatus.BAD_REQUEST, e.getMessage());
+            MensagemDTO mensagem = new MensagemDTO(e.getMessage(),HttpStatus.BAD_REQUEST);
+            return ResponseEntity.badRequest().body(mensagem);
         }
     }
 
     @PutMapping("/{id}")
-    public ResponseEntity<String> editarNotebook(@PathVariable Long id, @RequestBody NotebookDTO notebookDTO) {
+    public ResponseEntity<MensagemDTO> editarNotebook(@PathVariable Long id, @RequestBody NotebookDTO notebookDTO) {
         try {
             return ResponseEntity.ok(notebookService.editarNotebook(id, notebookDTO));
-        } catch (IllegalArgumentException e) {
-            return ResponseEntity.badRequest().body(e.getMessage());
-        } catch (EntityNotFoundException e) {
-            return ResponseEntity.notFound().build();
         } catch(Exception e){
-            throw new ResponseStatusException(HttpStatus.BAD_REQUEST, e.getMessage());
+            MensagemDTO mensagem = new MensagemDTO(e.getMessage(),HttpStatus.BAD_REQUEST);
+            return ResponseEntity.badRequest().body(mensagem);
         }
     }
 
     @DeleteMapping("/{id}")
-    public ResponseEntity<String> deletar(@PathVariable Long id) {
+    public ResponseEntity<MensagemDTO> deletar(@PathVariable Long id) {
         try {
-            notebookService.deletar(id);
-            return ResponseEntity.ok("Notebook deletado com sucesso!");
-        }catch (IllegalArgumentException e) {
-            return ResponseEntity.badRequest().body(e.getMessage());
-        } catch (EntityNotFoundException e) {
-            return ResponseEntity.notFound().build();
-        } catch(Exception e){
-            throw new ResponseStatusException(HttpStatus.BAD_REQUEST, e.getMessage());
+            return ResponseEntity.ok(notebookService.deletar(id));
+        }catch(Exception e){
+            MensagemDTO mensagem = new MensagemDTO(e.getMessage(),HttpStatus.BAD_REQUEST);
+            return ResponseEntity.badRequest().body(mensagem);
         }
     }
 
