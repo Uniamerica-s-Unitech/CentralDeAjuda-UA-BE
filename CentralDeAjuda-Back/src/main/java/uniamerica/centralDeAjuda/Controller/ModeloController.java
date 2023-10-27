@@ -1,12 +1,10 @@
 package uniamerica.centralDeAjuda.Controller;
 
 
-import jakarta.persistence.EntityNotFoundException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
-import org.springframework.web.server.ResponseStatusException;
 import uniamerica.centralDeAjuda.DTO.MensagemDTO;
 import uniamerica.centralDeAjuda.DTO.ModeloDTO;
 import uniamerica.centralDeAjuda.Services.ModeloService;
@@ -15,6 +13,7 @@ import java.util.List;
 
 @RestController
 @RequestMapping("modelo")
+@CrossOrigin(origins = "http://localhost:4200")
 public class ModeloController {
 
     @Autowired

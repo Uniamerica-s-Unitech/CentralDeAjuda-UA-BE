@@ -1,11 +1,9 @@
 package uniamerica.centralDeAjuda.Controller;
 
-import jakarta.persistence.EntityNotFoundException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
-import org.springframework.web.server.ResponseStatusException;
 import uniamerica.centralDeAjuda.DTO.MensagemDTO;
 import uniamerica.centralDeAjuda.DTO.NotebookDTO;
 import uniamerica.centralDeAjuda.Services.NotebookService;
@@ -13,6 +11,7 @@ import uniamerica.centralDeAjuda.Services.NotebookService;
 import java.util.List;
 @RestController
 @RequestMapping("/notebook")
+@CrossOrigin(origins = "http://localhost:4200")
 public class NotebookController {
 
     @Autowired
