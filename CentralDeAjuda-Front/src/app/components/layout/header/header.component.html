@@ -1,15 +1,10 @@
-<nav class="d-flex">
+<nav class="nav d-flex position-fixed justify-content-center shadow-sm p-3 h-100 bg-body-secondary">
     <div>
-        <ul>
-            <li>
-                <input type="button" value="Tickets" routerLink="ticket">
-            </li>
-            <li>
-                <input type="button" value="Notebooks" routerLink="notebook">
-            </li>
-            <li>
-                <input type="button" value="Alunos" routerLink="aluno">
-            </li>
-        </ul>
+        <img src="assets\img\logo.png">
+        <section class="nav flex-column mt-5">
+            <button class="mb-5" routerLink="ticket"><img src="assets\img\home.svg">Home</button>
+            <button class="mb-5" routerLink="notebook"><img src="assets\img\notebooks.svg">Notebooks</button>
+            <button routerLink="aluno"><img src="assets\img\alunos.svg">Alunos</button>
+        </section>
     </div>
 </nav>
