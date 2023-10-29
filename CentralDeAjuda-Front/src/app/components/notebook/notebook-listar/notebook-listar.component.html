@@ -1,1 +1,74 @@
+<main>
+    <header class="d-flex flex-row align-items-center">
+        <div class="d-flex flex-row ">
+            <div class="disponivil">
+                100 <br>notebooks<br>disponíveis
+            </div>
+            <button (click)="cadastrarNotebook(modalNotebook)" class="btnAdicionar">
+                <div>
+                    <img src="assets\img\adicionar.svg">
+                </div>
+                Novo notebook
+            </button>
+        </div>
+        <div class="serch">
+            <input type="text" placeholder="Pesquisar por id-patrimonio"/>
+        </div>
+    </header>
+    <article >
+        <div class="d-flex justify-content-center">
+            <h2>Lista de notebooks</h2>
+        </div>
+        <table class="table tabela table-hover">
+            <thead>
+                <tr>
+                    <th>ID</th>
+                    <th>Marca</th>
+                    <th>Modelo</th>
+                    <th>Patrimônio</th>
+                    <th>Ações</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr *ngFor="let notebook of listaNotebooks; let i = index">
+                    
+                    <td class="d-flex justify-content-center p-4"  >
+                        <button (click)="editarNotebook(modalNotebook, notebook, i)" class="btn novo text-white">Editar</button>
+                        <button (click)="excluirNotebook(modaloExcluir, notebook, i)" class="btn btn-danger btn-sm">Deletar</button>
+                    </td>
+                </tr>
+            </tbody>
+        </table>
+    </article>
+</main>
 
+<ng-template #modalNotebook let-modal>
+    <div class="modal-header modal-style ">
+      <h4 class="modal-title">{{tituloModal}}</h4>
+      <button type="button" class="btn-close" aria-label="Close" (click)="modal.dismiss('Cross click')"></button>
+    </div>
+    <div class="modal-body modal-style">
+      
+        <app-notebook-detalhes [notebook]="notebookParaEditar" (retorno)="atualizarListaNotebook($event)" ></app-notebook-detalhes>
+              
+    </div>
+    <div class="modal-footer modal-style">
+        <button type="button" class="btn btn-danger" (click)="modal.close('Close click')">Close</button>
+    </div>
+</ng-template>
+
+<ng-template #modaloExcluir let-modal>
+    <div class="modal-header modal-style ">
+        <h4 class="modal-title">{{tituloModal}}</h4>
+        <button type="button" class="btn-close" aria-label="Close" (click)="modal.dismiss('Cross click')"></button>
+    </div>
+    <div class="modal-body modal-style">
+      
+        <h3>Vc tem certeza que quer deletar esse notebook?</h3>
+              
+    </div>
+    <div class="modal-footer modal-style">
+        <button type="button" class="btn btn-danger" (click)="confirmarExclusao(notebookParaExcluir)">Deletar</button>
+        <button type="button" class="btn btn-danger" (click)="modal.close('Close click')">Close</button>
+    </div>
+</ng-template>

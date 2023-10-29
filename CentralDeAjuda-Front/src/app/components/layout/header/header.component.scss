@@ -1,3 +1,6 @@
+*{
+    box-sizing: content-box;
+}
 button{
     display: flex;
     justify-content: flex-start;
@@ -19,4 +22,10 @@ button:hover{
     transition: .5s;
     border: .1rem solid #fff;
     box-shadow: 0 12px 16px 0 rgba(0,0,0,0.24), 0 17px 50px 0 rgba(0,0,0,0.19);
+}
+.borda{
+    border-right: .2rem solid rgb(12, 141, 12);
+}
+.sidebar{
+    max-width: 12%;
 }
