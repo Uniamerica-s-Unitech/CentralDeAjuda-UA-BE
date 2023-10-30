@@ -47,6 +47,7 @@ export class NotebookListarComponent {
   }
 
   editarNotebook(modal:any,notebook:Notebook,indice:number){
+    console.log('Valor de notebook.modeloId antes da edição:', notebook.modeloId);
     this.notebookParaEditar = Object.assign({}, notebook);
     this.indiceParaEdicao = indice;
 
@@ -66,7 +67,8 @@ export class NotebookListarComponent {
   confirmarExclusao(notebook: Notebook) {
     this.notebookService.deletar(notebook.id).subscribe({
       next: (mensagem:Mensagem) => {
-        this.listarNotebooks(); // Atualize a lista após a exclusão
+        this.listarNotebooks();
+        this.modalService.dismissAll(); // Atualize a lista após a exclusão
       }
     });
   }

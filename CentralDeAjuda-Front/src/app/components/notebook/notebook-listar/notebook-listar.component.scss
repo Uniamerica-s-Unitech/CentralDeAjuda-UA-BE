@@ -32,3 +32,52 @@ header{
 
     }
 }
+
+.quadro_tabela {
+    width: 95%;
+    margin: 0 auto;
+    padding: 1.5rem 0;
+}
+.scroll {
+    overflow: auto;
+    height: 60vh;
+    flex-grow: 1;
+    width: 99%;
+    margin: 0 auto;
+}
+/* width */
+::-webkit-scrollbar {
+    width: 10px;
+}
+
+/* Track */
+::-webkit-scrollbar-track {
+    background: transparent;
+    border-radius: 2rem;
+}
+
+/* Handle */
+::-webkit-scrollbar-thumb {
+    background: #00A859;
+    border-radius: 2rem;
+}
+
+/* Handle on hover */
+::-webkit-scrollbar-thumb:hover {
+    background: #555;
+}
+
+.fixed-header {
+    position: sticky;
+    top: 0;
+    z-index: 1;
+
+    tr{
+        th{
+            background-color: #aaa;
+        }
+    }
+}
+.img{
+    width: 1.2rem;
+}

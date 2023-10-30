@@ -15,30 +15,39 @@
             <input type="text" placeholder="Pesquisar por id-patrimonio"/>
         </div>
     </header>
-    <article >
+    <article>
         <div class="d-flex justify-content-center">
             <h2>Lista de notebooks</h2>
         </div>
-        <table class="table tabela table-hover">
-            <thead>
-                <tr>
-                    <th>ID</th>
-                    <th>Marca</th>
-                    <th>Modelo</th>
-                    <th>Patrimônio</th>
-                    <th>Ações</th>
-                </tr>
-            </thead>
-            <tbody>
-                <tr *ngFor="let notebook of listaNotebooks; let i = index">
-                    
-                    <td class="d-flex justify-content-center p-4"  >
-                        <button (click)="editarNotebook(modalNotebook, notebook, i)" class="btn novo text-white">Editar</button>
-                        <button (click)="excluirNotebook(modaloExcluir, notebook, i)" class="btn btn-danger btn-sm">Deletar</button>
-                    </td>
-                </tr>
-            </tbody>
-        </table>
+        <section class="h-100">
+            <div class="quadro_tabela">
+                <div class="scroll ">
+                    <table class="table table-striped">
+                        <thead class="fixed-header">
+                            <tr>
+                                <th scope="col">ID</th>
+                                <th scope="col">Patrimônio</th>
+                                <th scope="col">Marca</th>
+                                <th scope="col">Modelo</th>
+                                <th scope="col" class="text-center">Ações</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr *ngFor="let notebook of listaNotebooks; let i = index">
+                                <td>{{ notebook.id }}</td>
+                                <td>{{ notebook.patrimonio }}</td>
+                                <td>{{ notebook.modeloId.marcaId.nome }}</td>
+                                <td>{{ notebook.modeloId.nome }}</td>
+                                <td class="text-center">
+                                    <button (click)="editarNotebook(modalNotebook, notebook, i)" class="btn btn-outline-warning  mx-2"><img class="img" src="assets\img\write.svg"></button>
+                                    <button (click)="excluirNotebook(modaloExcluir, notebook, i)" class="btn btn-danger"><img class="img" src="assets\img\delete.svg"></button>
+                                </td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </section>
     </article>
 </main>
 
@@ -63,12 +72,10 @@
         <button type="button" class="btn-close" aria-label="Close" (click)="modal.dismiss('Cross click')"></button>
     </div>
     <div class="modal-body modal-style">
-      
-        <h3>Vc tem certeza que quer deletar esse notebook?</h3>
-              
+        <h5>Vc tem certeza que quer deletar esse notebook?</h5>   
     </div>
     <div class="modal-footer modal-style">
-        <button type="button" class="btn btn-danger" (click)="confirmarExclusao(notebookParaExcluir)">Deletar</button>
-        <button type="button" class="btn btn-danger" (click)="modal.close('Close click')">Close</button>
+        <button type="button" class="btn btn-outline-danger" (click)="confirmarExclusao(notebookParaExcluir)">Deletar</button>
+        <button type="button" class="btn btn-secondary" (click)="modal.close('Close click')">Close</button>
     </div>
 </ng-template>

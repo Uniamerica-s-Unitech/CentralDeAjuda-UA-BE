@@ -1,1 +1,15 @@
-<p>notebook-detalhes works!</p>
+<form (ngSubmit)="salvar()" class="mb-3">
+    <div class="mb-3">
+        <label for="exampleInputText1" class="form-label">Patrimônio:</label>
+        <input type="text" class="form-control" name="exampleInputText1" [(ngModel)]="notebook.patrimonio">
+      </div>
+    <div class="mb-3">
+      <label for="modelo" class="form-label">Modelo:</label>
+      <select [compareWith]="byId" class="form-select" name="modelo" [(ngModel)]="notebook.modeloId" (change)="carregarModelos()">
+        <option *ngFor="let modelo of listaModelos" [ngValue]="modelo">{{ modelo.nome }}</option>
+      </select>
+    </div> 
+    <div class="d-flex justify-content-center">
+        <button type="submit" class="btn btn-success">Salvar</button>
+    </div>
+</form>

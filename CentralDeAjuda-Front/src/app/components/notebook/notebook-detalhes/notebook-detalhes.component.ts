@@ -1,6 +1,8 @@
 import { Component,EventEmitter,Input,Output,inject} from '@angular/core';
 import { Mensagem } from 'src/app/models/mensagem';
+import { Modelo } from 'src/app/models/modelo';
 import { Notebook } from 'src/app/models/notebook';
+import { ModeloService } from 'src/app/services/modelo.service';
 import { NotebookService } from 'src/app/services/notebook.service';
 
 @Component({
@@ -13,8 +15,21 @@ export class NotebookDetalhesComponent {
   @Output() retorno = new EventEmitter<Mensagem>;
 
   notebookService = inject(NotebookService);
+  modeloService = inject(ModeloService);
 
-  constructor() {}
+  listaModelos: Modelo[] = [];
+
+  constructor() {
+    this.carregarModelos();
+  }
+
+  carregarModelos() {
+    this.modeloService.listar().subscribe({
+      next: lista => {
+        this.listaModelos = lista;
+      }
+    });
+  }
 
   salvar() {
     this.notebookService.save(this.notebook).subscribe({
@@ -26,5 +41,13 @@ export class NotebookDetalhesComponent {
         console.error(erro);
       }
     });
+  }
+
+  byId(item1: any, item2: any){
+    if(item1 != null && item2 != null){
+      return item1.id === item2.id;
+    }else{
+      return item1 === item2;
+    }
   }
 }
