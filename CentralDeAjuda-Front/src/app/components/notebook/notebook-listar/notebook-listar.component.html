@@ -1,53 +1,36 @@
 <main>
-    <header class="d-flex flex-row align-items-center">
-        <div class="d-flex flex-row ">
-            <div class="disponivil">
-                100 <br>notebooks<br>disponíveis
-            </div>
+    <article>
+        <div class="scroll ">
+            <table class="table table-striped">
+                <thead class="fixed-header">
+                    <tr>
+                        <th scope="col">ID</th>
+                        <th scope="col">Patrimônio</th>
+                        <th scope="col">Marca</th>
+                        <th scope="col">Modelo</th>
+                        <th scope="col" class="text-center">Ações</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr *ngFor="let notebook of listaNotebooks; let i = index">
+                        <td>{{ notebook.id }}</td>
+                        <td>{{ notebook.patrimonio }}</td>
+                        <td>{{ notebook.modeloId.marcaId.nome }}</td>
+                        <td>{{ notebook.modeloId.nome }}</td>
+                        <td class="text-center">
+                            <button (click)="editarNotebook(modalNotebook, notebook, i)" class="btn btn-outline-warning  mx-2"><img class="img" src="assets\img\write.svg"></button>
+                            <button (click)="excluirNotebook(modaloExcluir, notebook, i)" class="btn btn-danger"><img class="img" src="assets\img\delete.svg"></button>
+                        </td>
+                    </tr>
+                </tbody>
+            </table>
+            
+        </div>
+        <div class="text-center">
             <button (click)="cadastrarNotebook(modalNotebook)" class="btnAdicionar">
-                <div>
-                    <img src="assets\img\adicionar.svg">
-                </div>
                 Novo notebook
             </button>
         </div>
-        <div class="serch">
-            <input type="text" placeholder="Pesquisar por id-patrimonio"/>
-        </div>
-    </header>
-    <article>
-        <div class="d-flex justify-content-center">
-            <h2>Lista de notebooks</h2>
-        </div>
-        <section class="h-100">
-            <div class="quadro_tabela">
-                <div class="scroll ">
-                    <table class="table table-striped">
-                        <thead class="fixed-header">
-                            <tr>
-                                <th scope="col">ID</th>
-                                <th scope="col">Patrimônio</th>
-                                <th scope="col">Marca</th>
-                                <th scope="col">Modelo</th>
-                                <th scope="col" class="text-center">Ações</th>
-                            </tr>
-                        </thead>
-                        <tbody>
-                            <tr *ngFor="let notebook of listaNotebooks; let i = index">
-                                <td>{{ notebook.id }}</td>
-                                <td>{{ notebook.patrimonio }}</td>
-                                <td>{{ notebook.modeloId.marcaId.nome }}</td>
-                                <td>{{ notebook.modeloId.nome }}</td>
-                                <td class="text-center">
-                                    <button (click)="editarNotebook(modalNotebook, notebook, i)" class="btn btn-outline-warning  mx-2"><img class="img" src="assets\img\write.svg"></button>
-                                    <button (click)="excluirNotebook(modaloExcluir, notebook, i)" class="btn btn-danger"><img class="img" src="assets\img\delete.svg"></button>
-                                </td>
-                            </tr>
-                        </tbody>
-                    </table>
-                </div>
-            </div>
-        </section>
     </article>
 </main>
 

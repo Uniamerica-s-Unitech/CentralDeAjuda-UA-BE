@@ -1,0 +1,41 @@
+<main>
+    
+        <div class=" d-flex">
+            <div class="d-flex flex-row">
+                <div class="disponivil mt-2">
+                    100 <br>Notebooks disponíveis
+                </div>
+            </div>
+            <div class="serch col-lg-10">
+                <input type="text"  placeholder="Pesquisar por id-patrimônio" />
+            </div>
+        </div>
+    <article>
+        <section class="h-100">
+            <div class="quadro_tabela">
+                <ul ngbNav #nav="ngbNav" [(activeId)]="active" class="nav-tabs">
+                    <li [ngbNavItem]="1">
+                        <button ngbNavLink>Notebooks</button>
+                        <ng-template ngbNavContent>
+                            <app-notebook-listar></app-notebook-listar>
+                        </ng-template>
+                    </li>
+                    <li [ngbNavItem]="2">
+                        <button ngbNavLink>Modelos</button>
+                        <ng-template ngbNavContent>
+                            <app-modelo-lista></app-modelo-lista>
+                        </ng-template>
+                    </li>
+                    <li [ngbNavItem]="3">
+                        <button ngbNavLink>Marcas</button>
+                        <ng-template ngbNavContent>
+                            <app-marca-lista></app-marca-lista>
+                        </ng-template>
+                    </li>
+                </ul>
+                
+                <div [ngbNavOutlet]="nav" class="mt-2"></div>
+            </div>
+        </section>
+    </article>
+</main>

@@ -10,6 +10,8 @@ import { NotebookService } from 'src/app/services/notebook.service';
   styleUrls: ['./notebook-listar.component.scss']
 })
 export class NotebookListarComponent {
+  active = 1;
+
   listaNotebooks: Notebook[] = [];
 
   notebookParaEditar: Notebook = new Notebook();
@@ -47,7 +49,6 @@ export class NotebookListarComponent {
   }
 
   editarNotebook(modal:any,notebook:Notebook,indice:number){
-    console.log('Valor de notebook.modeloId antes da edição:', notebook.modeloId);
     this.notebookParaEditar = Object.assign({}, notebook);
     this.indiceParaEdicao = indice;
 

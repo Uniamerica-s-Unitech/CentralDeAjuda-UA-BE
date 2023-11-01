@@ -1,1 +1,9 @@
-<p>marca-detalhes works!</p>
+<form (ngSubmit)="salvar()" class="mb-3">
+    <div class="mb-3">
+        <label for="exampleInputText1" class="form-label">Nome:</label>
+        <input type="text" class="form-control" name="exampleInputText1" [(ngModel)]="marca.nome">
+      </div>
+    <div class="d-flex justify-content-center">
+        <button type="submit" class="btn btn-success">Salvar</button>
+    </div>
+</form>
