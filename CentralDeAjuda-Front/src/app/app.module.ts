@@ -22,6 +22,7 @@ import { HttpClientModule } from '@angular/common/http';
 import { MatTabsModule } from '@angular/material/tabs';
 import { NotebookListarComponent } from './components/notebook/notebook-listar/notebook-listar.component';
 import { NotebookPaginaComponent } from './components/notebook/notebook-pagina/notebook-pagina.component';
+import { HeaderTopComponent } from './components/layout/header-top/header-top.component';
 
 @NgModule({
   declarations: [
@@ -40,7 +41,8 @@ import { NotebookPaginaComponent } from './components/notebook/notebook-pagina/n
     IndexComponent,
     FooterComponent,
     HeaderComponent,
-    NotebookPaginaComponent
+    NotebookPaginaComponent,
+    HeaderTopComponent
     ],
   imports: [
     BrowserModule,

@@ -9,14 +9,11 @@ import { MarcaService } from 'src/app/services/marca.service';
   styleUrls: ['./marca-detalhes.component.scss']
 })
 export class MarcaDetalhesComponent {
- 
   @Input() marca : Marca = new Marca();
   @Output() retorno = new EventEmitter<Mensagem>;
 
   marcaService = inject(MarcaService);
-
-  constructor() {}
-
+  
   salvar() {
     this.marcaService.save(this.marca).subscribe({
       next: mensagem => { // QUANDO DÁ CERTO

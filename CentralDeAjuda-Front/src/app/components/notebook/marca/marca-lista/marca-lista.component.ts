@@ -1,4 +1,4 @@
-import { Component ,inject} from '@angular/core';
+import { Component ,EventEmitter,Output,inject} from '@angular/core';
 import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
 import { Marca } from 'src/app/models/marca';
 import { Mensagem } from 'src/app/models/mensagem';
@@ -10,7 +10,10 @@ import { MarcaService } from 'src/app/services/marca.service';
   styleUrls: ['./marca-lista.component.scss']
 })
 export class MarcaListaComponent {
-  listaMarcas: Marca[] = [];
+  @Output() retorno = new EventEmitter<any>();
+
+  listaMarcasOriginal: Marca[] = [];
+  listaMarcasFiltrada: Marca[] = [];
 
   marcaParaEditar: Marca = new Marca();
   marcaParaExcluir: Marca = new Marca();
@@ -20,8 +23,7 @@ export class MarcaListaComponent {
   marcaService = inject(MarcaService);
 
   tituloModal!: string;
-
-
+  
   constructor(){
     this.listarMarcas();
   }
@@ -29,7 +31,8 @@ export class MarcaListaComponent {
   listarMarcas(){
     this.marcaService.listar().subscribe({
       next: lista =>{
-        this.listaMarcas = lista;
+        this.listaMarcasOriginal = lista;
+        this.listaMarcasFiltrada = lista;
       }
     })
   }
@@ -37,6 +40,7 @@ export class MarcaListaComponent {
   atualizarListaMarca(menssagem : Mensagem){
     this.modalService.dismissAll();
     this.listarMarcas();
+    this.retorno.emit("ok");
   }
 
   cadastrarMarca(modalMarca : any){
@@ -70,5 +74,22 @@ export class MarcaListaComponent {
         this.modalService.dismissAll(); // Atualize a lista após a exclusão
       }
     });
+  }
+
+  @Output() realizarPesquisa(pesquisaMarca: string) {
+    const termoPesquisa = pesquisaMarca.toLowerCase();
+    
+    if (!termoPesquisa) {
+      // Se o termo de pesquisa estiver vazio, restaurar a lista original
+      this.listaMarcasFiltrada = this.listaMarcasOriginal;
+    } else {
+      // Caso contrário, aplicar a pesquisa
+      this.listaMarcasFiltrada = this.listaMarcasOriginal.filter((marca: Marca) => {
+        const nome = marca.nome.toLowerCase();
+        return (
+          nome.includes(termoPesquisa)
+        );
+      });
+    }
   }
 }

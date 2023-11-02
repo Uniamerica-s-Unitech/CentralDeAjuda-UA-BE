@@ -2,9 +2,9 @@
     <div>
         <img src="assets\img\logo.png">
         <section class="nav flex-column mt-5">
-            <button class="mb-5" routerLink="ticket"><img src="assets\img\home.svg">Home</button>
-            <button class="mb-5" routerLink="notebook"><img src="assets\img\notebooks.svg">Notebooks</button>
-            <button routerLink="aluno"><img src="assets\img\alunos.svg">Alunos</button>
+            <button [ngClass]="{ 'active': (active == 1) }" class="mb-5" (click)="active = 1" routerLink="ticket"><img src="assets\img\home.svg">Home</button>
+            <button [ngClass]="{ 'active': (active == 2) }"class="mb-5" (click)="active = 2" routerLink="notebook"><img src="assets\img\notebooks.svg">Notebooks</button>
+            <button [ngClass]="{ 'active': (active == 3) }" (click)="active = 3" routerLink="aluno"><img src="assets\img\alunos.svg">Alunos</button>
         </section>
     </div>
 </nav>

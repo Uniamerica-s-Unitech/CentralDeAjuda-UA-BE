@@ -1,15 +1,4 @@
 <main>
-    
-        <div class=" d-flex">
-            <div class="d-flex flex-row">
-                <div class="disponivil mt-2">
-                    100 <br>Notebooks disponíveis
-                </div>
-            </div>
-            <div class="serch col-lg-10">
-                <input type="text"  placeholder="Pesquisar por id-patrimônio" />
-            </div>
-        </div>
     <article>
         <section class="h-100">
             <div class="quadro_tabela">
@@ -17,19 +6,52 @@
                     <li [ngbNavItem]="1">
                         <button ngbNavLink>Notebooks</button>
                         <ng-template ngbNavContent>
-                            <app-notebook-listar></app-notebook-listar>
+                            <div class="col-lg-12 d-flex align-items-center my-2">
+                                <div class="serch col-lg-4 me-3">
+                                    <input type="text" placeholder="Pesquisar por id-patrimônio" [(ngModel)]="pesquisaNotebook" (keyup)="filtrarNotebooks()"/>
+                                </div>
+                                <div class="col-lg-4 d-flex align-items-center text-center">
+                                    <select [compareWith]="byId" class="form-select form-select-sm me-4" [(ngModel)]="filterModelo" (change)="filtrarNotebookPorModelo()">
+                                        <option [ngValue]="undefined">Filtrar por modelo:</option>
+                                        <option *ngFor="let modelo of listaModelos" [ngValue]="modelo">{{modelo.nome}}</option>
+                                    </select>
+                                </div>
+                                <div class="col-lg-4 d-flex align-items-center">
+                                    <select [compareWith]="byId" class="form-select form-select-sm me-4" [(ngModel)]="filterMarca" (change)="filtrarNotebookPorMarca()">
+                                        <option [ngValue]="undefined">Filtrar por marca:</option>
+                                        <option *ngFor="let marca of listaMarcas" [ngValue]="marca">{{marca.nome}}</option>
+                                    </select>
+                                </div>
+                            </div>
+                            <app-notebook-listar (retorno)="recarregarLista()" #notebook></app-notebook-listar>
                         </ng-template>
                     </li>
                     <li [ngbNavItem]="2">
                         <button ngbNavLink>Modelos</button>
                         <ng-template ngbNavContent>
-                            <app-modelo-lista></app-modelo-lista>
+                            <div class="col-lg-12 d-flex align-items-center my-2">
+                                <div class="serch col-lg-4 me-3">
+                                    <input type="text" placeholder="Pesquisar por nome do modelo ou marca" [(ngModel)]="pesquisaModelo" (keyup)="filtrarModelos()"/>
+                                </div>
+                                <div class="col-lg-4 d-flex align-items-center">
+                                    <select [compareWith]="byId" class="form-select form-select-sm me-4" [(ngModel)]="filterMarca" (change)="filtrarModeloPorMarca()">
+                                        <option [ngValue]="undefined">Filtrar por marca:</option>
+                                        <option *ngFor="let marca of listaMarcas"[ngValue]="marca">{{marca.nome}}</option>
+                                    </select>
+                                </div>
+                            </div>
+                            <app-modelo-lista (retorno)="recarregarLista()" #modelo></app-modelo-lista>
                         </ng-template>
                     </li>
                     <li [ngbNavItem]="3">
                         <button ngbNavLink>Marcas</button>
                         <ng-template ngbNavContent>
-                            <app-marca-lista></app-marca-lista>
+                            <div class="col-lg-12 d-flex align-items-center my-2">
+                                <div class="serch col-lg-12 me-3">
+                                    <input type="text" placeholder="Pesquisar por nome da marca" [(ngModel)]="pesquisaMarca" (keyup)="filtrarMarcas()"/>
+                                </div>
+                            </div>
+                            <app-marca-lista (retorno)="recarregarLista()" #marca></app-marca-lista>
                         </ng-template>
                     </li>
                 </ul>

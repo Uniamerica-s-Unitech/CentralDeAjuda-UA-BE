@@ -12,7 +12,7 @@
                     </tr>
                 </thead>
                 <tbody>
-                    <tr *ngFor="let notebook of listaNotebooks; let i = index">
+                    <tr *ngFor="let notebook of listaNotebooksFiltrada; let i = index">
                         <td>{{ notebook.id }}</td>
                         <td>{{ notebook.patrimonio }}</td>
                         <td>{{ notebook.modeloId.marcaId.nome }}</td>
@@ -24,7 +24,6 @@
                     </tr>
                 </tbody>
             </table>
-            
         </div>
         <div class="text-center">
             <button (click)="cadastrarNotebook(modalNotebook)" class="btnAdicionar">

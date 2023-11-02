@@ -1,35 +1,43 @@
-.disponivil{
-    background-color: #00A859;
-    border-radius: 15px;
-    text-align: center;
-    align-items: center;
-    margin-right: 1rem;
-    margin-left: 30px;
-}
 .btnAdicionar{
     margin: 0 1rem 0 1rem;
     background-color: transparent;
     border: none;
 }
-.serch{
-    border-bottom: .1rem solid #00A859;
-    height: 10vh;
-    input{
-        height: 100%;
-        width: 100%;
-        border: none;
-        outline: none;
-        font-size: 1.5rem;
-        background-image: url(../../../../assets/img/search_icon.svg);
-        background-repeat: no-repeat;
-        background-position: left;
-        padding-left: 45px;
-
-    }
-}
-
 .quadro_tabela {
     width: 95%;
     margin: 0 auto;
     padding: 1.5rem 0;
+
+    .nav-tabs{
+        border-bottom: 1px solid #00A859;
+    }
+    
+    .nav-item .active{
+        background-color: #00a859;
+        color: white;
+    }
+
+    .nav-link{
+        color: #00A859;
+    }
+
+}
+.serch{
+    border-bottom: .1rem solid #00A859;
+    height: 100%;
+    input{
+        width: 100%;
+        border: none;
+        outline: none;
+        font-size: 1.2rem;
+        background-image: url(../../../../assets/img/search_icon.svg);
+        background-repeat: no-repeat;
+        background-position: left;
+        background-size: 3vh;
+        padding-left: 30px;
+
+    }
+}
+.form-select{
+    border-color: #00A859;
 }

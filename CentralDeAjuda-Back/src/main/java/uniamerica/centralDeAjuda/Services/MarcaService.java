@@ -38,7 +38,7 @@ public class MarcaService {
         Assert.notNull(marca.getNome(),"Nome inválido!");
 
         if (!marcaRepository.findByNomeMarca(marca.getNome()).isEmpty()){
-            throw new IllegalArgumentException("Esse RA ja existe!");
+            throw new IllegalArgumentException("Essa marca ja existe!");
         }
 
         marcaRepository.save(marca);

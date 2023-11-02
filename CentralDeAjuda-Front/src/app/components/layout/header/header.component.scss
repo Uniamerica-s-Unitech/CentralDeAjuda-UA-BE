@@ -13,7 +13,7 @@ button{
         margin-right: 0.5rem;
       }
 }
-button:hover ,button:focus{
+.active{
     background-color: rgb(12, 141, 12);
     color: #fff;
     transition: .5s;

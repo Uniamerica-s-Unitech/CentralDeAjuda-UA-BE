@@ -3,7 +3,6 @@ import { RouterModule, Routes } from '@angular/router';
 import { TicketListaComponent } from './components/ticket/ticket-lista/ticket-lista.component';
 import { IndexComponent } from './components/layout/index/index.component';
 import { AlunoListaComponent } from './components/aluno/aluno-lista/aluno-lista.component';
-import { NotebookListarComponent } from './components/notebook/notebook-listar/notebook-listar.component';
 import { NotebookPaginaComponent } from './components/notebook/notebook-pagina/notebook-pagina.component';
 
 const routes: Routes = [

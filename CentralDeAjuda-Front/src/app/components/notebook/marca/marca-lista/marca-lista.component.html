@@ -10,7 +10,7 @@
                     </tr>
                 </thead>
                 <tbody>
-                    <tr *ngFor="let marca of listaMarcas; let i = index">
+                    <tr *ngFor="let marca of listaMarcasFiltrada; let i = index">
                         <td>{{ marca.id }}</td>
                         <td>{{ marca.nome }}</td>
                         <td class="text-center">
@@ -20,7 +20,6 @@
                     </tr>
                 </tbody>
             </table>
-            
         </div>
         <div class="text-center">
             <button (click)="cadastrarMarca(modalMarca)" class="btnAdicionar">
