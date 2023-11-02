@@ -1,13 +1,13 @@
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Lexend+Deca:wght@300;400;500;600;700;800;900&display=swap" rel="stylesheet">
-<div>
-    
-    <app-header></app-header>
 
-    <main>
+<div class="row col-lg-12">
+    <div class="col-lg-2 ">
+        <app-header class="col-lg-2 position-fixed h-100"></app-header>
+    </div>
+    <div class="col-lg-10">
+        <app-header-top class="w-100"></app-header-top>
         <router-outlet></router-outlet>
-    </main>
-
-    <app-footer></app-footer>
+    </div>
 </div>

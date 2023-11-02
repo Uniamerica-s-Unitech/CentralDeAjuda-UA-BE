@@ -6,7 +6,6 @@ import { AppComponent } from './app.component';
 import { AlunoListaComponent } from './components/aluno/aluno-lista/aluno-lista.component';
 import { AlunoDetalhesComponent } from './components/aluno/aluno-detalhes/aluno-detalhes.component';
 import { NotebookDetalhesComponent } from './components/notebook/notebook-detalhes/notebook-detalhes.component';
-import { NotebookListarComponent } from './components/notebook/notebook-listar/notebook-listar.component';
 import { TicketListaComponent } from './components/ticket/ticket-lista/ticket-lista.component';
 import { TicketDetalhesComponent } from './components/ticket/ticket-detalhes/ticket-detalhes.component';
 import { MarcaDetalhesComponent } from './components/notebook/marca/marca-detalhes/marca-detalhes.component';
@@ -17,9 +16,13 @@ import { TicketHistoricoComponent } from './components/ticket/ticket-historico/t
 import { IndexComponent } from './components/layout/index/index.component';
 import { FooterComponent } from './components/layout/footer/footer.component';
 import { HeaderComponent } from './components/layout/header/header.component';
-import { NgbModule } from '@ng-bootstrap/ng-bootstrap';
+import { NgbModule, NgbNavModule } from '@ng-bootstrap/ng-bootstrap';
 import { FormsModule } from '@angular/forms';
 import { HttpClientModule } from '@angular/common/http';
+import { MatTabsModule } from '@angular/material/tabs';
+import { NotebookListarComponent } from './components/notebook/notebook-listar/notebook-listar.component';
+import { NotebookPaginaComponent } from './components/notebook/notebook-pagina/notebook-pagina.component';
+import { HeaderTopComponent } from './components/layout/header-top/header-top.component';
 
 @NgModule({
   declarations: [
@@ -37,14 +40,17 @@ import { HttpClientModule } from '@angular/common/http';
     TicketHistoricoComponent,
     IndexComponent,
     FooterComponent,
-    HeaderComponent
+    HeaderComponent,
+    NotebookPaginaComponent,
+    HeaderTopComponent
     ],
   imports: [
     BrowserModule,
     AppRoutingModule,
     NgbModule,
     FormsModule,
-    HttpClientModule
+    HttpClientModule,
+    NgbNavModule
   ],
   providers: [],
   bootstrap: [AppComponent]

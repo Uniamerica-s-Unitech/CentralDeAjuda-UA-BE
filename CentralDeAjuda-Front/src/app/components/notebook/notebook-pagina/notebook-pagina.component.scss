@@ -1,0 +1,43 @@
+.btnAdicionar{
+    margin: 0 1rem 0 1rem;
+    background-color: transparent;
+    border: none;
+}
+.quadro_tabela {
+    width: 95%;
+    margin: 0 auto;
+    padding: 1.5rem 0;
+
+    .nav-tabs{
+        border-bottom: 1px solid #00A859;
+    }
+    
+    .nav-item .active{
+        background-color: #00a859;
+        color: white;
+    }
+
+    .nav-link{
+        color: #00A859;
+    }
+
+}
+.serch{
+    border-bottom: .1rem solid #00A859;
+    height: 100%;
+    input{
+        width: 100%;
+        border: none;
+        outline: none;
+        font-size: 1.2rem;
+        background-image: url(../../../../assets/img/search_icon.svg);
+        background-repeat: no-repeat;
+        background-position: left;
+        background-size: 3vh;
+        padding-left: 30px;
+
+    }
+}
+.form-select{
+    border-color: #00A859;
+}

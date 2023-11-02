@@ -1,0 +1,51 @@
+.btnAdicionar{
+    margin-top: 1rem;
+    background-color: #00A859;
+    color: #fff;
+    border: 1px solid #000;
+    border-radius: 1.5rem;
+    padding: .5rem 1rem;
+}
+.scroll {
+    overflow: auto;
+    height: 60vh;
+    flex-grow: 1;
+    width: 99%;
+    margin: 0 auto;
+}
+/* width */
+::-webkit-scrollbar {
+    width: 10px;
+}
+
+/* Track */
+::-webkit-scrollbar-track {
+    background: transparent;
+    border-radius: 2rem;
+}
+
+/* Handle */
+::-webkit-scrollbar-thumb {
+    background: #00A859;
+    border-radius: 2rem;
+}
+
+/* Handle on hover */
+::-webkit-scrollbar-thumb:hover {
+    background: #555;
+}
+
+.fixed-header {
+    position: sticky;
+    top: 0;
+    z-index: 1;
+
+    tr{
+        th{
+            background-color: #aaa;
+        }
+    }
+}
+.img{
+    width: 1.2rem;
+}

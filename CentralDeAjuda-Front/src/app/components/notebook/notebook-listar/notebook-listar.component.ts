@@ -1,6 +1,8 @@
-import { Component ,inject} from '@angular/core';
+import { Component ,EventEmitter,Output,inject} from '@angular/core';
 import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
+import { Marca } from 'src/app/models/marca';
 import { Mensagem } from 'src/app/models/mensagem';
+import { Modelo } from 'src/app/models/modelo';
 import { Notebook } from 'src/app/models/notebook';
 import { NotebookService } from 'src/app/services/notebook.service';
 
@@ -10,7 +12,10 @@ import { NotebookService } from 'src/app/services/notebook.service';
   styleUrls: ['./notebook-listar.component.scss']
 })
 export class NotebookListarComponent {
-  listaNotebooks: Notebook[] = [];
+  @Output() retorno = new EventEmitter<any>();
+
+  listaNotebooksOriginal: Notebook[] = [];
+  listaNotebooksFiltrada: Notebook[] = [];
 
   notebookParaEditar: Notebook = new Notebook();
   notebookParaExcluir: Notebook = new Notebook();
@@ -21,7 +26,6 @@ export class NotebookListarComponent {
 
   tituloModal!: string;
 
-
   constructor(){
     this.listarNotebooks();
   }
@@ -29,7 +33,8 @@ export class NotebookListarComponent {
   listarNotebooks(){
     this.notebookService.listar().subscribe({
       next: lista =>{
-        this.listaNotebooks = lista;
+        this.listaNotebooksOriginal = lista;
+        this.listaNotebooksFiltrada = lista;
       }
     })
   }
@@ -37,6 +42,7 @@ export class NotebookListarComponent {
   atualizarListaNotebook(menssagem : Mensagem){
     this.modalService.dismissAll();
     this.listarNotebooks();
+    this.retorno.emit("ok");
   }
 
   cadastrarNotebook(modalNotebook : any){
@@ -47,7 +53,6 @@ export class NotebookListarComponent {
   }
 
   editarNotebook(modal:any,notebook:Notebook,indice:number){
-    console.log('Valor de notebook.modeloId antes da edição:', notebook.modeloId);
     this.notebookParaEditar = Object.assign({}, notebook);
     this.indiceParaEdicao = indice;
 
@@ -68,8 +73,49 @@ export class NotebookListarComponent {
     this.notebookService.deletar(notebook.id).subscribe({
       next: (mensagem:Mensagem) => {
         this.listarNotebooks();
-        this.modalService.dismissAll(); // Atualize a lista após a exclusão
+        this.modalService.dismissAll();
       }
     });
+  }
+
+  @Output() realizarPesquisa(pesquisaNotebook: string) {
+    const termoPesquisa = pesquisaNotebook.toLowerCase();
+    
+    if (!termoPesquisa) {
+      this.listaNotebooksFiltrada = this.listaNotebooksOriginal;
+    } else {
+      this.listaNotebooksFiltrada = this.listaNotebooksOriginal.filter((notebook: Notebook) => {
+        const patrimonio = notebook.patrimonio.toLowerCase();
+        return (
+          patrimonio.includes(termoPesquisa)
+        );
+      });
+    }
+  }
+
+  @Output() realizarPesquisaPorModelo(filterModelo: Modelo) {
+    if (filterModelo == null) {
+      this.listaNotebooksFiltrada = this.listaNotebooksOriginal;
+    } else {
+      this.listaNotebooksFiltrada = this.listaNotebooksOriginal.filter((notebook: Notebook) => {
+        const idModelo = notebook.modeloId.id;
+        return (
+          idModelo === filterModelo.id
+        );
+      });
+    }
+  }
+
+  @Output() realizarPesquisaPorMarca(filterMarca: Marca) {
+    if (filterMarca == null) {
+      this.listaNotebooksFiltrada = this.listaNotebooksOriginal;
+    } else {
+      this.listaNotebooksFiltrada = this.listaNotebooksOriginal.filter((notebook: Notebook) => {
+        const idModelo = notebook.modeloId.marcaId.id;
+        return (
+          idModelo === filterMarca.id
+        );
+      });
+    }
   }
 }
