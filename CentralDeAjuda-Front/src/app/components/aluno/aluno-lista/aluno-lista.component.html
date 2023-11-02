@@ -1,1 +1,78 @@
-<p>aluno-lista works!</p>
+<main>
+    
+    <header class="d-flex flex-row align-items-center">
+        <div class="d-flex flex-row ">
+            <div class="disponivil">
+                {{num}} <br>Alunos<br>cadastrados
+            </div>
+            <button (click)="cadastrarAlunos(modalAluno)" class="btnAdicionar">
+                <div>
+                    <img src="assets\img\adicionar.svg">
+                </div>
+                Novo aluno
+            </button>
+        </div>
+        <div class="serch">
+            <input type="text" placeholder="Pesquisar por id-patrimonio"/>
+        </div>
+    </header>
+    <article>
+        <div class="d-flex justify-content-center">
+            <h2>Lista de aluno</h2>
+        </div>
+        <section class="h-100">
+            <div class="quadro_tabela">
+                <div class="scroll ">
+                    <table class="table table-striped">
+                        <thead class="fixed-header">
+                            <tr>
+                                <th scope="col">RA</th>
+                                <th scope="col">Nome</th>
+                                <th scope="col" class="text-center">Ações</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr *ngFor="let aluno of listaAlunos; let i = index">
+                                <td>{{ aluno.ra }}</td>
+                                <td>{{ aluno.nome }}</td>
+                                <td class="text-center">
+                                    <button (click)="editarAluno(modalAluno, aluno, i)" class="btn btn-outline-warning  mx-2"><img class="img" src="assets\img\write.svg"></button>
+                                    <button (click)="excluirAluno(modaloExcluir, aluno, i)" class="btn btn-danger"><img class="img" src="assets\img\delete.svg"></button>
+                                </td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </section>
+    </article>
+</main>
+
+<ng-template #modalAluno let-modal>
+    <div class="modal-header modal-style ">
+      <h4 class="modal-title">{{tituloModal}}</h4>
+      <button type="button" class="btn-close" aria-label="Close" (click)="modal.dismiss('Cross click')"></button>
+    </div>
+    <div class="modal-body modal-style">
+      
+        <app-aluno-detalhes [aluno]="alunoParaEditar" (retorno)="atualizarListaAluno($event)" ></app-aluno-detalhes>
+              
+    </div>
+    <div class="modal-footer modal-style">
+        <button type="button" class="btn btn-danger" (click)="modal.close('Close click')">Close</button>
+    </div>
+</ng-template>
+
+<ng-template #modaloExcluir let-modal>
+    <div class="modal-header modal-style ">
+        <h4 class="modal-title">{{tituloModal}}</h4>
+        <button type="button" class="btn-close" aria-label="Close" (click)="modal.dismiss('Cross click')"></button>
+    </div>
+    <div class="modal-body modal-style">
+        <h5>Vc tem certeza que quer deletar esse Aluno?</h5>   
+    </div>
+    <div class="modal-footer modal-style">
+        <button type="button" class="btn btn-outline-danger" (click)="confirmarExclusao(alunoParaExcluir)">Deletar</button>
+        <button type="button" class="btn btn-secondary" (click)="modal.close('Close click')">Close</button>
+    </div>
+</ng-template>

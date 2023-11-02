@@ -1,0 +1,83 @@
+.disponivil{
+    background-color: #00A859;
+    border-radius: 15px;
+    text-align: center;
+    display: flex;
+    align-items: center;
+    padding: 1.5rem .8rem;
+}
+header{
+    padding-top: .5rem;
+    width: 100%;
+}
+.btnAdicionar{
+    margin: 0 1rem 0 1rem;
+    background-color: transparent;
+    border: none;
+}
+.serch{
+    border-bottom: .1rem solid #00A859;
+    width: 100vw;
+    width: 100%;
+    input{
+        height: 10vh;
+        width: 100%;
+       border: none;
+        outline: none;
+        font-size: 1.5rem;
+        background-image: url(../../../../assets/img/search_icon.svg);
+        background-repeat: no-repeat;
+        background-position: left;
+        padding-left: 45px;
+
+    }
+}
+
+.quadro_tabela {
+    width: 95%;
+    margin: 0 auto;
+    padding: 1.5rem 0;
+}
+.scroll {
+    overflow: auto;
+    height: 60vh;
+    flex-grow: 1;
+    width: 99%;
+    margin: 0 auto;
+}
+/* width */
+::-webkit-scrollbar {
+    width: 10px;
+}
+
+/* Track */
+::-webkit-scrollbar-track {
+    background: transparent;
+    border-radius: 2rem;
+}
+
+/* Handle */
+::-webkit-scrollbar-thumb {
+    background: #00A859;
+    border-radius: 2rem;
+}
+
+/* Handle on hover */
+::-webkit-scrollbar-thumb:hover {
+    background: #555;
+}
+
+.fixed-header {
+    position: sticky;
+    top: 0;
+    z-index: 1;
+
+    tr{
+        th{
+            background-color: #aaa;
+        }
+    }
+}
+.img{
+    width: 1.2rem;
+}
