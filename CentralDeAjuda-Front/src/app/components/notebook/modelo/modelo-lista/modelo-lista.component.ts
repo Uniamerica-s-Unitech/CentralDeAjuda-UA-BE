@@ -90,8 +90,7 @@ export class ModeloListaComponent {
         const nome = modelo.nome.toLowerCase();
         const marca = modelo.marcaId.nome.toLowerCase();
         return (
-          nome.includes(termoPesquisa) ||
-          marca.includes(termoPesquisa)
+          nome.includes(termoPesquisa)
         );
       });
     }

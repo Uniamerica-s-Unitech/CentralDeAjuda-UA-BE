@@ -16,13 +16,13 @@ import { TicketHistoricoComponent } from './components/ticket/ticket-historico/t
 import { IndexComponent } from './components/layout/index/index.component';
 import { FooterComponent } from './components/layout/footer/footer.component';
 import { HeaderComponent } from './components/layout/header/header.component';
-import { NgbModule, NgbNavModule } from '@ng-bootstrap/ng-bootstrap';
+import { NgbModule } from '@ng-bootstrap/ng-bootstrap';
 import { FormsModule } from '@angular/forms';
 import { HttpClientModule } from '@angular/common/http';
-import { MatTabsModule } from '@angular/material/tabs';
 import { NotebookListarComponent } from './components/notebook/notebook-listar/notebook-listar.component';
 import { NotebookPaginaComponent } from './components/notebook/notebook-pagina/notebook-pagina.component';
 import { HeaderTopComponent } from './components/layout/header-top/header-top.component';
+import { TicketPaginaComponent } from './components/ticket/ticket-pagina/ticket-pagina.component';
 
 @NgModule({
   declarations: [
@@ -42,7 +42,8 @@ import { HeaderTopComponent } from './components/layout/header-top/header-top.co
     FooterComponent,
     HeaderComponent,
     NotebookPaginaComponent,
-    HeaderTopComponent
+    HeaderTopComponent,
+    TicketPaginaComponent
     ],
   imports: [
     BrowserModule,
@@ -50,7 +51,6 @@ import { HeaderTopComponent } from './components/layout/header-top/header-top.co
     NgbModule,
     FormsModule,
     HttpClientModule,
-    NgbNavModule
   ],
   providers: [],
   bootstrap: [AppComponent]

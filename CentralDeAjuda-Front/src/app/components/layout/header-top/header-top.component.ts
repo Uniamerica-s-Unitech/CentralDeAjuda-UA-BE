@@ -1,5 +1,7 @@
 import { Component, inject } from '@angular/core';
+import { AlunoService } from 'src/app/services/aluno.service';
 import { NotebookService } from 'src/app/services/notebook.service';
+import { TicketService } from 'src/app/services/ticket.service';
 
 @Component({
   selector: 'app-header-top',
@@ -9,10 +11,18 @@ import { NotebookService } from 'src/app/services/notebook.service';
 export class HeaderTopComponent {
 
   notebookService = inject(NotebookService);
+  alunoService = inject(AlunoService);
+  ticketService = inject(TicketService);
+
   qtdNotebooks: number = 0;
+  qtdAlunos: number = 0;
+  qtdTickets: number = 0;
+
 
   constructor(){
-    this.listarNotebooks(); 
+    this.listarNotebooks();
+    this.listarAlunos();
+    this.listarTickets(); 
 
     setInterval(() => {
       this.listarNotebooks(); 
@@ -27,5 +37,20 @@ export class HeaderTopComponent {
       }
     })
   }
+  listarAlunos(){
+    this.alunoService.listar().subscribe({
+      next: lista =>{
+        this.qtdAlunos = lista.length;
+      }
+    })
+  }
+  listarTickets(){
+    this.ticketService.listarAbertos().subscribe({
+      next: lista =>{
+        this.qtdTickets = lista.length;
+      }
+    })
+  }
+
 
 }

@@ -1,4 +1,4 @@
-import { Component, inject } from '@angular/core';
+import { Component, Output, inject } from '@angular/core';
 import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
 import { Aluno } from 'src/app/models/aluno';
 import { Mensagem } from 'src/app/models/mensagem';
@@ -11,27 +11,32 @@ import { AlunoService } from 'src/app/services/aluno.service';
 })
 export class AlunoListaComponent {
 
-  listaAlunos: Aluno[] = [];
+  listaAlunosOriginal: Aluno[] = [];
+  listaAlunosFiltrada: Aluno[] = [];
+
   alunoParaEditar: Aluno = new Aluno();
   alunoParaExcluir: Aluno = new Aluno();
+
   indiceParaEdicao!: number; 
-  num!: number;
+
   modalService = inject(NgbModal);
   alunoService = inject(AlunoService);
+
   tituloModal!: string;
+  termoPesquisa!: "";
+
   constructor(){
     this.listarAlunos();
-
   }
 
-listarAlunos(){
-  this.alunoService.listar().subscribe({
-    next: lista =>{
-      this.listaAlunos = lista;
-      this.num = this.listaAlunos.length;
-    }
-  })
-}
+  listarAlunos(){
+    this.alunoService.listar().subscribe({
+      next: lista =>{
+        this.listaAlunosOriginal = lista;
+        this.listaAlunosFiltrada = lista;
+      }
+    })
+  }
 
   atualizarListaAluno(menssagem : Mensagem){
     this.modalService.dismissAll();
@@ -72,4 +77,19 @@ listarAlunos(){
     });
   }
 
+  @Output() realizarPesquisa(termoPesquisa: string) {
+    termoPesquisa.toLowerCase();
+    
+    if (!termoPesquisa) {
+      this.listaAlunosFiltrada = this.listaAlunosOriginal;
+    } else {
+      this.listaAlunosFiltrada = this.listaAlunosOriginal.filter((aluno: Aluno) => {
+        const nome = aluno.nome.toLowerCase();
+        const ra = aluno.ra;
+        return (
+          nome.includes(termoPesquisa)
+        );
+      });
+    }
+  }
 }
