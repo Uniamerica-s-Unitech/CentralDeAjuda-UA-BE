@@ -28,6 +28,11 @@ public class AlunoController {
         }
     }
 
+    @GetMapping("/listaSemVinculo")
+    public List<AlunoDTO> listarSemVinculo(){
+        return alunoService.listarSemVinculo();
+    }
+
     @GetMapping("/lista")
     public List<AlunoDTO> listar(){
         return alunoService.listar();

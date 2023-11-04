@@ -13,6 +13,10 @@ export class NotebookService {
 
   constructor() { }
 
+  listarNotebooksSemVinculos(): Observable<Notebook[]> {
+    return this.http.get<Notebook[]>(`${this.API}` + "/listaSemVinculo");
+  }
+
   listar(): Observable<Notebook[]> {
     return this.http.get<Notebook[]>(`${this.API}` + "/lista");
   }

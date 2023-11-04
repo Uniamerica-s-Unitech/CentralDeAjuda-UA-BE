@@ -14,8 +14,6 @@ import lombok.Setter;
 public class ModeloDTO{
     private Long id;
 
-    private Boolean ativo = true;
-
     @NotNull(message = "Nome inválido")
     @NotBlank(message = "O nome do modelo é obrigatório")
     @Size(min = 2, max = 50, message = "O nome deve ter entre 2 e 50 caracteres")

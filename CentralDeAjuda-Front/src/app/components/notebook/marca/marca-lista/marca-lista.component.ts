@@ -1,8 +1,10 @@
-import { Component ,EventEmitter,Output,inject} from '@angular/core';
+import { Component ,EventEmitter,Input,Output,inject} from '@angular/core';
 import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
 import { Marca } from 'src/app/models/marca';
 import { Mensagem } from 'src/app/models/mensagem';
 import { MarcaService } from 'src/app/services/marca.service';
+import { ToastrService } from 'ngx-toastr';
+
 
 @Component({
   selector: 'app-marca-lista',
@@ -11,6 +13,7 @@ import { MarcaService } from 'src/app/services/marca.service';
 })
 export class MarcaListaComponent {
   @Output() retorno = new EventEmitter<any>();
+  @Input() modoVincular: boolean = false;
 
   listaMarcasOriginal: Marca[] = [];
   listaMarcasFiltrada: Marca[] = [];
@@ -21,8 +24,10 @@ export class MarcaListaComponent {
 
   modalService = inject(NgbModal);
   marcaService = inject(MarcaService);
+  toastr = inject(ToastrService);
 
   tituloModal!: string;
+  termoPesquisa!: "";
   
   constructor(){
     this.listarMarcas();
@@ -70,15 +75,19 @@ export class MarcaListaComponent {
   confirmarExclusao(marca: Marca) {
     this.marcaService.deletar(marca.id).subscribe({
       next: (mensagem:Mensagem) => {
+        this.toastr.success(mensagem.mensagem);
         this.listarMarcas();
         this.modalService.dismissAll(); // Atualize a lista após a exclusão
+      },
+      error: erro => { // QUANDO DÁ ERRO
+        this.toastr.error(erro.error.mensagem);
+        console.error(erro);
       }
     });
   }
 
-  @Output() realizarPesquisa(pesquisaMarca: string) {
-    const termoPesquisa = pesquisaMarca.toLowerCase();
-    
+  @Output() realizarPesquisa(termoPesquisa: string) {
+    termoPesquisa.toLowerCase();
     if (!termoPesquisa) {
       // Se o termo de pesquisa estiver vazio, restaurar a lista original
       this.listaMarcasFiltrada = this.listaMarcasOriginal;
@@ -91,5 +100,8 @@ export class MarcaListaComponent {
         );
       });
     }
+  }
+  vincular(marca: Marca){
+    this.retorno.emit(marca);
   }
 }

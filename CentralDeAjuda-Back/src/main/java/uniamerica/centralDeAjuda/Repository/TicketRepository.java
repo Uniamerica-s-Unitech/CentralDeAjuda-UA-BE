@@ -9,11 +9,11 @@ import uniamerica.centralDeAjuda.Entity.Ticket;
 import java.util.List;
 
 public interface TicketRepository extends JpaRepository<Ticket, Long> {
-    @Query("FROM Ticket WHERE dataDevolucao IS NULL")
+    @Query("FROM Ticket WHERE dataDevolucao IS NULL and ativo = true")
     List<Ticket> findTicketsAbertos();
-    @Query("FROM Ticket WHERE dataDevolucao IS NULL AND alunoId = :aluno")
+    @Query("FROM Ticket t WHERE t.dataDevolucao IS NULL AND t.ativo = true AND t.alunoId = :aluno")
     List<Ticket> findTicketsAbertosPorAluno(Aluno aluno);
-    @Query("FROM Ticket WHERE dataDevolucao IS NULL AND notebookId = :notebook")
+    @Query("FROM Ticket t WHERE t.dataDevolucao IS NULL AND t.ativo = true AND t.notebookId = :notebook")
     List<Ticket> findTicketsAbertosPorNotebook(Notebook notebook);
     @Query("FROM Ticket WHERE dataDevolucao IS NOT NULL")
     List<Ticket> findHistoricoByDataDevolucao();

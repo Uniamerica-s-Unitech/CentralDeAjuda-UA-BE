@@ -15,8 +15,6 @@ import java.time.LocalDateTime;
 public class TicketDTO{
     private Long id;
 
-    private Boolean ativo = true;
-
     @NotNull(message = "ID inválido")
     @NotBlank(message = "O ID do aluno é obrigatório")
     private AlunoDTO alunoId;
@@ -30,4 +28,6 @@ public class TicketDTO{
     private LocalDateTime dataEntrega;
 
     private LocalDateTime dataDevolucao;
+
+    private String observacao;
 }

@@ -1,24 +1,9 @@
 <main>
-    
-    <header class="d-flex flex-row align-items-center">
-        <div class="d-flex flex-row ">
-            <div class="disponivil">
-                {{num}} <br>Alunos<br>cadastrados
-            </div>
-            <button (click)="cadastrarAlunos(modalAluno)" class="btnAdicionar">
-                <div>
-                    <img src="assets\img\adicionar.svg">
-                </div>
-                Novo aluno
-            </button>
-        </div>
-        <div class="serch">
-            <input type="text" placeholder="Pesquisar por id-patrimonio"/>
-        </div>
-    </header>
     <article>
-        <div class="d-flex justify-content-center">
-            <h2>Lista de aluno</h2>
+        <div class="col-lg-12 d-flex align-items-center barra">
+            <div class="serch col-lg-12">
+                <input type="text" placeholder="Pesquisar por nome do aluno ou RA " [(ngModel)]="termoPesquisa" (keyup)="realizarPesquisa(termoPesquisa)"/>
+            </div>
         </div>
         <section class="h-100">
             <div class="quadro_tabela">
@@ -32,16 +17,24 @@
                             </tr>
                         </thead>
                         <tbody>
-                            <tr *ngFor="let aluno of listaAlunos; let i = index">
+                            <tr *ngFor="let aluno of listaAlunosFiltrada; let i = index">
                                 <td>{{ aluno.ra }}</td>
                                 <td>{{ aluno.nome }}</td>
-                                <td class="text-center">
+                                <td class="text-center" *ngIf="!modoVincular">
                                     <button (click)="editarAluno(modalAluno, aluno, i)" class="btn btn-outline-warning  mx-2"><img class="img" src="assets\img\write.svg"></button>
                                     <button (click)="excluirAluno(modaloExcluir, aluno, i)" class="btn btn-danger"><img class="img" src="assets\img\delete.svg"></button>
+                                </td>
+                                <td class="text-center" *ngIf="modoVincular">
+                                    <button (click)="vincular(aluno)" class="btn btn-danger">Vincular</button>
                                 </td>
                             </tr>
                         </tbody>
                     </table>
+                </div>
+                <div class="text-center">
+                    <button (click)="cadastrarAluno(modalAluno)" class="btnAdicionar">
+                        Novo Aluno
+                    </button>
                 </div>
             </div>
         </section>

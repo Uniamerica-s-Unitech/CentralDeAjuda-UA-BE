@@ -42,7 +42,7 @@ TicketService {
         return ticketRepository.findHistoricoByDataDevolucao().stream().map(this::ticketToDTO).toList();
     }
 
-    public MensagemDTO cadastrarTicket(TicketDTO ticketDTO) {
+    public MensagemDTO cadastrarTicket(TicketDTO ticketDTO) throws Exception {
         Ticket ticket = toTicket(ticketDTO);
 
         Assert.notNull(ticket.getAlunoId(),"Aluno inválido!");
@@ -60,9 +60,9 @@ TicketService {
         List<Ticket> notebookTicketsAtivos = ticketRepository.findTicketsAbertosPorNotebook(ticket.getNotebookId());
 
         if (!alunoTicketsAtivos.isEmpty()){
-            return new MensagemDTO("O aluno possui um tickey ativo", HttpStatus.CREATED);
+            throw new Exception("O aluno possui um tickey ativo");
         }else if(!notebookTicketsAtivos.isEmpty()){
-            return new MensagemDTO("O notebook possui um tickey ativo", HttpStatus.CREATED);
+            throw new Exception("O notebook possui um tickey ativo");
         }else {
             ticketRepository.save(ticket);
             return new MensagemDTO("Ticket cadastrado com sucesso!", HttpStatus.CREATED);
@@ -97,28 +97,42 @@ TicketService {
         }*/
 
         ticketRepository.save(ticket);
-        return new MensagemDTO("Ticket atualizado com sucesso!", HttpStatus.CREATED);
+        if(ticket.getDataDevolucao() == null)
+            return new MensagemDTO("Ticket atualizado com sucesso!", HttpStatus.CREATED);
+        else
+            return new MensagemDTO("Ticket finalizado com sucesso!", HttpStatus.CREATED);
+    }
+
+    public MensagemDTO cancelar(Long id){
+        Ticket ticketBanco = ticketRepository.findById(id)
+                .orElseThrow(()-> new EntityNotFoundException("Notebook com ID "+id+" nao existe!"));
+
+        desativarTicket(ticketBanco);
+        return new MensagemDTO("Ticket cancelado com sucesso!", HttpStatus.CREATED);
+    }
+
+    private void desativarTicket(Ticket ticket) {
+        ticket.setAtivo(false);
+        ticketRepository.save(ticket);
     }
 
     public TicketDTO ticketToDTO(Ticket ticket){
         TicketDTO ticketDTO = new TicketDTO();
 
         ticketDTO.setId(ticket.getId());
-        ticketDTO.setAtivo(ticket.getAtivo());
         ticketDTO.setDataDevolucao(ticket.getDataDevolucao());
         ticketDTO.setDataEntrega(ticket.getDataEntrega());
+        ticketDTO.setObservacao(ticket.getObservacao());
 
             AlunoDTO alunoDTO = new AlunoDTO();
 
             alunoDTO.setId(ticket.getAlunoId().getId());
-            alunoDTO.setAtivo(ticket.getAlunoId().getAtivo());
             alunoDTO.setNome(ticket.getAlunoId().getNome());
             alunoDTO.setRa(ticket.getAlunoId().getRa());
 
 
             NotebookDTO notebookDTO = new NotebookDTO();
             notebookDTO.setId(ticket.getNotebookId().getId());
-            notebookDTO.setAtivo(ticket.getNotebookId().getAtivo());
             notebookDTO.setPatrimonio(ticket.getNotebookId().getPatrimonio());
 
                 ModeloDTO modeloDTO = new ModeloDTO();
@@ -139,9 +153,9 @@ TicketService {
         Ticket novoTicket = new Ticket();
 
         novoTicket.setId(ticketDTO.getId());
-        novoTicket.setAtivo(ticketDTO.getAtivo());
         novoTicket.setDataDevolucao(ticketDTO.getDataDevolucao());
         novoTicket.setDataEntrega(ticketDTO.getDataEntrega());
+        novoTicket.setObservacao(ticketDTO.getObservacao());
 
         Aluno aluno = new Aluno();
         aluno.setId(ticketDTO.getAlunoId().getId());

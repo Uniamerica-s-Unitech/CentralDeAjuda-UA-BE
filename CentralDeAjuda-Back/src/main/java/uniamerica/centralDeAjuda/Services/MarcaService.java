@@ -32,33 +32,33 @@ public class MarcaService {
         return marcaRepository.findMarcaByAtivo().stream().map(this::marcaToDTO).toList();
     }
 
-    public MensagemDTO cadastrarMarca(MarcaDTO marcaDTO) {
+    public MensagemDTO cadastrarMarca(MarcaDTO marcaDTO) throws Exception{
         Marca marca = toMarca(marcaDTO);
 
         Assert.notNull(marca.getNome(),"Nome inválido!");
 
         if (!marcaRepository.findByNomeMarca(marca.getNome()).isEmpty()){
-            throw new IllegalArgumentException("Essa marca ja existe!");
+            throw new Exception("Essa marca ja existe!");
         }
 
         marcaRepository.save(marca);
         return new MensagemDTO("Marca cadastrada com sucesso!", HttpStatus.CREATED);
     }
 
-    public MensagemDTO editarMarca(Long id, MarcaDTO marcaDTO) {
+    public MensagemDTO editarMarca(Long id, MarcaDTO marcaDTO) throws Exception{
         Marca marca = toMarca(marcaDTO);
 
         Assert.notNull(marca.getNome(), "Nome inválido!");
 
         if (!marcaRepository.findByNomeMarca(marca.getNome()).isEmpty()){
-            throw new IllegalArgumentException("Esse RA ja existe!");
+            throw new Exception("Esse marca ja existe!");
         }
 
         marcaRepository.save(marca);
         return new MensagemDTO("Marca atualizada com sucesso!", HttpStatus.CREATED);
     }
 
-    public MensagemDTO deletar(Long id) {
+    public MensagemDTO deletar(Long id) throws Exception{
         Marca marcaBanco = marcaRepository.findById(id)
                 .orElseThrow(()->
                         new EntityNotFoundException("Marca com ID "+id+" nao existe!"));
@@ -66,7 +66,7 @@ public class MarcaService {
         List<Modelo> marcaModeloAtivo = modeloRepository.findModeloByMarcaAtiva(marcaBanco);
 
         if (!marcaModeloAtivo.isEmpty()){
-            return new MensagemDTO("Não é possível excluir essa marca, pois existem modelos ativos associados a ela.", HttpStatus.CREATED);
+            throw new Exception("Não é possível excluir essa marca, pois existem modelos ativos associados a ela.");
         } else {
             desativarMarca(marcaBanco);
         }
@@ -82,7 +82,6 @@ public class MarcaService {
         MarcaDTO marcaDTO = new MarcaDTO();
 
         marcaDTO.setId(marca.getId());
-        marcaDTO.setAtivo(marca.getAtivo());
         marcaDTO.setNome(marca.getNome());
 
         return marcaDTO;
@@ -92,7 +91,6 @@ public class MarcaService {
         Marca novoMarca = new Marca();
 
         novoMarca.setId(marcaDTO.getId());
-        novoMarca.setAtivo(marcaDTO.getAtivo());
         novoMarca.setNome(marcaDTO.getNome());
 
         return novoMarca;
