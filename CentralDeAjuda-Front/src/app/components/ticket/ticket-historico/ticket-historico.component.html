@@ -1,1 +1,51 @@
-<p>ticket-historico works!</p>
+<main>
+    <article>
+        <div class="col-lg-12 d-flex align-items-center mt-2 barra">
+            <div class="serch col-lg-12 me-3">
+                <input type="text" placeholder="Pesquisar por nome do aluno ou RA ou patrimonio" [(ngModel)]="termoPesquisa" (keyup)="realizarPesquisa(termoPesquisa)"/>
+            </div>
+        </div>
+        <div class="col-lg-12 d-flex align-items-center mt-2 barra">
+            <div class="col-lg-6 d-flex align-items-center text-center">
+                <select [compareWith]="byId" class="form-select form-select-sm me-4" [(ngModel)]="filterModelo" (change)="realizarPesquisaPorModelo(filterModelo)">
+                    <option [ngValue]="undefined">Filtrar por modelo</option>
+                    <option *ngFor="let modelo of listaModelos" [ngValue]="modelo">{{modelo.nome}}</option>
+                </select>
+            </div>
+            <div class="col-lg-6 d-flex align-items-center">
+                <select [compareWith]="byId" class="form-select form-select-sm me-4" [(ngModel)]="filterMarca" (change)="realizarPesquisaPorMarca(filterMarca)">
+                    <option [ngValue]="undefined">Filtrar por marca</option>
+                    <option *ngFor="let marca of listaMarcas" [ngValue]="marca">{{marca.nome}}</option>
+                </select>
+            </div>
+        </div>
+        <section class="h-100">
+            <div class="quadro_tabela">
+                <div class="scroll ">
+                    <table class="table table-striped">
+                        <thead class="fixed-header">
+                            <tr>
+                                <th scope="col">ID</th>
+                                <th scope="col">RA</th>
+                                <th scope="col">Nome do Aluno</th>
+                                <th scope="col">Patrimônio</th>
+                                <!--th scope="col">Entregado</th>
+                                <th scope="col">Devolvido</th-->
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr *ngFor="let ticket of listaTicketsHistoricosFiltrada; let i = index">
+                                <td>{{ ticket.id }}</td>
+                                <td>{{ ticket.alunoId.ra }}</td>
+                                <td>{{ ticket.alunoId.nome }}</td>
+                                <td>{{ ticket.notebookId.patrimonio }}</td>
+                                <!--td>{{ ticket.dataEntrega }}</td>
+                                <td>{{ ticket.dataDevolucao }}</td-->
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </section>
+    </article>
+</main>

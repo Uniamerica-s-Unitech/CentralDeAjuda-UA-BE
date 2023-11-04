@@ -47,12 +47,9 @@ public class NotebookService {
         if (!notebookRepository.findByIdPatrimonio(notebook.getPatrimonio()).isEmpty()){
             throw new Exception("Esse Patrimonio ja existe!");
         }
-        Assert.notNull(notebook.getModeloId(),"Patrimonio inválido!");
-        /*if (notebook.getModeloId().getId() == null){
+        Assert.notNull(notebook.getModeloId(),"Modelo inválido!");
+        if (notebook.getModeloId().getId() == null){
             throw new Exception("Modelo inválido!");
-        }*/
-        if (!modeloRepository.findById(notebook.getModeloId().getId()).isEmpty()){
-            throw new Exception("Esse Patrimonio ja existe!");
         }
 
         notebookRepository.save(notebook);

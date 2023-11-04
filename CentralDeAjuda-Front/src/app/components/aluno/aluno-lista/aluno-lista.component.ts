@@ -116,9 +116,10 @@ export class AlunoListaComponent implements OnInit{
     } else {
       this.listaAlunosFiltrada = this.listaAlunosOriginal.filter((aluno: Aluno) => {
         const nome = aluno.nome.toLowerCase();
-        const ra = aluno.ra;
+        const ra = aluno.ra.toString().toLowerCase();
         return (
-          nome.includes(termoPesquisa)
+          nome.includes(termoPesquisa) || 
+          ra.includes(termoPesquisa)
         );
       });
     }

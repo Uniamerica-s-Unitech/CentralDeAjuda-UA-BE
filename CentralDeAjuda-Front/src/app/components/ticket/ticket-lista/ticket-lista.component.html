@@ -5,6 +5,20 @@
                 <input type="text" placeholder="Pesquisar por nome do aluno ou RA ou patrimonio" [(ngModel)]="termoPesquisa" (keyup)="realizarPesquisa(termoPesquisa)"/>
             </div>
         </div>
+        <div class="col-lg-12 d-flex align-items-center mt-2 barra">
+            <div class="col-lg-6 d-flex align-items-center text-center">
+                <select [compareWith]="byId" class="form-select form-select-sm me-4" [(ngModel)]="filterModelo" (change)="realizarPesquisaPorModelo(filterModelo)">
+                    <option [ngValue]="undefined">Filtrar por modelo</option>
+                    <option *ngFor="let modelo of listaModelos" [ngValue]="modelo">{{modelo.nome}}</option>
+                </select>
+            </div>
+            <div class="col-lg-6 d-flex align-items-center">
+                <select [compareWith]="byId" class="form-select form-select-sm me-4" [(ngModel)]="filterMarca" (change)="realizarPesquisaPorMarca(filterMarca)">
+                    <option [ngValue]="undefined">Filtrar por marca</option>
+                    <option *ngFor="let marca of listaMarcas" [ngValue]="marca">{{marca.nome}}</option>
+                </select>
+            </div>
+        </div>
         <section class="h-100">
             <div class="quadro_tabela">
                 <div class="scroll ">
@@ -15,6 +29,7 @@
                                 <th scope="col">RA</th>
                                 <th scope="col">Nome do Aluno</th>
                                 <th scope="col">Patrimônio</th>
+                                <!--th scope="col">Entregado</th-->
                                 <th scope="col" class="text-center">Ações</th>
                             </tr>
                         </thead>
@@ -24,6 +39,7 @@
                                 <td>{{ ticket.alunoId.ra }}</td>
                                 <td>{{ ticket.alunoId.nome }}</td>
                                 <td>{{ ticket.notebookId.patrimonio }}</td>
+                                <!--td>{{ ticket.dataEntrega }}</td-->
                                 <td class="text-center">
                                     <button (click)="finalizarTicket(modalTicket, ticket, i)" class="btn btn-outline-warning  mx-2">Finalizar</button>
                                     <button (click)="cancelarTicket(modalTicket, ticket, i)" class="btn btn-danger">Cancelar</button>

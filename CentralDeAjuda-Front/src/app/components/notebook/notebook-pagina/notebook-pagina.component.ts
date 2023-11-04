@@ -1,10 +1,4 @@
-import { Component, ViewChild, inject} from '@angular/core';
-import { Marca } from 'src/app/models/marca';
-import { Modelo } from 'src/app/models/modelo';
-import { MarcaService } from 'src/app/services/marca.service';
-import { ModeloService } from 'src/app/services/modelo.service';
-import { ModeloListaComponent } from '../modelo/modelo-lista/modelo-lista.component';
-import { MarcaListaComponent } from '../marca/marca-lista/marca-lista.component';
+import { Component} from '@angular/core';
 
 @Component({
   selector: 'app-notebook-pagina',

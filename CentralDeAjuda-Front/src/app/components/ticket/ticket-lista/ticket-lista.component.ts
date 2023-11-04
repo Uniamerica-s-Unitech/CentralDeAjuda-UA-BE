@@ -4,6 +4,8 @@ import { Marca } from 'src/app/models/marca';
 import { Mensagem } from 'src/app/models/mensagem';
 import { Modelo } from 'src/app/models/modelo';
 import { Ticket } from 'src/app/models/ticket';
+import { MarcaService } from 'src/app/services/marca.service';
+import { ModeloService } from 'src/app/services/modelo.service';
 import { TicketService } from 'src/app/services/ticket.service';
 
 
@@ -17,6 +19,8 @@ export class TicketListaComponent {
 
   listaTicketsOriginal: Ticket[] = [];
   listaTicketsFiltrada: Ticket[] = [];
+  listaModelos : Modelo[] = [];
+  listaMarcas : Marca[] = [];
 
   ticketParaEditar: Ticket = new Ticket();
   ticketParaExcluir: Ticket = new Ticket();
@@ -25,12 +29,19 @@ export class TicketListaComponent {
 
   modalService = inject(NgbModal);
   ticketService = inject(TicketService);
+  modeloService = inject(ModeloService);
+  marcaService = inject(MarcaService);
+
+  filterModelo!: Modelo;
+  filterMarca!: Marca;
 
   tituloModal!: string;
   termoPesquisa!: "";
 
   constructor(){
     this.listarTickets();
+    this.carregarMarcas();
+    this.carregarModelos();
   }
 
   listarTickets(){
@@ -40,6 +51,21 @@ export class TicketListaComponent {
         this.listaTicketsFiltrada = lista;
       }
     })
+  }
+
+  carregarModelos() {
+    this.modeloService.listar().subscribe({
+      next: lista => {
+        this.listaModelos = lista;
+      }
+    });
+  }
+  carregarMarcas() {
+    this.marcaService.listar().subscribe({
+      next: lista => {
+        this.listaMarcas = lista;
+      }
+    });
   }
 
   atualizarListaTicket(menssagem : Mensagem){
@@ -83,11 +109,12 @@ export class TicketListaComponent {
     } else {
       this.listaTicketsFiltrada = this.listaTicketsOriginal.filter((ticket: Ticket) => {
         const alunoNome = ticket.alunoId.nome.toLowerCase();
-        const alunoRa = ticket.alunoId.ra;
+        const alunoRa = ticket.alunoId.ra.toString().toLowerCase();
         const notebook = ticket.notebookId.patrimonio.toLowerCase();
         return (
           notebook.includes(termoPesquisa) ||
-          alunoNome.includes(termoPesquisa)
+          alunoNome.includes(termoPesquisa) ||
+          alunoRa.includes(termoPesquisa)
         );
       });
     }
@@ -116,6 +143,14 @@ export class TicketListaComponent {
           idModelo === filterMarca.id
         );
       });
+    }
+  }
+
+  byId(item1: any, item2: any){
+    if(item1 != null && item2 != null){
+      return item1.id === item2.id;
+    }else{
+      return item1 === item2;
     }
   }
 }

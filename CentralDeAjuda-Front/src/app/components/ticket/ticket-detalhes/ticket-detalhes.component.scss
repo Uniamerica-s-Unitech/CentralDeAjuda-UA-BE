@@ -4,3 +4,6 @@
 .form-control{
     border-color: #00A859;
 }
+.form-control:focus{
+    box-shadow: 0 0 5px #00A859;
+}

@@ -1,0 +1,77 @@
+.barra{
+    padding: 0 2.5vw 0 2.5vw;
+}
+.serch{
+    border-bottom: .1rem solid #00A859;
+    height: 100%;
+    
+    input{
+        height: 3rem;
+        width: 100%;
+        border: none;
+        outline: none;
+        font-size: 1.2rem;
+        background-image: url(../../../../assets/img/search_icon.svg);
+        background-repeat: no-repeat;
+        background-position: left;
+        background-size: 3vh;
+        padding-left: 35px;
+
+    }
+}
+.quadro_tabela {
+    width: 95%;
+    margin: 0 auto;
+    padding: .5rem 0;
+}
+.scroll {
+    overflow: auto;
+    height: 55vh;
+    flex-grow: 1;
+    width: 99%;
+    margin: 0 auto;
+}
+/* width */
+::-webkit-scrollbar {
+    width: 10px;
+}
+
+/* Track */
+::-webkit-scrollbar-track {
+    background: transparent;
+    border-radius: 2rem;
+}
+
+/* Handle */
+::-webkit-scrollbar-thumb {
+    background: #00A859;
+    border-radius: 2rem;
+}
+
+/* Handle on hover */
+::-webkit-scrollbar-thumb:hover {
+    background: #555;
+}
+
+.fixed-header {
+    position: sticky;
+    top: 0;
+    z-index: 1;
+
+    tr{
+        th{
+            background-color: #aaa;
+        }
+    }
+}
+.img{
+    width: 1.2rem;
+}
+
+.form-select{
+    border-color: #00A859;
+}
+
+.form-select:focus{
+    box-shadow: 0 0 5px #00A859;
+}

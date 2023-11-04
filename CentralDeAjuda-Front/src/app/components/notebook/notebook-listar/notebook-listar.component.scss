@@ -73,3 +73,6 @@
 .form-select{
     border-color: #00A859;
 }
+.form-select:focus{
+    box-shadow: 0 0 5px #00A859;
+}

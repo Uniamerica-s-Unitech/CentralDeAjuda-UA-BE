@@ -30,11 +30,11 @@
 .quadro_tabela {
     width: 95%;
     margin: 0 auto;
-    padding: 1.5rem 0;
+    padding: .5rem 0;
 }
 .scroll {
     overflow: auto;
-    height: 58.7vh;
+    height: 55vh;
     flex-grow: 1;
     width: 99%;
     margin: 0 auto;
@@ -74,4 +74,12 @@
 }
 .img{
     width: 1.2rem;
+}
+
+.form-select{
+    border-color: #00A859;
+}
+
+.form-select:focus{
+    box-shadow: 0 0 5px #00A859;
 }
