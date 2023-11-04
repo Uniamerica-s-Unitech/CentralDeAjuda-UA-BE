@@ -19,12 +19,12 @@ import { HeaderComponent } from './components/layout/header/header.component';
 import { NgbModule } from '@ng-bootstrap/ng-bootstrap';
 import { FormsModule } from '@angular/forms';
 import { HttpClientModule } from '@angular/common/http';
-import { NotebookListarComponent } from './components/notebook/notebook-listar/notebook-listar.component';
 import { NotebookPaginaComponent } from './components/notebook/notebook-pagina/notebook-pagina.component';
 import { HeaderTopComponent } from './components/layout/header-top/header-top.component';
 import { TicketPaginaComponent } from './components/ticket/ticket-pagina/ticket-pagina.component';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { ToastrModule } from 'ngx-toastr';
+import { NotebookListaComponent } from './components/notebook/notebook-lista/notebook-lista.component';
 
 @NgModule({
   declarations: [
@@ -32,7 +32,7 @@ import { ToastrModule } from 'ngx-toastr';
     AlunoListaComponent,
     AlunoDetalhesComponent,
     NotebookDetalhesComponent,
-    NotebookListarComponent,
+    NotebookListaComponent,
     TicketListaComponent,
     TicketDetalhesComponent,
     MarcaDetalhesComponent,
