@@ -6,6 +6,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import uniamerica.centralDeAjuda.DTO.MensagemDTO;
 import uniamerica.centralDeAjuda.DTO.TicketDTO;
+import uniamerica.centralDeAjuda.Entity.Ticket;
 import uniamerica.centralDeAjuda.Services.TicketService;
 
 import java.util.List;
@@ -38,23 +39,32 @@ public class TicketController {
         return ticketService.buscarHistoricoPorDataDevolucao();
     }
 
-        @PostMapping
-        public ResponseEntity<MensagemDTO> cadastrarTicket(@RequestBody TicketDTO ticketDTO) {
-            try{
-                return ResponseEntity.ok(ticketService.cadastrarTicket(ticketDTO));
-            }catch(Exception e){
-                MensagemDTO mensagem = new MensagemDTO(e.getMessage(),HttpStatus.BAD_REQUEST);
-                return ResponseEntity.badRequest().body(mensagem);
-            }
+    @PostMapping
+    public ResponseEntity<MensagemDTO> cadastrarTicket(@RequestBody TicketDTO ticketDTO) {
+        try{
+            return ResponseEntity.ok(ticketService.cadastrarTicket(ticketDTO));
+        }catch(Exception e){
+            MensagemDTO mensagem = new MensagemDTO(e.getMessage(),HttpStatus.BAD_REQUEST);
+            return ResponseEntity.badRequest().body(mensagem);
         }
+    }
 
-        @PutMapping("/{id}")
-        public ResponseEntity<MensagemDTO> editarTicket(@PathVariable Long id, @RequestBody TicketDTO ticketDTO) {
-            try {
-                return ResponseEntity.ok(ticketService.editarTicket(id, ticketDTO));
-            } catch(Exception e){
-                MensagemDTO mensagem = new MensagemDTO(e.getMessage(),HttpStatus.BAD_REQUEST);
-                return ResponseEntity.badRequest().body(mensagem);
-            }
+    @PutMapping("/{id}")
+    public ResponseEntity<MensagemDTO> editarTicket(@PathVariable Long id, @RequestBody TicketDTO ticketDTO) {
+        try {
+            return ResponseEntity.ok(ticketService.editarTicket(id, ticketDTO));
+        } catch(Exception e){
+            MensagemDTO mensagem = new MensagemDTO(e.getMessage(),HttpStatus.BAD_REQUEST);
+            return ResponseEntity.badRequest().body(mensagem);
         }
+    }
+    @DeleteMapping("/{id}")
+    public ResponseEntity<MensagemDTO> deletar(@PathVariable Long id) {
+        try {
+            return ResponseEntity.ok(ticketService.cancelar(id));
+        }catch(Exception e){
+            MensagemDTO mensagem = new MensagemDTO(e.getMessage(),HttpStatus.BAD_REQUEST);
+            return ResponseEntity.badRequest().body(mensagem);
+        }
+    }
 }

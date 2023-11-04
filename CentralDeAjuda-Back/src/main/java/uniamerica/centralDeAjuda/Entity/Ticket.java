@@ -37,4 +37,7 @@ public class Ticket{
 
     @Column(name = "data_de_devolucao")
     private LocalDateTime dataDevolucao;
+
+    @Column(name = "observacao")
+    private String observacao;
 }

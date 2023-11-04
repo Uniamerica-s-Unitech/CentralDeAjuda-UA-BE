@@ -6,6 +6,9 @@ import { Ticket } from 'src/app/models/ticket';
 import { AlunoService } from 'src/app/services/aluno.service';
 import { NotebookService } from 'src/app/services/notebook.service';
 import { TicketService } from 'src/app/services/ticket.service';
+import { ToastrService } from 'ngx-toastr';
+import { NgbModal, NgbModalRef } from '@ng-bootstrap/ng-bootstrap';
+
 
 @Component({
   selector: 'app-ticket-detalhes',
@@ -13,12 +16,16 @@ import { TicketService } from 'src/app/services/ticket.service';
   styleUrls: ['./ticket-detalhes.component.scss']
 })
 export class TicketDetalhesComponent {
-  @Input() ticket : Ticket = new Ticket();
+  @Input() modo: number = 1; //1: editar, 2: finalizar, 3: cancelar
+  @Input() ticket: Ticket = new Ticket();
   @Output() retorno = new EventEmitter<Mensagem>;
 
   ticketService = inject(TicketService);
   notebookService = inject(NotebookService);
   alunoService = inject(AlunoService);
+  toastr = inject(ToastrService);
+  modalService = inject(NgbModal);
+  modalRef!: NgbModalRef;
 
   listaNotebooks: Notebook[] = [];
   listaAlunos: Aluno[] = [];
@@ -44,22 +51,53 @@ export class TicketDetalhesComponent {
   }
 
   salvar() {
-    this.ticketService.save(this.ticket).subscribe({
-      next: mensagem => { // QUANDO DÁ CERTO
-        this.retorno.emit(mensagem);
-      },
-      error: erro => { // QUANDO DÁ ERRO
-        alert('Exemplo de tratamento de erro/exception! Observe o erro no console!');
-        console.error(erro);
-      }
-    });
+    if (this.modo == 1) //normal - cadastrando um novo
+      this.ticket.dataEntrega = new Date();
+    else if (this.modo == 2) //finalizar
+      this.ticket.dataDevolucao = new Date();
+    else if (this.modo == 3){ //cancelar
+      this.ticketService.deletar(this.ticket.id).subscribe({
+        next: mensagem => { // QUANDO DÁ CERTO
+          this.toastr.success(mensagem.mensagem);
+          this.retorno.emit(mensagem);
+        },
+        error: erro => { // QUANDO DÁ ERRO
+          this.toastr.error(erro.error.mensagem);
+          console.error(erro);
+        }
+      });
+    }
+    
+    if(this.modo == 1 || this.modo == 2){
+      this.ticketService.save(this.ticket).subscribe({
+        next: mensagem => { // QUANDO DÁ CERTO
+          this.toastr.success(mensagem.mensagem);
+          this.retorno.emit(mensagem);
+        },
+        error: erro => { // QUANDO DÁ ERRO
+          this.toastr.error(erro.error.mensagem);
+          console.error(erro);
+        }
+      });
+    }
+
+    
   }
 
-  byId(item1: any, item2: any){
-    if(item1 != null && item2 != null){
-      return item1.id === item2.id;
-    }else{
-      return item1 === item2;
-    }
+  retornoAluno(aluno: any) {
+    this.toastr.success('Aluno vinculado com sucesso');
+    this.ticket.alunoId = aluno;
+    this.modalRef.dismiss();
   }
+
+  retornoNotebook(notebook: any) {
+    this.toastr.success('Notebook vinculado com sucesso');
+    this.ticket.notebookId = notebook;
+    this.modalRef.dismiss();
+  }
+
+  buscar(modal: any) {
+    this.modalRef = this.modalService.open(modal, { size: 'lg' });
+  }
+
 }

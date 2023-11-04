@@ -6,52 +6,19 @@
                     <li [ngbNavItem]="1">
                         <button ngbNavLink>Notebooks</button>
                         <ng-template ngbNavContent>
-                            <div class="col-lg-12 d-flex align-items-center my-2">
-                                <div class="serch col-lg-4 me-3">
-                                    <input type="text" placeholder="Pesquisar por id-patrimônio" [(ngModel)]="pesquisaNotebook" (keyup)="filtrarNotebooks()"/>
-                                </div>
-                                <div class="col-lg-4 d-flex align-items-center text-center">
-                                    <select [compareWith]="byId" class="form-select form-select-sm me-4" [(ngModel)]="filterModelo" (change)="filtrarNotebookPorModelo()">
-                                        <option [ngValue]="undefined">Filtrar por modelo:</option>
-                                        <option *ngFor="let modelo of listaModelos" [ngValue]="modelo">{{modelo.nome}}</option>
-                                    </select>
-                                </div>
-                                <div class="col-lg-4 d-flex align-items-center">
-                                    <select [compareWith]="byId" class="form-select form-select-sm me-4" [(ngModel)]="filterMarca" (change)="filtrarNotebookPorMarca()">
-                                        <option [ngValue]="undefined">Filtrar por marca:</option>
-                                        <option *ngFor="let marca of listaMarcas" [ngValue]="marca">{{marca.nome}}</option>
-                                    </select>
-                                </div>
-                            </div>
-                            <app-notebook-listar (retorno)="recarregarLista()" #notebook></app-notebook-listar>
+                            <app-notebook-listar></app-notebook-listar>
                         </ng-template>
                     </li>
                     <li [ngbNavItem]="2">
                         <button ngbNavLink>Modelos</button>
                         <ng-template ngbNavContent>
-                            <div class="col-lg-12 d-flex align-items-center my-2">
-                                <div class="serch col-lg-4 me-3">
-                                    <input type="text" placeholder="Pesquisar por nome do modelo" [(ngModel)]="pesquisaModelo" (keyup)="filtrarModelos()"/>
-                                </div>
-                                <div class="col-lg-4 d-flex align-items-center">
-                                    <select [compareWith]="byId" class="form-select form-select-sm me-4" [(ngModel)]="filterMarca" (change)="filtrarModeloPorMarca()">
-                                        <option [ngValue]="undefined">Filtrar por marca:</option>
-                                        <option *ngFor="let marca of listaMarcas"[ngValue]="marca">{{marca.nome}}</option>
-                                    </select>
-                                </div>
-                            </div>
-                            <app-modelo-lista (retorno)="recarregarLista()" #modelo></app-modelo-lista>
+                            <app-modelo-lista></app-modelo-lista>
                         </ng-template>
                     </li>
                     <li [ngbNavItem]="3">
                         <button ngbNavLink>Marcas</button>
                         <ng-template ngbNavContent>
-                            <div class="col-lg-12 d-flex align-items-center my-2">
-                                <div class="serch col-lg-12 me-3">
-                                    <input type="text" placeholder="Pesquisar por nome da marca" [(ngModel)]="pesquisaMarca" (keyup)="filtrarMarcas()"/>
-                                </div>
-                            </div>
-                            <app-marca-lista (retorno)="recarregarLista()" #marca></app-marca-lista>
+                            <app-marca-lista></app-marca-lista>
                         </ng-template>
                     </li>
                 </ul>

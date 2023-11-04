@@ -1,0 +1,11 @@
+.ng-invalid.ng-touched:not(form){
+    border: 1px solid red;
+}
+
+.form-control{
+    border-color: #00A859;
+}
+
+.modal-body , .modal-header, .modal-footer{
+    padding: .4rem 1.5rem;
+}

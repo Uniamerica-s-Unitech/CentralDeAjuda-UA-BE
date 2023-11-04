@@ -20,15 +20,19 @@ export class HeaderTopComponent {
 
 
   constructor(){
-    this.listarNotebooks();
-    this.listarAlunos();
-    this.listarTickets(); 
+    
+    this.carregarListas();
 
     setInterval(() => {
-      this.listarNotebooks(); 
+      this.carregarListas();
     }, 3000);
   }
 
+  carregarListas(){
+    this.listarNotebooks();
+    this.listarAlunos();
+    this.listarTickets(); 
+  }
 
   listarNotebooks(){
     this.notebookService.listar().subscribe({

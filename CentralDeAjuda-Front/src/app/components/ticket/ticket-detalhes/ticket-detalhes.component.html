@@ -1,9 +1,67 @@
 <form (ngSubmit)="salvar()" class="mb-3">
-    <div class="mb-3">
-        <label for="exampleInputText1" class="form-label">Ra ou nomo do aluno:</label>
-        <input type="text" class="form-control" name="exampleInputText1" [(ngModel)]="ticket.alunoId">
-    </div>
-    <div class="d-flex justify-content-center">
-        <button type="submit" class="btn btn-success">Salvar</button>
-    </div>
+  <div class="mb-3" *ngIf="modo == 1">
+    <label for="aluno" class="form-label">Aluno</label>
+    <p class="alert alert-danger d-flex justify-content-between align-items-center" *ngIf="ticket.alunoId == null">
+      Aluno não vinculado, é obrigatório!
+      <button type="button" (click)="buscar(modalAluno)" class="btn btn-danger">Buscar</button>
+    </p>
+    <p class="alert alert-success d-flex justify-content-between align-items-center" *ngIf="ticket.alunoId != null">
+      Aluno "{{ticket.alunoId.nome}}" - RA "{{ ticket.alunoId.ra }}"
+      <button type="button" (click)="buscar(modalAluno)" class="btn btn-secondary">Trocar</button>
+    </p>
+
+  </div>
+  <div class="mb-3" *ngIf="modo == 1">
+    <label for="notebook" class="form-label">Notebook</label>
+    <p class="alert alert-danger d-flex justify-content-between align-items-center" *ngIf="ticket.notebookId == null">
+      Notebook não vinculado, é obrigatório!
+      <button type="button" (click)="buscar(modalNotebook)" class="btn btn-danger">Buscar</button>
+    </p>
+    <p class="alert alert-success d-flex justify-content-between align-items-center" *ngIf="ticket.notebookId != null">
+      Modelo "{{ticket.notebookId.modeloId.nome}}" - Patrimônio "{{ticket.notebookId.patrimonio}}"
+      <button type="button" (click)="buscar(modalNotebook)" class="btn btn-secondary">Trocar</button>
+    </p>
+  </div>
+
+  <div class="mb-3" *ngIf="modo == 2 || modo == 3">
+    <label for="notebook" class="form-label">Observações</label>
+    <textarea class="form-control" name="abctext" id="" cols="10" rows="10" [(ngModel)]="ticket.observacao"></textarea>
+  </div>
+
+  <div class="d-flex justify-content-center">
+    <button type="submit" class="btn btn-success">Salvar</button>
+  </div>
 </form>
+
+
+
+<ng-template #modalAluno let-modal class="alunoLista">
+  <div class="modal-header modal-style">
+    <h4 class="modal-title">Buscar aluno</h4>
+    <button type="button" class="btn-close" aria-label="Close" (click)="modal.dismiss('Cross click')"></button>
+  </div>
+  <div class="modal-body modal-style">
+
+    <app-aluno-lista [modoVincular]="true" (retorno)="retornoAluno($event)" class="alunoLista"></app-aluno-lista>
+
+  </div>
+  <div class="modal-footer modal-style">
+    <button type="button" class="btn btn-danger" (click)="modal.close('Close click')">Close</button>
+  </div>
+</ng-template>
+
+
+<ng-template #modalNotebook let-modal>
+  <div class="modal-header modal-style ">
+    <h4 class="modal-title">Buscar aluno</h4>
+    <button type="button" class="btn-close" aria-label="Close" (click)="modal.dismiss('Cross click')"></button>
+  </div>
+  <div class="modal-body modal-style">
+
+    <app-notebook-listar [modoVincular]="true" (retorno)="retornoNotebook($event)"></app-notebook-listar>
+
+  </div>
+  <div class="modal-footer modal-style">
+    <button type="button" class="btn btn-danger" (click)="modal.close('Close click')">Close</button>
+  </div>
+</ng-template>

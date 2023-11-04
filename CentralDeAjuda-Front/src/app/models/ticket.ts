@@ -7,4 +7,5 @@ export class Ticket {
     notebookId!: Notebook;
     dataEntrega!: Date;
     dataDevolucao!: Date;
+    observacao!: string;
 }

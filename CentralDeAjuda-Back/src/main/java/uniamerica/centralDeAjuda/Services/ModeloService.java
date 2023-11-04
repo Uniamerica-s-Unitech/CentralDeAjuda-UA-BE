@@ -63,7 +63,7 @@ public class ModeloService {
         return new MensagemDTO("Modelo atualizado com sucesso!", HttpStatus.CREATED);
     }
 
-    public MensagemDTO deletar(Long id) {
+    public MensagemDTO deletar(Long id) throws Exception{
         Modelo modeloBanco = modeloRepository.findById(id)
                 .orElseThrow(()->
                         new EntityNotFoundException("Modelo com ID "+id+" nao existe!"));
@@ -71,7 +71,7 @@ public class ModeloService {
         List<Notebook> modeloNotebookAtivo = notebookRepository.findNotebookByModeloAtivo(modeloBanco);
 
         if (!modeloNotebookAtivo.isEmpty()){
-            return new MensagemDTO("Não é possível excluir esse modelo, pois existem notebooks ativos associados a ele.", HttpStatus.CREATED);
+            throw new Exception("Não é possível excluir esse modelo, pois existem notebooks ativos associados a ele.");
         } else {
             desativarModelo(modeloBanco);
         }
@@ -87,13 +87,11 @@ public class ModeloService {
         ModeloDTO modeloDTO = new ModeloDTO();
 
         modeloDTO.setId(modelo.getId());
-        modeloDTO.setAtivo(modelo.getAtivo());
         modeloDTO.setNome(modelo.getNome());
 
         MarcaDTO marcaDTO = new MarcaDTO();
 
         marcaDTO.setId(modelo.getMarcaId().getId());
-        marcaDTO.setAtivo(modelo.getMarcaId().getAtivo());
         marcaDTO.setNome(modelo.getMarcaId().getNome());
 
         modeloDTO.setMarcaId(marcaDTO);
@@ -104,7 +102,6 @@ public class ModeloService {
         Modelo novoModelo = new Modelo();
 
         novoModelo.setId(modeloDTO.getId());
-        novoModelo.setAtivo(modeloDTO.getAtivo());
         novoModelo.setNome(modeloDTO.getNome());
 
         Marca marca = new Marca();

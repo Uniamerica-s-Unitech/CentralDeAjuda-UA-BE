@@ -12,6 +12,11 @@ export class AlunoService {
   http = inject(HttpClient);
 
   constructor() { }
+
+  listarAlunosSemVinculos(): Observable<Aluno[]> {
+    return this.http.get<Aluno[]>(`${this.API}` + "/listaSemVinculo");
+  }
+
   listar(): Observable<Aluno[]> {
     return this.http.get<Aluno[]>(`${this.API}` + "/lista");
   }
@@ -19,7 +24,7 @@ export class AlunoService {
   save(aluno: Aluno): Observable<Mensagem> {
     if (aluno.id) {
       // Se a pessoa já tem um ID, atualize-a
-      return this.http.put<Mensagem>(this.API+"/"+`${aluno.id}`, aluno.nome);
+      return this.http.put<Mensagem>(this.API+"/"+`${aluno.id}`, aluno);
     } else {
       // Caso contrário, crie uma nova pessoa
       return this.http.post<Mensagem>(this.API, aluno);

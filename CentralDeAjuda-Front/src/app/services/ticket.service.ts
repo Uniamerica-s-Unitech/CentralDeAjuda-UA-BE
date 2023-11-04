@@ -22,11 +22,17 @@ export class TicketService {
 
   save(ticket: Ticket): Observable<Mensagem> {
     if (ticket.id) {
+      console.log('a');
       // Se a pessoa já tem um ID, atualize-a
       return this.http.put<Mensagem>(this.API+"/"+`${ticket.id}`, ticket);
     } else {
       // Caso contrário, crie uma nova pessoa
+      console.log('b');
       return this.http.post<Mensagem>(this.API, ticket);
     }
+  }
+
+  deletar(id: number): Observable<any> {
+    return this.http.delete<Mensagem>(this.API + "/" + `${id}`);
   }
 }

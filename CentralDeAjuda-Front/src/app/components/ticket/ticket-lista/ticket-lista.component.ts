@@ -6,6 +6,7 @@ import { Modelo } from 'src/app/models/modelo';
 import { Ticket } from 'src/app/models/ticket';
 import { TicketService } from 'src/app/services/ticket.service';
 
+
 @Component({
   selector: 'app-ticket-lista',
   templateUrl: './ticket-lista.component.html',
@@ -20,11 +21,13 @@ export class TicketListaComponent {
   ticketParaEditar: Ticket = new Ticket();
   ticketParaExcluir: Ticket = new Ticket();
   indiceParaEdicao!: number;
+  modoModal!: number; //1: editar, 2: finalizar, 3: cancelar
 
   modalService = inject(NgbModal);
   ticketService = inject(TicketService);
 
   tituloModal!: string;
+  termoPesquisa!: "";
 
   constructor(){
     this.listarTickets();
@@ -46,23 +49,35 @@ export class TicketListaComponent {
   }
 
   cadastrarTicket(modalTicket : any){
+    this.modoModal = 1; //estou passando o 1 pro detalhe saber q vou cadastrar
+
     this.ticketParaEditar = new Ticket();
     this.modalService.open(modalTicket,{size: 'md'});
 
     this.tituloModal = "Cadastrar Ticket";
   }
 
-  editarTicket(modal:any,ticket:Ticket,indice:number){
+  finalizarTicket(modal:any,ticket:Ticket,indice:number){
+    this.ticketParaEditar = Object.assign({}, ticket);
+    this.indiceParaEdicao = indice;
+    this.modoModal = 2; //estou passando o 2 pro detalhe saber q vou finalizar
+
+    this.modalService.open(modal, {size: 'md'});
+    this.tituloModal = "Finalizar Ticket";
+  }
+
+  cancelarTicket(modal:any,ticket:Ticket,indice:number){
     this.ticketParaEditar = Object.assign({}, ticket);
     this.indiceParaEdicao = indice;
 
+    this.modoModal = 3; //estou passando o 3 pro detalhe saber q vou cancelar
+
     this.modalService.open(modal, {size: 'md'});
-    this.tituloModal = "Editar Ticket";
+    this.tituloModal = "Excluir Ticket";
   }
 
-  @Output() realizarPesquisa(pesquisaTicket: string) {
-    const termoPesquisa = pesquisaTicket.toLowerCase();
-    
+  @Output() realizarPesquisa(termoPesquisa: string) {
+    termoPesquisa.toLowerCase();
     if (!termoPesquisa) {
       this.listaTicketsFiltrada = this.listaTicketsOriginal;
     } else {

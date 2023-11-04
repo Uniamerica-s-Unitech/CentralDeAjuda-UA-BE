@@ -1,15 +1,15 @@
-<form (ngSubmit)="salvar()" class="mb-3">
+<form #formulario1="ngForm" (ngSubmit)="salvar(formulario1)" class="mb-3">
     <div class="mb-3">
-        <label for="exampleInputText1" class="form-label">RA:</label>
-        <input type="number" class="form-control" name="exampleInputText1" [(ngModel)]="aluno.ra">
-      </div>
+      <label for="ra" class="form-label">RA</label>
+      <input #ra="ngModel" required type="number" class="form-control" name="ra" [(ngModel)]="aluno.ra">
+      <div *ngIf="!ra.valid && ra.touched" class="alert alert-danger" role="alert">*RA é obrigatório!</div>
+    </div>
       <div class="mb-3">
-        <label for="exampleInputText1" class="form-label">Nome:</label>
-        <input type="text" class="form-control" name="exampleInputText2" [(ngModel)]="aluno.nome">
-      </div>
-
+      <label for="nome" class="form-label">Nome</label>
+      <input #nome="ngModel" required type="text" class="form-control" name="nome" [(ngModel)]="aluno.nome">
+      <div *ngIf="!nome.valid && nome.touched" class="alert alert-danger" role="alert">*Nome é obrigatório!</div>
+    </div>
     <div class="d-flex justify-content-center">
-        
-        <button type="submit" class="btn btn-success">Salvar</button>
+      <button type="submit" class="btn btn-success">Salvar</button>
     </div>
 </form>

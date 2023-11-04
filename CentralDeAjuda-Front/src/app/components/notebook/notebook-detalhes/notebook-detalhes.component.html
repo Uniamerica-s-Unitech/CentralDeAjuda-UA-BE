@@ -1,15 +1,36 @@
-<form (ngSubmit)="salvar()" class="mb-3">
-    <div class="mb-3">
-        <label for="exampleInputText1" class="form-label">Patrimônio:</label>
-        <input type="text" class="form-control" name="exampleInputText1" [(ngModel)]="notebook.patrimonio">
-      </div>
-    <div class="mb-3">
-      <label for="modelo" class="form-label">Modelo:</label>
-      <select [compareWith]="byId" class="form-select" name="modelo" [(ngModel)]="notebook.modeloId" (change)="carregarModelos()">
-        <option *ngFor="let modelo of listaModelos" [ngValue]="modelo">{{ modelo.nome }}</option>
-      </select>
-    </div> 
-    <div class="d-flex justify-content-center">
-        <button type="submit" class="btn btn-success">Salvar</button>
-    </div>
+<form #formulario1="ngForm" (ngSubmit)="salvar(formulario1)" class="mb-3">
+  <div class="mb-3">
+    <label for="patrimonio" class="form-label">Patrimônio</label>
+    <input #patrimonio="ngModel" required type="text" class="form-control" name="patrimonio" [(ngModel)]="notebook.patrimonio">
+    <div *ngIf="!patrimonio.valid && patrimonio.touched" class="alert alert-danger" role="alert">*Patrimônio é obrigatório!</div>
+  </div>
+  <div class="mb-3">
+  <label for="modelo" class="form-label">Modelo</label>
+  <p class="alert alert-danger d-flex justify-content-between align-items-center" *ngIf="notebook.modeloId == null">
+    Modelo não vinculado, é obrigatório!
+    <button type="button" (click)="buscar(modalModelo)" class="btn btn-danger">Buscar</button>
+  </p>
+  <p class="alert alert-success d-flex justify-content-between align-items-center" *ngIf="notebook.modeloId != null">
+    Modleo "{{notebook.modeloId.nome}}" - Marca "{{notebook.modeloId.marcaId.nome}}"
+    <button type="button" (click)="buscar(modalModelo)" class="btn btn-secondary">Trocar</button>
+  </p>
+  </div> 
+  <div class="d-flex justify-content-center">
+    <button type="submit" class="btn btn-success">Salvar</button>
+  </div>
 </form>
+
+<ng-template #modalModelo let-modal>
+  <div class="modal-header modal-style ">
+    <h4 class="modal-title">Buscar modelo</h4>
+    <button type="button" class="btn-close" aria-label="Close" (click)="modal.dismiss('Cross click')"></button>
+  </div>
+  <div class="modal-body modal-style">
+
+    <app-modelo-lista [modoVincular]="true" (retorno)="retornoModelo($event)"></app-modelo-lista>
+
+  </div>
+  <div class="modal-footer modal-style">
+    <button type="button" class="btn btn-danger" (click)="modal.close('Close click')">Close</button>
+  </div>
+</ng-template>

@@ -12,8 +12,6 @@ import lombok.Setter;
 public class NotebookDTO{
     private Long id;
 
-    private Boolean ativo = true;
-
     @NotNull(message = "Patrimonio inválido")
     @NotBlank(message = "O patrimonio do notebook é obrigatório")
     private String patrimonio;

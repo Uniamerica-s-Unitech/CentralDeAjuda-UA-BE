@@ -6,6 +6,8 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 
+import java.util.List;
+
 @Entity
 @Table(name = "aluno", schema = "public")
 @Getter@Setter
@@ -25,4 +27,5 @@ public class Aluno{
 
     @Column(length = 8,nullable = false,unique = true)
     private String ra;
+
 }

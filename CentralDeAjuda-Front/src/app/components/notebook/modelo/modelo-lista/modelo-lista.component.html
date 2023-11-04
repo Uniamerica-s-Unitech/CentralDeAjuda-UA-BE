@@ -1,5 +1,16 @@
 <main>
     <article>
+        <div class="col-lg-12 d-flex align-items-center my-2 barra">
+            <div class="serch col-lg-8 me-3">
+                <input type="text" placeholder="Pesquisar por nome do modelo" [(ngModel)]="termoPesquisa" (keyup)="realizarPesquisa(termoPesquisa)"/>
+            </div>
+            <div class="col-lg-4 d-flex align-items-center">
+                <select [compareWith]="byId" class="form-select form-select-sm me-4" [(ngModel)]="filterMarca" (change)="realizarPesquisaPorMarca(filterMarca)">
+                    <option [ngValue]="undefined">Filtrar por marca</option>
+                    <option *ngFor="let marca of listaMarcas"[ngValue]="marca">{{marca.nome}}</option>
+                </select>
+            </div>
+        </div>
         <div class="scroll ">
             <table class="table table-striped">
                 <thead class="fixed-header">
@@ -15,9 +26,12 @@
                         <td>{{ modelo.id }}</td>
                         <td>{{ modelo.nome }}</td>
                         <td>{{ modelo.marcaId.nome }}</td>
-                        <td class="text-center">
+                        <td class="text-center" *ngIf="!modoVincular">
                             <button (click)="editarModelo(modalModelo, modelo, i)" class="btn btn-outline-warning  mx-2"><img class="img" src="assets\img\write.svg"></button>
                             <button (click)="excluirModelo(modaloExcluir, modelo, i)" class="btn btn-danger"><img class="img" src="assets\img\delete.svg"></button>
+                        </td>
+                        <td class="text-center" *ngIf="modoVincular">
+                            <button (click)="vincular(modelo)" class="btn btn-danger">Vincular</button>
                         </td>
                     </tr>
                 </tbody>

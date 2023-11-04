@@ -1,19 +1,10 @@
-.disponivil{
-    background-color: #00A859;
-    border-radius: 15px;
-    text-align: center;
-    display: flex;
-    align-items: center;
-    padding: 1.5rem .8rem;
-}
-header{
-    padding-top: .5rem;
-    width: 100%;
-}
 .btnAdicionar{
-    margin: 0 1rem 0 1rem;
-    background-color: transparent;
-    border: none;
+    margin-top: 1vh;
+    background-color: #00A859;
+    color: #fff;
+    border: 1px solid #000;
+    border-radius: 1.5rem;
+    padding: .5rem 1rem;
 }
 .barra{
     padding: 0 2.5vw 0 2.5vw;
@@ -31,8 +22,8 @@ header{
         background-image: url(../../../../assets/img/search_icon.svg);
         background-repeat: no-repeat;
         background-position: left;
-        background-size: 5vh;
-        padding-left: 35px;
+        background-size: 3vh;
+        padding-left: 25px;
 
     }
 }
@@ -40,11 +31,11 @@ header{
 .quadro_tabela {
     width: 95%;
     margin: 0 auto;
-    padding: 1.5rem 0;
+    margin-top: 1vh;
 }
 .scroll {
     overflow: auto;
-    height: 60vh;
+    height: 58.7vh;
     flex-grow: 1;
     width: 99%;
     margin: 0 auto;

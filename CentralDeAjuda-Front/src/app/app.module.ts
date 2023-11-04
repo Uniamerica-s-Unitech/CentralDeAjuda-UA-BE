@@ -23,6 +23,8 @@ import { NotebookListarComponent } from './components/notebook/notebook-listar/n
 import { NotebookPaginaComponent } from './components/notebook/notebook-pagina/notebook-pagina.component';
 import { HeaderTopComponent } from './components/layout/header-top/header-top.component';
 import { TicketPaginaComponent } from './components/ticket/ticket-pagina/ticket-pagina.component';
+import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
+import { ToastrModule } from 'ngx-toastr';
 
 @NgModule({
   declarations: [
@@ -51,6 +53,8 @@ import { TicketPaginaComponent } from './components/ticket/ticket-pagina/ticket-
     NgbModule,
     FormsModule,
     HttpClientModule,
+    BrowserAnimationsModule, // required animations module
+    ToastrModule.forRoot() // ToastrModule added
   ],
   providers: [],
   bootstrap: [AppComponent]
