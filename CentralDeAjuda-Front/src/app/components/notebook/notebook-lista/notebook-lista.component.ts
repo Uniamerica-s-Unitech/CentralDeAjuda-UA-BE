@@ -10,11 +10,11 @@ import { NotebookService } from 'src/app/services/notebook.service';
 import { ToastrService } from 'ngx-toastr';
 
 @Component({
-  selector: 'app-notebook-listar',
-  templateUrl: './notebook-listar.component.html',
-  styleUrls: ['./notebook-listar.component.scss']
+  selector: 'app-notebook-lista',
+  templateUrl: './notebook-lista.component.html',
+  styleUrls: ['./notebook-lista.component.scss']
 })
-export class NotebookListarComponent implements OnInit{
+export class NotebookListaComponent implements OnInit{
   @Output() retorno = new EventEmitter<any>();
   @Input() modoVincular: boolean = false;
 
