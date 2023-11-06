@@ -1,7 +1,7 @@
 <form #formulario1="ngForm" (ngSubmit)="salvar(formulario1)" class="mb-3">
     <div class="mb-3">
       <label for="ra" class="form-label">RA</label>
-      <input #ra="ngModel" required minlength="6"  type="number" class="form-control" name="ra" [(ngModel)]="aluno.ra">
+      <input #ra="ngModel" required  type="number" class="form-control" name="ra" [(ngModel)]="aluno.ra">
       <div *ngIf="!ra.valid && ra.touched" class="alert alert-danger" role="alert">*RA é obrigatório!</div>
     </div>
       <div class="mb-3">

@@ -46,12 +46,8 @@ TicketService {
         Ticket ticket = toTicket(ticketDTO);
 
         Assert.notNull(ticket.getAlunoId(),"Aluno inválido!");
-        Assert.isTrue(!alunoRepository.findById
-                (ticket.getAlunoId().getId()).isEmpty(),"Aluno não existe!");
 
         Assert.notNull(ticket.getNotebookId(),"Notebook inválido!");
-        Assert.isTrue(!notebookRepository.findById
-                (ticket.getNotebookId().getId()).isEmpty(),"Notebook não existe!");
 
         Assert.notNull(ticket.getDataEntrega(),"Data de entrega inválida!");
 
@@ -73,28 +69,10 @@ TicketService {
         Ticket ticket = toTicket(ticketDTO);
 
         Assert.notNull(ticket.getAlunoId(),"Aluno inválido!");
-        Assert.isTrue(!alunoRepository.findById
-                (ticket.getAlunoId().getId()).isEmpty(),"Aluno não existe!");
 
         Assert.notNull(ticket.getNotebookId(),"Notebook inválido!");
-        Assert.isTrue(!notebookRepository.findById
-                (ticket.getNotebookId().getId()).isEmpty(),"Notebook não existe!");
 
         Assert.notNull(ticket.getDataEntrega(),"Data de entrega inválida!");
-
-        /*List<Ticket> alunoTicketsAtivos = ticketRepository.findTicketsAbertosPorAluno(ticket.getAlunoId());
-
-        List<Ticket> notebookTicketsAtivos = ticketRepository.findTicketsAbertosPorNotebook(ticket.getNotebookId());
-
-        if (!alunoTicketsAtivos.isEmpty()){
-            return "O aluno possui um tickey ativo";
-        }else if(!notebookTicketsAtivos.isEmpty()){
-            return "O notebook possui um tickey ativo";
-        }else
-        {
-            ticketRepository.save(ticket);
-            return "Ticket cadastrado com sucesso!";
-        }*/
 
         ticketRepository.save(ticket);
         if(ticket.getDataDevolucao() == null)

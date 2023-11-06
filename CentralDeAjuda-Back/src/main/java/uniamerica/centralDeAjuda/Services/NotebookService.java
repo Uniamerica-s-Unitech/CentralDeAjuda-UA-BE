@@ -48,9 +48,7 @@ public class NotebookService {
             throw new Exception("Esse Patrimonio ja existe!");
         }
         Assert.notNull(notebook.getModeloId(),"Modelo inválido!");
-        if (notebook.getModeloId().getId() == null){
-            throw new Exception("Modelo inválido!");
-        }
+
 
         notebookRepository.save(notebook);
         return new MensagemDTO("Notebook cadastrado com sucesso!", HttpStatus.CREATED);

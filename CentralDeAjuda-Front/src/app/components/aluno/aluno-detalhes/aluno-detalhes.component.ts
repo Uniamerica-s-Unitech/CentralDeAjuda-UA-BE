@@ -23,13 +23,12 @@ export class AlunoDetalhesComponent {
     }
     else {
       this.alunoService.save(this.aluno).subscribe({
-        next: mensagem => { // QUANDO DÁ CERTO
+        next: mensagem => {
           this.toastr.success(mensagem.mensagem);
           this.retorno.emit(mensagem);
         },
-        error: erro => { // QUANDO DÁ ERRO
+        error: erro => {
           this.toastr.error(erro.error.mensagem);
-          console.error(erro);
         }
       });
     }

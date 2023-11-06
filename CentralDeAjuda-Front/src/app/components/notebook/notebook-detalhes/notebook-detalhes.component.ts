@@ -42,13 +42,12 @@ export class NotebookDetalhesComponent {
     }
     else {
       this.notebookService.save(this.notebook).subscribe({
-        next: mensagem => { // QUANDO DÁ CERTO
+        next: mensagem => {
           this.toastr.success(mensagem.mensagem);
           this.retorno.emit(mensagem);
         },
-        error: erro => { // QUANDO DÁ ERRO
+        error: erro => {
           this.toastr.error(erro.error.mensagem);
-          console.error(erro);
         }
       });
     }

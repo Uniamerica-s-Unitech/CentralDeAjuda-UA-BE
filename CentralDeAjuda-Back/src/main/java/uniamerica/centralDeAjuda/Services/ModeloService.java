@@ -56,8 +56,6 @@ public class ModeloService {
         Assert.notNull(modelo.getNome(), "Nome inválido!");
 
         Assert.notNull(modelo.getMarcaId(),"Marca invalida!");
-        Assert.isTrue(!marcaRepository.findById
-                        (modelo.getMarcaId().getId()).isEmpty(),"Marca não existe!");
 
         modeloRepository.save(modelo);
         return new MensagemDTO("Modelo atualizado com sucesso!", HttpStatus.CREATED);
