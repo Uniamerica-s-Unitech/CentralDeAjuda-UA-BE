@@ -28,6 +28,8 @@ import { NotebookListaComponent } from './components/notebook/notebook-lista/not
 import { CadastrarListComponent } from './components/sistema/cadastrar/cadastrar-list/cadastrar-list.component';
 import { CadastrarDetalhesComponent } from './components/sistema/cadastrar/cadastrar-detalhes/cadastrar-detalhes.component';
 import { LoginComponent } from './components/sistema/login/login.component';
+import { RouterModule } from '@angular/router';
+import { httpInterceptorProviders } from './interceptors/httpinterceptor.service';
 
 @NgModule({
   declarations: [
@@ -60,9 +62,12 @@ import { LoginComponent } from './components/sistema/login/login.component';
     FormsModule,
     HttpClientModule,
     BrowserAnimationsModule, // required animations module
-    ToastrModule.forRoot() // ToastrModule added
+    ToastrModule.forRoot(), // ToastrModule added
+    RouterModule
   ],
-  providers: [],
+  providers: [
+    httpInterceptorProviders
+  ],
   bootstrap: [AppComponent]
 })
 export class AppModule { }

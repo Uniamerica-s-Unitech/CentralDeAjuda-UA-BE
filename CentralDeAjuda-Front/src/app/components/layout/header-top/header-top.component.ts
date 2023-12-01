@@ -22,10 +22,6 @@ export class HeaderTopComponent {
   constructor(){
     
     this.carregarListas();
-
-    setInterval(() => {
-      this.carregarListas();
-    }, 3000);
   }
 
   carregarListas(){

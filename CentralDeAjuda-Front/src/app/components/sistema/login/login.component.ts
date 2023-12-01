@@ -24,7 +24,7 @@ export class LoginComponent {
     this.loginService.logar(this.login).subscribe({
       next: user => {
         this.loginService.addToken(user.password);
-        this.roteador.navigate(['admin/pedidos']);
+        this.roteador.navigate(['admin/ticket']);
       },
       error: erro => {
         this.toastr.error(erro.error.mensagem);
