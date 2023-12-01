@@ -1,0 +1,61 @@
+<div class="h-100 d-flex col-lg-12 flex-column" style="gap: 20px;">
+    <div class="serch col-lg-12 w-100">
+        <div style="width: 12% !important;">
+            <button (click)="cadastrarUser(modalUser)" class="novoSabor">Novo User</button>
+        </div>
+        <div class="w-100">
+            <input class="w-100" type="text" placeholder="Pesquisar por nome" [(ngModel)]="termoPesquisa" (keyup)="realizarPesquisa(termoPesquisa)"/>  
+        </div>
+    </div>
+    
+    <section class="quadroTabela container">
+        <div class="tabela">
+            <table class="table table-striped">
+                <thead class="fixed-header">
+                    <tr>
+                        <th scope="col">Nome</th>
+                        <th scope="col">Role</th>
+                        <th scope="col" class="text-center">Ações</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr *ngFor="let user of listaUsersFiltrada; let i = index">
+                        <td class="text-break text-wrap">{{ user.username }}</td>
+                        <td class="text-break text-wrap">{{ user.role }}</td>
+                        <td class="text-center text-break text-wrap" >
+                            <button (click)="editarUser(modalUser, user, i)" class="editar mx-2"><img class="img" src="../../../../assets/imagens/editar.svg"></button>
+                            <button (click)="excluirUser(modalExcluir, user, i)" class="deletar"><img class="img" src="../../../../assets/imagens/delete.svg"></button>
+                        </td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+    </section>
+</div>
+      
+<ng-template #modalUser let-modal>
+    <div class="modal-header cabecalhoModal">
+        <h4 class="modal-title">{{tituloModal}}</h4>
+        <button type="button" class="btn-close" aria-label="Close" (click)="modal.dismiss('Cross click')"></button>
+    </div>
+    <div class="modal-body">
+        <app-cadastrar-detalhes [user]="userParaEditar" (retorno)="atualizarLista($event)"></app-cadastrar-detalhes>      
+    </div>
+    <div class="modal-footer footerModal">
+        <button type="button" class="btn btn-danger" (click)="modal.close('Close click')">Close</button>
+    </div>
+</ng-template>
+
+<ng-template #modalExcluir let-modal>
+    <div class="modal-header modal-style">
+        <h4 class="modal-title">{{tituloModal}}</h4>
+        <button type="button" class="btn-close" aria-label="Close" (click)="modal.dismiss('Cross click')"></button>
+    </div>
+    <div class="modal-body modal-style">
+        <h5>Vc tem certeza que quer deletar esse Usuario?</h5>   
+    </div>
+    <div class="modal-footer modal-style">
+        <button type="button" class="btn btn-outline-danger" (click)="confirmarExclusao(userParaExcluir)">Deletar</button>
+        <button type="button" class="btn btn-secondary" (click)="modal.close('Close click')">Close</button>
+    </div>
+</ng-template>

@@ -25,6 +25,9 @@ import { TicketPaginaComponent } from './components/ticket/ticket-pagina/ticket-
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { ToastrModule } from 'ngx-toastr';
 import { NotebookListaComponent } from './components/notebook/notebook-lista/notebook-lista.component';
+import { CadastrarListComponent } from './components/sistema/cadastrar/cadastrar-list/cadastrar-list.component';
+import { CadastrarDetalhesComponent } from './components/sistema/cadastrar/cadastrar-detalhes/cadastrar-detalhes.component';
+import { LoginComponent } from './components/sistema/login/login.component';
 
 @NgModule({
   declarations: [
@@ -45,7 +48,10 @@ import { NotebookListaComponent } from './components/notebook/notebook-lista/not
     HeaderComponent,
     NotebookPaginaComponent,
     HeaderTopComponent,
-    TicketPaginaComponent
+    TicketPaginaComponent,
+    CadastrarListComponent,
+    CadastrarDetalhesComponent,
+    LoginComponent
     ],
   imports: [
     BrowserModule,

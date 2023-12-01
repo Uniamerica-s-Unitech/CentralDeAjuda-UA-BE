@@ -1,0 +1,40 @@
+.main{
+    background-color: #740303;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+.imagem{
+    max-width: 20rem;
+    height: auto;
+}
+.form-control{
+    border: 3px solid #eead2d;
+    background-color: #8b4513;
+    color: #fff;
+}
+.form-control:focus{
+    box-shadow: 0 0 10px #eead2d;
+}
+.form-label{
+    color: #fff;
+    font-size: 18px;
+}
+
+.logar{
+    padding: 12px 15px;
+    background-color: #eead2d;
+    color: #8b4513;
+    border: 2px solid #000;
+    border-radius: 15px;
+    outline: none;
+    font-size: 18px;
+    
+}
+.logar:hover{
+    background-color: #8b4513;
+    color: #eead2d;
+    border: 2px solid #eead2d;
+    transition: .5s;
+    box-shadow: 0 0 10px #eead2d;
+}

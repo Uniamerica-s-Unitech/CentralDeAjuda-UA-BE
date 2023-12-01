@@ -1,0 +1,121 @@
+.serch{
+    display: flex;
+    align-items: center;
+    border-bottom: 3px solid #eead2d;
+    padding-left: 5px;
+    background-color: #64310d;
+    input{
+        padding: 15px;
+        font-size: 20px;
+        outline: none;
+        background: none;
+        border: none;
+        background-image: url(../../../../../assets/imagens/search_icon.svg);
+        background-repeat: no-repeat;
+        background-position: left;
+        background-size: 25px;
+        padding-left: 28px;
+        color: #eead2d;
+    }
+    input::placeholder{
+        color: #fff;
+    }
+    .novoSabor{
+        padding: .5rem 1rem;
+        border-radius: 20px;
+        border: none;
+        border: 3px solid #eead2d;
+        background-color: #8b4513;
+        margin-right: 5px;
+        outline: none;
+        color: #fdfffc;
+    }
+    .novoSabor:hover{
+        border: 3px solid #fdfffc;
+        background-color: #eead2d;
+        transition: .5s;
+        color: #000;
+    }
+}
+.quadroTabela{
+    height: 80% !important;
+}
+.tabela{
+    max-height: 100%;
+    overflow-y: auto;
+    
+    tbody{
+    border: 2px solid #64310d;
+    }
+    th, tr{
+        background-color: #222427; 
+        color: #fdfffc;
+        font-weight: 400;
+    }
+    td{
+        background-color: #808080; 
+        color: #eee;
+        border: 1px solid #64310d;
+    }
+}
+.img{
+    width: 1.2rem;
+}
+.editar{
+    border: none;
+    border-radius: 7px;
+    border: 1px solid #ffc107;
+    background-color: transparent;
+    padding: 5px 8px;
+    outline: none;
+}
+.editar:hover{
+    background-color: #ffc107;
+    transition: .5s;
+}
+.deletar{
+    border: none;
+    border-radius: 7px;
+    background-color: #dc3545;
+    padding: 5px 8px;
+    outline: none;
+}
+.deletar:hover{
+    background-color: #bb2d3b;
+    transition: .5s;
+}
+.fixed-header {
+    position: sticky;
+    top: 0;
+    z-index: 1;
+}
+::-webkit-scrollbar {
+    width: 12px;
+}
+::-webkit-scrollbar-track {
+    background: #000;
+}
+::-webkit-scrollbar-thumb {
+    background: #eead2d;
+}
+::-webkit-scrollbar-thumb:hover {
+    background: #555;
+}
+.cabecalhoModal{
+    background-color: #222427;
+    border-bottom: 4px solid #eead2d;
+    color: #fdfffc;
+    border-top-right-radius: .3rem;
+    border-top-left-radius: .3rem;
+}
+.footerModal{
+    background-color: #222427;
+    border-top: 4px solid #eead2d;
+    color: #fdfffc;
+    border-bottom-left-radius: .3rem;
+    border-bottom-right-radius: .3rem;
+}
+
+.btn-close{
+    --bs-btn-close-focus-shadow:0
+}

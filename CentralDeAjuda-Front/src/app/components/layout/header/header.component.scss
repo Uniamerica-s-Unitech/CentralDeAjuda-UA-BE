@@ -1,4 +1,4 @@
-button{
+button,a{
     display: flex;
     justify-content: flex-start;
     padding: 0.5rem 1rem;
@@ -12,6 +12,10 @@ button{
         height: 2rem;
         margin-right: 0.5rem;
       }
+}
+
+a{
+    text-decoration: none;
 }
 .active{
     background-color: rgb(12, 141, 12);
