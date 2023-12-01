@@ -23,11 +23,12 @@ import { NotebookPaginaComponent } from './components/notebook/notebook-pagina/n
 import { HeaderTopComponent } from './components/layout/header-top/header-top.component';
 import { TicketPaginaComponent } from './components/ticket/ticket-pagina/ticket-pagina.component';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
-import { ToastrModule } from 'ngx-toastr';
 import { NotebookListaComponent } from './components/notebook/notebook-lista/notebook-lista.component';
 import { CadastrarListComponent } from './components/sistema/cadastrar/cadastrar-list/cadastrar-list.component';
 import { CadastrarDetalhesComponent } from './components/sistema/cadastrar/cadastrar-detalhes/cadastrar-detalhes.component';
 import { LoginComponent } from './components/sistema/login/login.component';
+import { ToastrModule } from 'ngx-toastr';
+import { RouterModule } from '@angular/router';
 
 @NgModule({
   declarations: [
@@ -55,13 +56,15 @@ import { LoginComponent } from './components/sistema/login/login.component';
     ],
   imports: [
     BrowserModule,
+    RouterModule,
     AppRoutingModule,
     NgbModule,
     FormsModule,
     HttpClientModule,
-    BrowserAnimationsModule, // required animations module
-    ToastrModule.forRoot() // ToastrModule added
+    BrowserAnimationsModule, 
+    ToastrModule.forRoot()
   ],
+  
   providers: [],
   bootstrap: [AppComponent]
 })
