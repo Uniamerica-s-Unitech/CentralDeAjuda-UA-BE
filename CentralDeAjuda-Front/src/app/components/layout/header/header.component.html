@@ -1,12 +1,12 @@
-<nav class="d-flex justify-content-center shadow-sm pt-3 h-100 bg-body-secondary borda">
+<nav class="d-flex justify-content-center pt-3 h-100 bg-body-secondary borda">
     <div>
         <img src="assets\img\logo.png">
         <section class="nav flex-column mt-5">
-            <button [ngClass]="{ 'active': (active == 1) }" class="mb-5" (click)="active = 1" routerLink="ticket"><img src="assets\img\home.svg">Home</button>
-            <button [ngClass]="{ 'active': (active == 2) }" class="mb-5" (click)="active = 2" routerLink="notebook"><img src="assets\img\notebooks.svg">Notebooks</button>
-            <button [ngClass]="{ 'active': (active == 3) }" class="mb-5" (click)="active = 3" routerLink="aluno"><img src="assets\img\alunos.svg">Alunos</button>
-            <button [ngClass]="{ 'active': (active == 4) }" (click)="active = 4" class="mb-4" routerLink="cadastrar">Usuários</button>
-            <a href="/#/login">Sair</a>
+            <button [ngClass]="{ 'active': (active == 1) }" class="mb-4" (click)="active = 1" routerLink="ticket"><img src="assets\img\home.svg">Home</button>
+            <button [ngClass]="{ 'active': (active == 2) }" class="mb-4" (click)="active = 2" routerLink="notebook"><img src="assets\img\notebooks.svg">Notebooks</button>
+            <button [ngClass]="{ 'active': (active == 3) }" class="mb-4" (click)="active = 3" routerLink="aluno"><img src="../../../../assets/img/aluno.png">Alunos</button>
+            <button [ngClass]="{ 'active': (active == 4) }" class="mb-4" (click)="active = 4" routerLink="cadastrar"><img src="../../../../assets/img/usuario.svg">Usuários</button>
+            <a class="sair" href="/#/login"><img src="../../../../assets/img/logout.svg">Sair</a>
         </section>
     </div>
 </nav>

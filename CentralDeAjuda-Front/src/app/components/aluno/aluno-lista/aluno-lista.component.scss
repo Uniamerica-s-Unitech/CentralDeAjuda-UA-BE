@@ -1,3 +1,6 @@
+.main{
+    height: 70% !important;
+}
 .btnAdicionar{
     margin-top: 1vh;
     background-color: #00A859;
@@ -35,7 +38,7 @@
 }
 .scroll {
     overflow: auto;
-    height: 58.7vh;
+    height: 100%;
     flex-grow: 1;
     width: 99%;
     margin: 0 auto;
@@ -75,4 +78,7 @@
 }
 .img{
     width: 1.2rem;
+}
+.btn-close{
+    --bs-btn-close-focus-shadow:0
 }

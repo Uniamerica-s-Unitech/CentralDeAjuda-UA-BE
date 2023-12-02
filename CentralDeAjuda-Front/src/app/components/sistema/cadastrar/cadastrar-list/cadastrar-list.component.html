@@ -1,37 +1,42 @@
-<div class="h-100 d-flex col-lg-12 flex-column" style="gap: 20px;">
-    <div class="serch col-lg-12 w-100">
-        <div style="width: 12% !important;">
-            <button (click)="cadastrarUser(modalUser)" class="novoSabor">Novo User</button>
+<main class="main w-100">
+    <article class="h-100 w-100">
+        <div class="col-lg-12 d-flex align-items-center barra w-100">
+            <div class="serch col-lg-12 w-100">
+                <input type="text" placeholder="Pesquisar por nome" [(ngModel)]="termoPesquisa" (keyup)="realizarPesquisa(termoPesquisa)"/>
+            </div>
         </div>
-        <div class="w-100">
-            <input class="w-100" type="text" placeholder="Pesquisar por nome" [(ngModel)]="termoPesquisa" (keyup)="realizarPesquisa(termoPesquisa)"/>  
-        </div>
-    </div>
-    
-    <section class="quadroTabela container">
-        <div class="tabela">
-            <table class="table table-striped">
-                <thead class="fixed-header">
-                    <tr>
-                        <th scope="col">Nome</th>
-                        <th scope="col">Role</th>
-                        <th scope="col" class="text-center">Ações</th>
-                    </tr>
-                </thead>
-                <tbody>
-                    <tr *ngFor="let user of listaUsersFiltrada; let i = index">
-                        <td class="text-break text-wrap">{{ user.username }}</td>
-                        <td class="text-break text-wrap">{{ user.role }}</td>
-                        <td class="text-center text-break text-wrap" >
-                            <button (click)="editarUser(modalUser, user, i)" class="editar mx-2"><img class="img" src="../../../../assets/imagens/editar.svg"></button>
-                            <button (click)="excluirUser(modalExcluir, user, i)" class="deletar"><img class="img" src="../../../../assets/imagens/delete.svg"></button>
-                        </td>
-                    </tr>
-                </tbody>
-            </table>
-        </div>
-    </section>
-</div>
+        <section class="h-100">
+            <div class="quadro_tabela h-100">
+                <div class="scroll ">
+                    <table class="table table-striped">
+                        <thead class="fixed-header">
+                            <tr>
+                                <th scope="col">Nome</th>
+                                <th scope="col">Role</th>
+                                <th scope="col" class="text-center">Ações</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr *ngFor="let user of listaUsersFiltrada; let i = index">
+                                <td class="text-break text-wrap">{{ user.username }}</td>
+                                <td class="text-break text-wrap">{{ user.role }}</td>
+                                <td class="text-center text-break text-wrap" >
+                                    <button (click)="editarUser(modalUser, user, i)" class="btn btn-outline-warning  mx-2"><img class="img" src="../../../../../assets/img/write.svg"></button>
+                                    <button (click)="excluirUser(modalExcluir, user, i)" class="btn btn-danger"><img class="img" src="../../../../../assets/img/delete.svg"></button>
+                                </td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+                <div class="text-center">
+                    <button (click)="cadastrarUser(modalUser)" class="btnAdicionar">
+                        Novo Usuário
+                    </button>
+                </div>
+            </div>
+        </section>
+    </article>
+</main>
       
 <ng-template #modalUser let-modal>
     <div class="modal-header cabecalhoModal">

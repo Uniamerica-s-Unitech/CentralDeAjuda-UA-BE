@@ -40,7 +40,7 @@
     <h4 class="modal-title">Buscar aluno</h4>
     <button type="button" class="btn-close" aria-label="Close" (click)="modal.dismiss('Cross click')"></button>
   </div>
-  <div class="modal-body modal-style">
+  <div class="modal-body modal-style" style="height: 500px;">
 
     <app-aluno-lista [modoVincular]="true" (retorno)="retornoAluno($event)" class="alunoLista"></app-aluno-lista>
 
@@ -56,7 +56,7 @@
     <h4 class="modal-title">Buscar aluno</h4>
     <button type="button" class="btn-close" aria-label="Close" (click)="modal.dismiss('Cross click')"></button>
   </div>
-  <div class="modal-body modal-style">
+  <div class="modal-body modal-style" style="height: 500px;">
 
     <app-notebook-lista [modoVincular]="true" (retorno)="retornoNotebook($event)"></app-notebook-lista>
 
