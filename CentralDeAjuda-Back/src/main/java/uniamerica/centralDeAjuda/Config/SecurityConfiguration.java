@@ -38,7 +38,6 @@ public class SecurityConfiguration  {
                 .authorizeHttpRequests((requests) -> requests
                         .requestMatchers("/*").permitAll() //permitir o primeiro nível pra rodar o Angular
                         .requestMatchers("/api/login").permitAll()
-                        .requestMatchers("/api/admin/notebook/*").permitAll()
                         .anyRequest().authenticated())
                 .authenticationProvider(authenticationProvider)
                 .addFilterBefore(jwtAuthFilter, UsernamePasswordAuthenticationFilter.class)

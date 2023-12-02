@@ -92,7 +92,7 @@ public class LoginServices {
         novoUser.setId(userDTO.getId());
         novoUser.setAtivo(userDTO.getAtivo());
         novoUser.setUsername(userDTO.getUsername());
-        novoUser.setPassword(userDTO.getPassword());
+        novoUser.setPassword(userDTO.getToken());
         novoUser.setRole(userDTO.getRole());
 
         return novoUser;
@@ -103,7 +103,7 @@ public class LoginServices {
         UserDTO userDTO = new UserDTO();
         userDTO.setId(user.getId());
         userDTO.setRole(user.getRole());
-        userDTO.setPassword(token);
+        userDTO.setToken(token);
         userDTO.setUsername(user.getUsername());
         return userDTO;
     }
