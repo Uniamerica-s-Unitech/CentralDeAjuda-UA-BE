@@ -36,8 +36,8 @@ public class JwtServiceGenerator {
                 .setClaims(extraClaims)
                 .setSubject(userDetails.getUsername())
                 .setIssuedAt(new Date(System.currentTimeMillis()))
-                .setExpiration(new Date(new Date().getTime() + 3600000 * uniamerica.centralDeAjuda.Config.JwtParameters.HORAS_EXPIRACAO_TOKEN))
-                .signWith(getSigningKey(), uniamerica.centralDeAjuda.Config.JwtParameters.ALGORITMO_ASSINATURA)
+                .setExpiration(new Date(new Date().getTime() + 3600000 * JwtParameters.HORAS_EXPIRACAO_TOKEN))
+                .signWith(getSigningKey(), JwtParameters.ALGORITMO_ASSINATURA)
                 .compact();
     }
 
@@ -65,7 +65,7 @@ public class JwtServiceGenerator {
     }
 
     private Key getSigningKey() {
-        byte[] keyBytes = Decoders.BASE64.decode(uniamerica.centralDeAjuda.Config.JwtParameters.SECRET_KEY);
+        byte[] keyBytes = Decoders.BASE64.decode(JwtParameters.SECRET_KEY);
         return Keys.hmacShaKeyFor(keyBytes);
     }
 

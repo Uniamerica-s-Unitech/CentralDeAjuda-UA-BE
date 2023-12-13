@@ -1,11 +1,11 @@
 package uniamerica.centralDeAjuda.Repository;
 
-import org.springframework.data.jpa.repository.JpaRepository;
-import org.springframework.data.jpa.repository.Query;
-import uniamerica.centralDeAjuda.Entity.User;
-
 import java.util.List;
 import java.util.Optional;
+import uniamerica.centralDeAjuda.Entity.User;
+import org.springframework.data.jpa.repository.JpaRepository;
+import org.springframework.data.jpa.repository.Query;
+
 
 
 public interface LoginRepository extends JpaRepository<User, Long>{

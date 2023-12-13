@@ -1,6 +1,5 @@
 package uniamerica.centralDeAjuda.Entity;
 
-
 import jakarta.persistence.*;
 import lombok.Getter;
 import lombok.Setter;
@@ -16,18 +15,14 @@ import java.util.List;
 @Table(name="usuario")
 @Getter @Setter
 public class User implements UserDetails{
-
-    //private static final long serialVersionUID = 1L;
-
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
     @Column(name = "username",unique = true,nullable = false)
     private String username;
-    @Column(name = "password",nullable = false)
     private String password;
-    @Column(name = "role",nullable = false)
     private String role;
+
     @Column(name = "ativo")
     private Boolean ativo = true;
 
@@ -74,9 +69,6 @@ public class User implements UserDetails{
         return true;
     }
 
-
-
-
     public Long getId() {
         return id;
     }
@@ -100,7 +92,4 @@ public class User implements UserDetails{
     public void setPassword(String password) {
         this.password = password;
     }
-
-
-
 }

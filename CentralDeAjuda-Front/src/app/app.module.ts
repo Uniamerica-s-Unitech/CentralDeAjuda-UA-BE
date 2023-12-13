@@ -61,8 +61,8 @@ import { httpInterceptorProviders } from './interceptors/httpinterceptor.service
     NgbModule,
     FormsModule,
     HttpClientModule,
-    BrowserAnimationsModule, // required animations module
-    ToastrModule.forRoot(), // ToastrModule added
+    BrowserAnimationsModule,
+    ToastrModule.forRoot(),
     RouterModule
   ],
   providers: [
