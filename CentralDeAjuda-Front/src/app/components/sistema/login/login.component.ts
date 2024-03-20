@@ -23,7 +23,8 @@ export class LoginComponent {
   logar() {
     this.loginService.logar(this.login).subscribe({
       next: user => {
-        this.loginService.addToken(user.password);
+        console.log(user);
+        this.loginService.addToken(user.token);
         this.roteador.navigate(['admin/aluno']);
       },
       error: erro => {

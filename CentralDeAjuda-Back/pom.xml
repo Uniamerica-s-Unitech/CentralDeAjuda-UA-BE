@@ -91,26 +91,26 @@
 				</configuration>
 			</plugin>
 
-			<plugin> <!-- Copia o build do front para o static do back, integrando a aplicação-->
-				<artifactId>maven-resources-plugin</artifactId>
-				<executions>
-					<execution>
-						<id>copy-resources</id>
-						<phase>validate</phase>
-						<goals>
-							<goal>copy-resources</goal>
-						</goals>
-						<configuration>
-							<outputDirectory>${basedir}/target/classes/static/</outputDirectory>
-							<resources>
-								<resource>
-									<directory>${basedir}/../Pizzaria_front/dist/pizzaria-front</directory>
-								</resource>
-							</resources>
-						</configuration>
-					</execution>
-				</executions>
-			</plugin>
+<!--			<plugin> &lt;!&ndash; Copia o build do front para o static do back, integrando a aplicação&ndash;&gt;-->
+<!--				<artifactId>maven-resources-plugin</artifactId>-->
+<!--				<executions>-->
+<!--					<execution>-->
+<!--						<id>copy-resources</id>-->
+<!--						<phase>validate</phase>-->
+<!--						<goals>-->
+<!--							<goal>copy-resources</goal>-->
+<!--						</goals>-->
+<!--						<configuration>-->
+<!--							<outputDirectory>${basedir}/target/classes/static/</outputDirectory>-->
+<!--							<resources>-->
+<!--								<resource>-->
+<!--									<directory>${basedir}/../Pizzaria_front/dist/pizzaria-front</directory>-->
+<!--								</resource>-->
+<!--							</resources>-->
+<!--						</configuration>-->
+<!--					</execution>-->
+<!--				</executions>-->
+<!--			</plugin>-->
 		</plugins>
 	</build>
 

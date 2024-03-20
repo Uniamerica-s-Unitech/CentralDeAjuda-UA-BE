@@ -6,6 +6,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
+import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import uniamerica.centralDeAjuda.Config.JwtServiceGenerator;
@@ -38,10 +39,13 @@ public class LoginServices {
                         loginDTO.getPassword()
                 )
         );
-        User user = loginRepository.findByUsername(loginDTO.getUsername()).orElseThrow();
-        var jwtToken = jwtService.generateToken(user);
+        User user = loginRepository.findByUsername(loginDTO.getUsername()).orElse(null);
+        if (user != null) {
+            var jwtToken = jwtService.generateToken(user);
+            return toUserDTO(user, jwtToken);
+        }
 
-        return toUserDTO(user, jwtToken);
+        throw new UsernameNotFoundException("Usuário não encontrado");
     }
 
     public List<UserDTO> listar() {
