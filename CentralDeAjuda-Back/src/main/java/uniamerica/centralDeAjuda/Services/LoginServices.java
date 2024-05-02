@@ -96,7 +96,7 @@ public class LoginServices {
         novoUser.setId(userDTO.getId());
         novoUser.setAtivo(userDTO.getAtivo());
         novoUser.setUsername(userDTO.getUsername());
-        novoUser.setPassword(userDTO.getToken());
+        novoUser.setPassword(userDTO.getPassword());
         novoUser.setRole(userDTO.getRole());
 
         return novoUser;

@@ -8,7 +8,7 @@ import { Mensagem } from '../models/mensagem';
   providedIn: 'root'
 })
 export class TicketService {
-  API: string = 'http://localhost:8080/ticket'
+  API: string = 'https://172.21.247.48:8080/ticket'
   http = inject(HttpClient);
 
   constructor() { }

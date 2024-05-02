@@ -11,7 +11,7 @@ import uniamerica.centralDeAjuda.Services.NotebookService;
 import java.util.List;
 @RestController
 @RequestMapping("/notebook")
-@CrossOrigin(origins = "http://localhost:4200")
+@CrossOrigin(origins = "*")
 public class NotebookController {
 
     @Autowired

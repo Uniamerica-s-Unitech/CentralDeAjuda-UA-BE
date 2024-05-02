@@ -8,7 +8,7 @@ import { Mensagem } from '../models/mensagem';
   providedIn: 'root'
 })
 export class ModeloService {
-  API: string = 'http://localhost:8080/modelo'
+  API: string = 'https://172.21.247.48:8080/modelo'
   http = inject(HttpClient);
 
   constructor() { }
