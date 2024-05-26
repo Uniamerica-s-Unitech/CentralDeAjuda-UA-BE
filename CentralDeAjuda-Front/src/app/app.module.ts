@@ -1,4 +1,4 @@
-import { NgModule } from '@angular/core';
+import { APP_INITIALIZER, NgModule } from '@angular/core';
 import { BrowserModule } from '@angular/platform-browser';
 
 import { AppRoutingModule } from './app-routing.module';
@@ -18,7 +18,7 @@ import { FooterComponent } from './components/layout/footer/footer.component';
 import { HeaderComponent } from './components/layout/header/header.component';
 import { NgbModule } from '@ng-bootstrap/ng-bootstrap';
 import { FormsModule } from '@angular/forms';
-import { HttpClientModule } from '@angular/common/http';
+import { HTTP_INTERCEPTORS, HttpClient, HttpClientModule } from '@angular/common/http';
 import { NotebookPaginaComponent } from './components/notebook/notebook-pagina/notebook-pagina.component';
 import { HeaderTopComponent } from './components/layout/header-top/header-top.component';
 import { TicketPaginaComponent } from './components/ticket/ticket-pagina/ticket-pagina.component';
@@ -29,7 +29,12 @@ import { CadastrarListComponent } from './components/sistema/cadastrar/cadastrar
 import { CadastrarDetalhesComponent } from './components/sistema/cadastrar/cadastrar-detalhes/cadastrar-detalhes.component';
 import { LoginComponent } from './components/sistema/login/login.component';
 import { RouterModule } from '@angular/router';
-import { httpInterceptorProviders } from './interceptors/httpinterceptor.service';
+import { KeycloakService } from './services/KeycloakService';
+import { HttpinterceptorService } from './interceptors/httpinterceptor.service';
+
+export function kcFactory(kcService: KeycloakService) {
+  return () => kcService.init();
+}
 
 @NgModule({
   declarations: [
@@ -66,7 +71,18 @@ import { httpInterceptorProviders } from './interceptors/httpinterceptor.service
     RouterModule
   ],
   providers: [
-    httpInterceptorProviders
+    {
+      provide: APP_INITIALIZER,
+      deps: [KeycloakService],
+      useFactory: kcFactory,
+      multi: true
+    },
+    HttpClient,
+    {
+      provide: HTTP_INTERCEPTORS,
+      useClass: HttpinterceptorService,
+      multi: true
+    },
   ],
   bootstrap: [AppComponent]
 })

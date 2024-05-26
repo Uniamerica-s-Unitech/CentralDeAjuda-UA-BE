@@ -14,8 +14,6 @@ const routes: Routes = [
   { 
     path: "admin", 
     component:IndexComponent,
-    canActivate: [rotaguardGuard], 
-    data: { roles: ['ADMIN'] }, 
     children:[
       {path:"ticket",component: TicketPaginaComponent},
       {path:"aluno",component:AlunoListaComponent},

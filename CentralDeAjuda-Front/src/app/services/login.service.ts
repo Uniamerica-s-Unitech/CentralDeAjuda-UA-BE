@@ -9,7 +9,7 @@ import { Mensagem } from '../models/mensagem';
   providedIn: 'root'
 })
 export class LoginService {
-  API: string = 'https://172.21.247.48:8080/api/login';
+  API: string = 'https://localhost:443/token/login';
   http = inject(HttpClient);
 
   constructor() { }
