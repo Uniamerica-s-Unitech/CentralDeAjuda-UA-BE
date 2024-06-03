@@ -1,4 +1,4 @@
-import { Component, inject } from '@angular/core';
+import { Component, Input, inject } from '@angular/core';
 import { AlunoService } from 'src/app/services/aluno.service';
 import { NotebookService } from 'src/app/services/notebook.service';
 import { TicketService } from 'src/app/services/ticket.service';
@@ -9,6 +9,8 @@ import { TicketService } from 'src/app/services/ticket.service';
   styleUrls: ['./header-top.component.scss']
 })
 export class HeaderTopComponent {
+  @Input() isLogged: boolean | undefined;
+  @Input() isAdmin: boolean | undefined;
 
   notebookService = inject(NotebookService);
   alunoService = inject(AlunoService);

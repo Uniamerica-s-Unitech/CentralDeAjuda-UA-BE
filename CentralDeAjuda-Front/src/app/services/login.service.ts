@@ -4,50 +4,93 @@ import { Login } from '../models/login';
 import { Observable } from 'rxjs';
 import { User } from '../models/user';
 import { Mensagem } from '../models/mensagem';
+import { OAuthService } from 'angular-oauth2-oidc';
+import { Router } from '@angular/router';
 
 @Injectable({
   providedIn: 'root'
 })
 export class LoginService {
-  API: string = 'https://localhost:443/token/login';
-  http = inject(HttpClient);
+  constructor(private oauthService: OAuthService, private router: Router){}
 
-  constructor() { }
-
-
-  logar(login: Login): Observable<User> {
-    return this.http.post<User>(this.API, login);
+  public login(): void {
+    this.oauthService.initImplicitFlowInternal();
+    this.router.navigate(['/ticket']);
   }
 
-  deslogar(): Observable<any> {
-    return this.http.get<any>(this.API+'/deslogar');
+  public logout(): void {
+    this.oauthService.logOut();
   }
 
-  addToken(token: string){
-    localStorage.setItem('token', token);
+  public getUsername(): string {
+    return this.oauthService.getIdentityClaims()[`preferred_username`];
   }
 
-  removerToken(){
-    localStorage.removeItem('token');
+  public getIsLogged(): boolean {
+    return (this.oauthService.hasValidIdToken() && this.oauthService.hasValidAccessToken());
   }
 
-  getToken(){
-    return localStorage.getItem('token');
+  public getIsAdmin(): boolean {
+    const token = this.oauthService.getAccessToken();
+    const payload = token.split('.')[1];
+    const payloadDecodedJson = atob(payload);
+    const payloadDecoded = JSON.parse(payloadDecodedJson);
+    // console.log(payloadDecoded);
+    return payloadDecoded.realm_access.roles.indexOf('realm-admin') !== -1;
   }
 
-  listarUsers(): Observable<User[]> {
-    return this.http.get<User[]>(`${this.API}`+'/lista');
-  }
 
-  saveUser(user: User): Observable<Mensagem> {
-    if (user.id) {
-      return this.http.put<Mensagem>(this.API+"/"+`${user.id}`, user);
-    } else {
-      return this.http.post<Mensagem>(this.API+"/user", user);
-    }
-  }
 
-  deletarUser(id: number): Observable<Mensagem> {
-    return this.http.delete<Mensagem>(this.API + "/" + `${id}`);
-  }
+
+
+
+
+
+
+
+
+
+
+
+  // API: string = 'http://localhost:8080/api/login';
+  // http = inject(HttpClient);
+
+  // constructor() { }
+
+
+  // logar(login: Login): Observable<User> {
+  //   return this.http.post<User>(this.API, login);
+  // }
+
+  // deslogar(): Observable<any> {
+  //   return this.http.get<any>(this.API+'/deslogar');
+  // }
+
+  // addToken(token: string){
+  //   localStorage.setItem('token', token);
+  // }
+
+  // removerToken(){
+  //   localStorage.removeItem('token');
+  // }
+
+  // getToken(){
+  //   return localStorage.getItem('token');
+  // }
+
+  // listarUsers(): Observable<User[]> {
+  //   return this.http.get<User[]>(`${this.API}`+'/lista');
+  // }
+
+  // saveUser(user: User): Observable<Mensagem> {
+  //   if (user.id) {
+  //     return this.http.put<Mensagem>(this.API+"/"+`${user.id}`, user);
+  //   } else {
+  //     return this.http.post<Mensagem>(this.API+"/user", user);
+  //   }
+  // }
+
+  // deletarUser(id: number): Observable<Mensagem> {
+  //   return this.http.delete<Mensagem>(this.API + "/" + `${id}`);
+  // }
 }

@@ -1,4 +1,4 @@
-import { APP_INITIALIZER, NgModule } from '@angular/core';
+import { NgModule } from '@angular/core';
 import { BrowserModule } from '@angular/platform-browser';
 
 import { AppRoutingModule } from './app-routing.module';
@@ -18,23 +18,18 @@ import { FooterComponent } from './components/layout/footer/footer.component';
 import { HeaderComponent } from './components/layout/header/header.component';
 import { NgbModule } from '@ng-bootstrap/ng-bootstrap';
 import { FormsModule } from '@angular/forms';
-import { HTTP_INTERCEPTORS, HttpClient, HttpClientModule } from '@angular/common/http';
+import { HttpClientModule } from '@angular/common/http';
 import { NotebookPaginaComponent } from './components/notebook/notebook-pagina/notebook-pagina.component';
 import { HeaderTopComponent } from './components/layout/header-top/header-top.component';
 import { TicketPaginaComponent } from './components/ticket/ticket-pagina/ticket-pagina.component';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { ToastrModule } from 'ngx-toastr';
 import { NotebookListaComponent } from './components/notebook/notebook-lista/notebook-lista.component';
-import { CadastrarListComponent } from './components/sistema/cadastrar/cadastrar-list/cadastrar-list.component';
-import { CadastrarDetalhesComponent } from './components/sistema/cadastrar/cadastrar-detalhes/cadastrar-detalhes.component';
-import { LoginComponent } from './components/sistema/login/login.component';
 import { RouterModule } from '@angular/router';
-import { KeycloakService } from './services/KeycloakService';
-import { HttpinterceptorService } from './interceptors/httpinterceptor.service';
+import { OAuthModule } from 'angular-oauth2-oidc';
+import { CadastrarDetalhesComponent } from './components/sistema/cadastrar/cadastrar-detalhes/cadastrar-detalhes.component';
+import { CadastrarListComponent } from './components/sistema/cadastrar/cadastrar-list/cadastrar-list.component';
 
-export function kcFactory(kcService: KeycloakService) {
-  return () => kcService.init();
-}
 
 @NgModule({
   declarations: [
@@ -56,9 +51,8 @@ export function kcFactory(kcService: KeycloakService) {
     NotebookPaginaComponent,
     HeaderTopComponent,
     TicketPaginaComponent,
-    CadastrarListComponent,
     CadastrarDetalhesComponent,
-    LoginComponent
+    CadastrarListComponent
     ],
   imports: [
     BrowserModule,
@@ -68,22 +62,15 @@ export function kcFactory(kcService: KeycloakService) {
     HttpClientModule,
     BrowserAnimationsModule,
     ToastrModule.forRoot(),
-    RouterModule
+    RouterModule,
+    OAuthModule.forRoot({
+      resourceServer: {
+          allowedUrls: ['http://localhost:8080/foo','http://localhost:8080/aluno'],
+          sendAccessToken: true
+      }
+  })
   ],
-  providers: [
-    {
-      provide: APP_INITIALIZER,
-      deps: [KeycloakService],
-      useFactory: kcFactory,
-      multi: true
-    },
-    HttpClient,
-    {
-      provide: HTTP_INTERCEPTORS,
-      useClass: HttpinterceptorService,
-      multi: true
-    },
-  ],
+  providers: [],
   bootstrap: [AppComponent]
 })
 export class AppModule { }

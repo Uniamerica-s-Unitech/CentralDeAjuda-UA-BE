@@ -4,10 +4,10 @@
 
 <div class="row col-lg-12 h-100 w-100">
     <div class="col-lg-2 h-100">
-        <app-header class="col-lg-2"></app-header>
+        <app-header class="col-lg-2" [isLogged]="isLogged" [isAdmin]="isAdmin" [username]="username"></app-header>
     </div>
     <div class="col-lg-10 h-100">
-        <app-header-top></app-header-top>
+        <app-header-top [isLogged]="isLogged" [isAdmin]="isAdmin"></app-header-top>
         <router-outlet class="h-100 w-100"></router-outlet>
     </div>
 </div>

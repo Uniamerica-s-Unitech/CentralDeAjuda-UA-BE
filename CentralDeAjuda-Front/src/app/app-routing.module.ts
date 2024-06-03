@@ -4,26 +4,27 @@ import { IndexComponent } from './components/layout/index/index.component';
 import { AlunoListaComponent } from './components/aluno/aluno-lista/aluno-lista.component';
 import { NotebookPaginaComponent } from './components/notebook/notebook-pagina/notebook-pagina.component';
 import { TicketPaginaComponent } from './components/ticket/ticket-pagina/ticket-pagina.component';
-import { LoginComponent } from './components/sistema/login/login.component';
-import { rotaguardGuard } from './guards/rotaguard.guard';
 import { CadastrarListComponent } from './components/sistema/cadastrar/cadastrar-list/cadastrar-list.component';
+import { rotaguardGuard } from './guards/rotaguard.guard';
 
 const routes: Routes = [
+  // {path: '', component: AlunoListaComponent},
+  // {path: '**', redirectTo: '', pathMatch: 'full'}
   { path: "", redirectTo: "login", pathMatch: 'full'},
-  { path: "login", component: LoginComponent },
+  // { path: "login", component: LoginComponent },
   { 
-    path: "admin", 
+    path: "", 
     component:IndexComponent,
     children:[
-      {path:"ticket",component: TicketPaginaComponent},
-      {path:"aluno",component:AlunoListaComponent},
-      {path:"notebook",component:NotebookPaginaComponent},
-      {path: "cadastrar", component:CadastrarListComponent}
+      {path:"ticket",component: TicketPaginaComponent ,canActivate: [rotaguardGuard],data: {requiredRoles: ['admin']},},
+      {path:"aluno",component:AlunoListaComponent,canActivate: [rotaguardGuard],data: {requiredRoles: ['admin']},},
+      {path:"notebook",component:NotebookPaginaComponent,canActivate: [rotaguardGuard],data: {requiredRoles: ['admin']},},
+      {path:"cadastrar", component:CadastrarListComponent,canActivate: [rotaguardGuard],data: {requiredRoles: ['admin']},}
   ]}
 ];
 
 @NgModule({
-  imports: [RouterModule.forRoot(routes, {useHash: true})],
+  imports: [RouterModule.forRoot(routes)],//, {useHash: true}
   exports: [RouterModule]
 })
 export class AppRoutingModule { }

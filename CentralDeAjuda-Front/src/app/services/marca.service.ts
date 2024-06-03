@@ -8,7 +8,7 @@ import { Mensagem } from '../models/mensagem';
   providedIn: 'root'
 })
 export class MarcaService {
-  API: string = 'https://172.21.247.48:443/marca'
+  API: string = 'http://localhost:8080/marca'
   http = inject(HttpClient);
 
   constructor() { }

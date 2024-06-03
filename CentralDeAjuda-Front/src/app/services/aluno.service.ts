@@ -8,7 +8,7 @@ import { Mensagem } from '../models/mensagem';
   providedIn: 'root'
 })
 export class AlunoService {
-  API: string = 'https://172.21.247.48:443/aluno'
+  API: string = 'http://localhost:8080/aluno'
   http = inject(HttpClient);
 
   constructor() { }
