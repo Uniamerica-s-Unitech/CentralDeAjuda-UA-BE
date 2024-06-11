@@ -67,7 +67,7 @@ describe('TicketDetalhesComponent', () => {
     fixture.detectChanges();
 
     let form = fixture.debugElement.nativeElement.querySelector('form');
-    console.log(form);
+    // console.log(form);
     form.dispatchEvent(new Event('ngSubmit'));
 
     tick();

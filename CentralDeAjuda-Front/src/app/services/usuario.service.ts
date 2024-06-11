@@ -8,7 +8,7 @@ import { Usuario } from '../models/usuario';
 })
 export class UsuarioService {
 
-  userURL = 'http://localhost:8080/user/';
+  userURL = 'https://172.21.247.40/api/user/';
 
 //   httpOptions = { headers: new HttpHeaders({'Content-Type' : 'application/json'})};
 

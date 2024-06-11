@@ -28,9 +28,10 @@ public class Modelo{
 
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "marca_id",nullable = false)
+    @JsonIgnoreProperties("modelos")
     private Marca marcaId;
 
     @OneToMany(mappedBy = "modeloId",cascade = CascadeType.ALL)
-    @JsonIgnoreProperties("notebooks")
+    @JsonIgnoreProperties("modeloId")
     private List<Notebook> notebooks;
 }

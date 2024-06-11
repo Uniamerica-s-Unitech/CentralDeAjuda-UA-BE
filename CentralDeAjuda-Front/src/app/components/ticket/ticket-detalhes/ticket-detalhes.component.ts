@@ -63,7 +63,7 @@ export class TicketDetalhesComponent {
         },
         error: erro => { // QUANDO DÁ ERRO
           this.toastr.error(erro.error.mensagem);
-          console.error(erro);
+          // console.error(erro);
         }
       });
     }
@@ -76,7 +76,7 @@ export class TicketDetalhesComponent {
         },
         error: erro => { // QUANDO DÁ ERRO
           this.toastr.error(erro.error.mensagem);
-          console.error(erro);
+          // console.error(erro);
         }
       });
     }

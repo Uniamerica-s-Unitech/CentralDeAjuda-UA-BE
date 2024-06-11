@@ -1,5 +1,6 @@
 package uniamerica.centralDeAjuda.Controller;
 
+import com.fasterxml.jackson.databind.ObjectMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -9,8 +10,10 @@ import uniamerica.centralDeAjuda.DTO.NotebookDTO;
 import uniamerica.centralDeAjuda.Services.NotebookService;
 
 import java.util.List;
+import java.util.Map;
+
 @RestController
-@RequestMapping("/notebook")
+@RequestMapping("/api/notebook")
 @CrossOrigin(origins = "*")
 public class NotebookController {
 
@@ -38,9 +41,11 @@ public class NotebookController {
     }
 
     @PostMapping
-    public ResponseEntity<MensagemDTO> cadastrarNotebook(@RequestBody NotebookDTO notebookDTO) {
+    public ResponseEntity<MensagemDTO> cadastrarNotebook(@RequestBody Map<String, Object> payload) {
         try{
-            return ResponseEntity.ok(notebookService.cadastrarNotebook(notebookDTO));
+            NotebookDTO notebookDTO = new ObjectMapper().convertValue(payload.get("notebook"), NotebookDTO.class);
+            String userCreacao = (String) payload.get("userCreacao");
+            return ResponseEntity.ok(notebookService.cadastrarNotebook(notebookDTO, userCreacao));
         } catch(Exception e){
             MensagemDTO mensagem = new MensagemDTO(e.getMessage(),HttpStatus.BAD_REQUEST);
             return ResponseEntity.badRequest().body(mensagem);
@@ -48,9 +53,11 @@ public class NotebookController {
     }
 
     @PutMapping("/{id}")
-    public ResponseEntity<MensagemDTO> editarNotebook(@PathVariable Long id, @RequestBody NotebookDTO notebookDTO) {
+    public ResponseEntity<MensagemDTO> editarNotebook(@PathVariable Long id, @RequestBody Map<String, Object> payload) {
         try {
-            return ResponseEntity.ok(notebookService.editarNotebook(id, notebookDTO));
+            NotebookDTO notebookDTO = new ObjectMapper().convertValue(payload.get("notebook"), NotebookDTO.class);
+            String userAlteracao = (String) payload.get("userAlteracao");
+            return ResponseEntity.ok(notebookService.cadastrarNotebook(notebookDTO, userAlteracao));
         } catch(Exception e){
             MensagemDTO mensagem = new MensagemDTO(e.getMessage(),HttpStatus.BAD_REQUEST);
             return ResponseEntity.badRequest().body(mensagem);
@@ -58,9 +65,9 @@ public class NotebookController {
     }
 
     @DeleteMapping("/{id}")
-    public ResponseEntity<MensagemDTO> deletar(@PathVariable Long id) {
+    public ResponseEntity<MensagemDTO> deletar(@PathVariable Long id, @RequestParam String userExclusao) {
         try {
-            return ResponseEntity.ok(notebookService.deletar(id));
+            return ResponseEntity.ok(notebookService.deletar(id, userExclusao));
         }catch(Exception e){
             MensagemDTO mensagem = new MensagemDTO(e.getMessage(),HttpStatus.BAD_REQUEST);
             return ResponseEntity.badRequest().body(mensagem);

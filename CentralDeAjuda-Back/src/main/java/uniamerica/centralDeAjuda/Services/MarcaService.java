@@ -8,11 +8,14 @@ import org.springframework.stereotype.Service;
 import org.springframework.util.Assert;
 import uniamerica.centralDeAjuda.DTO.MarcaDTO;
 import uniamerica.centralDeAjuda.DTO.MensagemDTO;
+import uniamerica.centralDeAjuda.Entity.Auditoria;
 import uniamerica.centralDeAjuda.Entity.Marca;
 import uniamerica.centralDeAjuda.Entity.Modelo;
+import uniamerica.centralDeAjuda.Repository.AuditoriaRepository;
 import uniamerica.centralDeAjuda.Repository.MarcaRepository;
 import uniamerica.centralDeAjuda.Repository.ModeloRepository;
 
+import java.time.LocalDateTime;
 import java.util.List;
 
 @Service
@@ -22,7 +25,8 @@ public class MarcaService {
     private MarcaRepository marcaRepository;
     @Autowired
     private ModeloRepository modeloRepository;
-
+    @Autowired
+    private AuditoriaRepository auditoriaRepository;
     public MarcaDTO findMarcaById(Long id) {
         Marca marca = marcaRepository.findById(id).orElseThrow(() -> new EntityNotFoundException("Marca não encontrada!"));
         return marcaToDTO(marca);
@@ -32,7 +36,7 @@ public class MarcaService {
         return marcaRepository.findMarcaByAtivo().stream().map(this::marcaToDTO).toList();
     }
 
-    public MensagemDTO cadastrarMarca(MarcaDTO marcaDTO) throws Exception{
+    public MensagemDTO cadastrarMarca(MarcaDTO marcaDTO, String userCreacao) throws Exception{
         Marca marca = toMarca(marcaDTO);
 
         Assert.notNull(marca.getNome(),"Nome inválido!");
@@ -42,10 +46,17 @@ public class MarcaService {
         }
 
         marcaRepository.save(marca);
+
+        Auditoria auditoria = new Auditoria();
+        auditoria.setMarca(marca);
+        auditoria.setDataHoraCriacao(LocalDateTime.now());
+        auditoria.setUserCriacao(userCreacao);
+        auditoriaRepository.save(auditoria);
+
         return new MensagemDTO("Marca cadastrada com sucesso!", HttpStatus.CREATED);
     }
 
-    public MensagemDTO editarMarca(Long id, MarcaDTO marcaDTO) throws Exception{
+    public MensagemDTO editarMarca(Long id, MarcaDTO marcaDTO, String userAlteracao) throws Exception{
         Marca marca = toMarca(marcaDTO);
 
         Assert.notNull(marca.getNome(), "Nome inválido!");
@@ -55,10 +66,17 @@ public class MarcaService {
         }
 
         marcaRepository.save(marca);
+
+        Auditoria auditoria = new Auditoria();
+        auditoria.setMarca(marca);
+        auditoria.setDataHoraAlteracao(LocalDateTime.now());
+        auditoria.setUserAlteracao(userAlteracao);
+        auditoriaRepository.save(auditoria);
+
         return new MensagemDTO("Marca atualizada com sucesso!", HttpStatus.CREATED);
     }
 
-    public MensagemDTO deletar(Long id) throws Exception{
+    public MensagemDTO deletar(Long id, String userExclusao) throws Exception{
         Marca marcaBanco = marcaRepository.findById(id)
                 .orElseThrow(()->
                         new EntityNotFoundException("Marca com ID "+id+" nao existe!"));
@@ -69,6 +87,12 @@ public class MarcaService {
             throw new Exception("Não é possível excluir essa marca, pois existem modelos ativos associados a ela.");
         } else {
             desativarMarca(marcaBanco);
+
+            Auditoria auditoria = new Auditoria();
+            auditoria.setMarca(marcaBanco);
+            auditoria.setDataHoraExclusao(LocalDateTime.now());
+            auditoria.setUserExclusao(userExclusao);
+            auditoriaRepository.save(auditoria);
         }
         return new MensagemDTO("Marca deletada com sucesso!", HttpStatus.CREATED);
     }

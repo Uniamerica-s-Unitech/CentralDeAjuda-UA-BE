@@ -6,23 +6,26 @@ import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
 import org.springframework.util.Assert;
 import uniamerica.centralDeAjuda.DTO.*;
+import uniamerica.centralDeAjuda.Entity.Auditoria;
 import uniamerica.centralDeAjuda.Entity.Modelo;
 import uniamerica.centralDeAjuda.Entity.Notebook;
 import uniamerica.centralDeAjuda.Entity.Ticket;
+import uniamerica.centralDeAjuda.Repository.AuditoriaRepository;
 import uniamerica.centralDeAjuda.Repository.ModeloRepository;
 import uniamerica.centralDeAjuda.Repository.NotebookRepository;
 import uniamerica.centralDeAjuda.Repository.TicketRepository;
 
+import java.time.LocalDateTime;
 import java.util.List;
 
 @Service
 public class NotebookService {
     @Autowired
     private NotebookRepository notebookRepository;
-
     @Autowired
     private ModeloRepository modeloRepository;
-
+    @Autowired
+    private AuditoriaRepository auditoriaRepository;
     @Autowired
     private TicketRepository ticketRepository;
 
@@ -40,7 +43,7 @@ public class NotebookService {
         return notebookRepository.findNotebookByAtivoSemVinculo().stream().map(this::notebookToDTO).toList();
     }
 
-    public MensagemDTO cadastrarNotebook(NotebookDTO notebookDTO) throws Exception{
+    public MensagemDTO cadastrarNotebook(NotebookDTO notebookDTO, String userCreacao) throws Exception{
         Notebook notebook = toNotebook(notebookDTO);
 
         Assert.notNull(notebook.getPatrimonio(),"Patrimonio inválido!");
@@ -49,12 +52,18 @@ public class NotebookService {
         }
         Assert.notNull(notebook.getModeloId(),"Modelo inválido!");
 
-
         notebookRepository.save(notebook);
+
+        Auditoria auditoria = new Auditoria();
+        auditoria.setNotebook(notebook);
+        auditoria.setDataHoraCriacao(LocalDateTime.now());
+        auditoria.setUserCriacao(userCreacao);
+        auditoriaRepository.save(auditoria);
+
         return new MensagemDTO("Notebook cadastrado com sucesso!", HttpStatus.CREATED);
     }
 
-    public MensagemDTO editarNotebook(Long id, NotebookDTO notebookDTO) throws Exception{
+    public MensagemDTO editarNotebook(Long id, NotebookDTO notebookDTO, String userAlteracao) throws Exception{
         Notebook notebook = toNotebook(notebookDTO);
 
         Assert.notNull(notebook.getPatrimonio(),"Patrimonio inválido!");
@@ -64,10 +73,17 @@ public class NotebookService {
         Assert.notNull(notebook.getModeloId(),"Modelo inválido!");
 
         notebookRepository.save(notebook);
+
+        Auditoria auditoria = new Auditoria();
+        auditoria.setNotebook(notebook);
+        auditoria.setDataHoraAlteracao(LocalDateTime.now());
+        auditoria.setUserAlteracao(userAlteracao);
+        auditoriaRepository.save(auditoria);
+
         return new MensagemDTO("Notebook atualizado com sucesso!", HttpStatus.CREATED);
     }
 
-    public MensagemDTO deletar(Long id) throws Exception{
+    public MensagemDTO deletar(Long id, String userExclusao) throws Exception{
         Notebook notebookBanco = notebookRepository.findById(id)
                 .orElseThrow(()-> new EntityNotFoundException("Notebook com ID "+id+" nao existe!"));
 
@@ -78,6 +94,12 @@ public class NotebookService {
             throw new Exception("Não é possível excluir esse notebook, pois existem ticket ativos associados a ele.");
         } else {
             desativarNotebook(notebookBanco);
+
+            Auditoria auditoria = new Auditoria();
+            auditoria.setNotebook(notebookBanco);
+            auditoria.setDataHoraExclusao(LocalDateTime.now());
+            auditoria.setUserExclusao(userExclusao);
+            auditoriaRepository.save(auditoria);
         }
         return new MensagemDTO("Notebook deletado com sucesso!", HttpStatus.CREATED);
     }

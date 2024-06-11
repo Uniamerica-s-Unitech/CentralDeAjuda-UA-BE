@@ -1,5 +1,6 @@
 package uniamerica.centralDeAjuda.Controller;
 
+import com.fasterxml.jackson.databind.ObjectMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -9,9 +10,10 @@ import uniamerica.centralDeAjuda.DTO.MensagemDTO;
 import uniamerica.centralDeAjuda.Services.AlunoService;
 
 import java.util.List;
+import java.util.Map;
 
 @RestController
-@RequestMapping("/aluno")
+@RequestMapping("/api/aluno")
 @CrossOrigin(origins = "*")
 public class AlunoController {
 
@@ -39,9 +41,11 @@ public class AlunoController {
     }
 
     @PostMapping
-    public ResponseEntity<MensagemDTO> cadastrarAluno(@RequestBody AlunoDTO alunoDTO) {
+    public ResponseEntity<MensagemDTO> cadastrarAluno(@RequestBody Map<String, Object> payload) {
         try{
-            return ResponseEntity.ok(alunoService.cadastrarAluno(alunoDTO));
+            AlunoDTO alunoDTO = new ObjectMapper().convertValue(payload.get("aluno"), AlunoDTO.class);
+            String userCreacao = (String) payload.get("userCreacao");
+            return ResponseEntity.ok(alunoService.cadastrarAluno(alunoDTO, userCreacao));
         }catch(Exception e){
             MensagemDTO mensagem = new MensagemDTO(e.getMessage(),HttpStatus.BAD_REQUEST);
             return ResponseEntity.badRequest().body(mensagem);
@@ -49,9 +53,11 @@ public class AlunoController {
     }
 
     @PutMapping("/{id}")
-    public ResponseEntity<MensagemDTO> editarAluno(@PathVariable Long id, @RequestBody AlunoDTO alunoDTO) {
+    public ResponseEntity<MensagemDTO> editarAluno(@PathVariable Long id, @RequestBody Map<String, Object> payload) {
         try {
-            return ResponseEntity.ok(alunoService.editarAluno(id, alunoDTO));
+            AlunoDTO alunoDTO = new ObjectMapper().convertValue(payload.get("aluno"), AlunoDTO.class);
+            String userAlteracao = (String) payload.get("userAlteracao");
+            return ResponseEntity.ok(alunoService.editarAluno(id, alunoDTO, userAlteracao));
         }catch(Exception e){
             MensagemDTO mensagem = new MensagemDTO(e.getMessage(),HttpStatus.BAD_REQUEST);
             return ResponseEntity.badRequest().body(mensagem);
@@ -59,9 +65,9 @@ public class AlunoController {
     }
 
     @DeleteMapping("/{id}")
-    public ResponseEntity<MensagemDTO> deletar(@PathVariable Long id) {
+    public ResponseEntity<MensagemDTO> deletar(@PathVariable Long id, @RequestParam String userExclusao) {
         try {
-            return ResponseEntity.ok(alunoService.deletar(id));
+            return ResponseEntity.ok(alunoService.deletar(id, userExclusao));
         }catch(Exception e){
             MensagemDTO mensagem = new MensagemDTO(e.getMessage(),HttpStatus.BAD_REQUEST);
             return ResponseEntity.badRequest().body(mensagem);

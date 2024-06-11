@@ -65,7 +65,7 @@ import { CadastrarListComponent } from './components/sistema/cadastrar/cadastrar
     RouterModule,
     OAuthModule.forRoot({
       resourceServer: {
-          allowedUrls: ['http://localhost:8080/foo','http://localhost:8080/aluno'],
+          allowedUrls: [],
           sendAccessToken: true
       }
   })

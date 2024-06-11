@@ -6,13 +6,12 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import uniamerica.centralDeAjuda.DTO.MensagemDTO;
 import uniamerica.centralDeAjuda.DTO.TicketDTO;
-import uniamerica.centralDeAjuda.Entity.Ticket;
 import uniamerica.centralDeAjuda.Services.TicketService;
 
 import java.util.List;
 
 @RestController
-@RequestMapping("/ticket")
+@RequestMapping("/api/ticket")
 @CrossOrigin(origins = "*")
 public class TicketController {
 
@@ -59,9 +58,9 @@ public class TicketController {
         }
     }
     @DeleteMapping("/{id}")
-    public ResponseEntity<MensagemDTO> deletar(@PathVariable Long id) {
+    public ResponseEntity<MensagemDTO> deletar(@PathVariable Long id, @RequestParam String userExclusao) {
         try {
-            return ResponseEntity.ok(ticketService.cancelar(id));
+            return ResponseEntity.ok(ticketService.cancelar(id, userExclusao));
         }catch(Exception e){
             MensagemDTO mensagem = new MensagemDTO(e.getMessage(),HttpStatus.BAD_REQUEST);
             return ResponseEntity.badRequest().body(mensagem);

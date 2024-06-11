@@ -15,17 +15,25 @@ import { UsuarioService } from 'src/app/services/usuario.service';
 })
 export class CadastrarListComponent {
   @Input() usuario : Usuario = new Usuario();
+  toastr = inject(ToastrService);
   usuarioService = inject(UsuarioService);
   router = inject(Router);
 
   cadastrar(): void{
-    this.usuarioService.create(this.usuario).subscribe(
-      data => {
-        console.log(data);
+    this.usuarioService.create(this.usuario).subscribe({
+      next : (mensagem:Mensagem) => {
+        this.toastr.success('Usuario cadastrado com Sucesso!');
+        // console.log(data);
         // this.volver();
       },
-      err => console.log(err)
-    );
+      error: erro => { // QUANDO DÁ ERRO
+        this.toastr.error('Tem uma falha! Por favor tente novamente!!');
+        // console.error(erro);
+      }
+      // err => console.log(err)
+    });
+    
+      
   }
   // volver(): void {
   //   this.router.navigate(['/']);

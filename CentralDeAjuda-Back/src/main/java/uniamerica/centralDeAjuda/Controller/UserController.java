@@ -8,7 +8,7 @@ import uniamerica.centralDeAjuda.Entity.Usuario;
 import uniamerica.centralDeAjuda.Services.KeycloakService;
 
 @RestController
-@RequestMapping("/user")
+@RequestMapping("/api/user")
 @CrossOrigin
 public class UserController {
 
