@@ -9,10 +9,10 @@ import { LoginService } from './login.service';
   providedIn: 'root'
 })
 export class TicketService {
-  API: string = 'http://localhost:8080/api/ticket'
+  API: string = 'https://172.21.247.40/api/ticket'
   http = inject(HttpClient);
   loginService = inject(LoginService);  
-  nomeUser = this.loginService.getUsername();
+  // nomeUser = this.loginService.getUsername();
 
   constructor() { }
 
@@ -34,6 +34,7 @@ export class TicketService {
   }
 
   deletar(id: number): Observable<any> {
-    return this.http.delete<Mensagem>(this.API + "/" + `${id}`, { params: { userExclusao: this.nomeUser } });
+    const nomeUser = this.loginService.getUsername();
+    return this.http.delete<Mensagem>(this.API + "/" + `${id}`, { params: { userExclusao: nomeUser } });
   }
 }

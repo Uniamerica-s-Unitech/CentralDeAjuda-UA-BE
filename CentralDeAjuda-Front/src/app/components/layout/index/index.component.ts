@@ -18,7 +18,7 @@ export class IndexComponent {
   }
 
   authConfig: AuthConfig = {
-    issuer: 'https://172.21.247.46:8443/realms/centraldeajuda',
+    issuer: 'https://172.21.247.40:443/realms/centraldeajuda',
     requireHttps: false,
     redirectUri: window.location.origin,
     clientId: 'centraldeajuda-frontend',

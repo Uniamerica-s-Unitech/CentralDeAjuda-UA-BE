@@ -29,6 +29,7 @@ import { RouterModule } from '@angular/router';
 import { OAuthModule } from 'angular-oauth2-oidc';
 import { CadastrarDetalhesComponent } from './components/sistema/cadastrar/cadastrar-detalhes/cadastrar-detalhes.component';
 import { CadastrarListComponent } from './components/sistema/cadastrar/cadastrar-list/cadastrar-list.component';
+import { LogComponent } from './components/log/log.component';
 
 
 @NgModule({
@@ -52,7 +53,8 @@ import { CadastrarListComponent } from './components/sistema/cadastrar/cadastrar
     HeaderTopComponent,
     TicketPaginaComponent,
     CadastrarDetalhesComponent,
-    CadastrarListComponent
+    CadastrarListComponent,
+    LogComponent
     ],
   imports: [
     BrowserModule,

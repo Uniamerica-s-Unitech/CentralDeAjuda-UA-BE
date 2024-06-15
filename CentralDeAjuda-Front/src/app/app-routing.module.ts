@@ -6,6 +6,7 @@ import { NotebookPaginaComponent } from './components/notebook/notebook-pagina/n
 import { TicketPaginaComponent } from './components/ticket/ticket-pagina/ticket-pagina.component';
 import { CadastrarListComponent } from './components/sistema/cadastrar/cadastrar-list/cadastrar-list.component';
 import { rotaguardGuard } from './guards/rotaguard.guard';
+import { LogComponent } from './components/log/log.component';
 
 const routes: Routes = [
   // {path: '', component: AlunoListaComponent},
@@ -19,7 +20,8 @@ const routes: Routes = [
       {path:"ticket",component: TicketPaginaComponent ,canActivate: [rotaguardGuard],data: {requiredRoles: ['admin']},},
       {path:"aluno",component:AlunoListaComponent,canActivate: [rotaguardGuard],data: {requiredRoles: ['admin']},},
       {path:"notebook",component:NotebookPaginaComponent,canActivate: [rotaguardGuard],data: {requiredRoles: ['admin']},},
-      {path:"cadastrar", component:CadastrarListComponent,canActivate: [rotaguardGuard],data: {requiredRoles: ['admin']},}
+      {path:"cadastrar", component:CadastrarListComponent,canActivate: [rotaguardGuard],data: {requiredRoles: ['admin']},},
+      {path:"log", component:LogComponent,canActivate: [rotaguardGuard],data: {requiredRoles: ['admin']},}
   ]}
 ];
 

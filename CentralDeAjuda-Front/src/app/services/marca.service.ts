@@ -9,10 +9,10 @@ import { LoginService } from './login.service';
   providedIn: 'root'
 })
 export class MarcaService {
-  API: string = 'http://localhost:8080/api/marca'
+  API: string = 'https://172.21.247.40/api/marca'
   http = inject(HttpClient);
   loginService = inject(LoginService);  
-  nomeUser = this.loginService.getUsername();
+  // nomeUser = this.loginService.getUsername();
 
   constructor() { }
 
@@ -21,16 +21,18 @@ export class MarcaService {
   }
 
   save(marca: Marca): Observable<Mensagem> {
+    const nomeUser = this.loginService.getUsername();
     if (marca.id) {
       // Se a pessoa já tem um ID, atualize-a
-      return this.http.put<Mensagem>(`${this.API}/${marca.id}`, { marca, userAlteracao: this.nomeUser });
+      return this.http.put<Mensagem>(`${this.API}/${marca.id}`, { marca, userAlteracao: nomeUser });
     } else {
       // Caso contrário, crie uma nova pessoa
-      return this.http.post<Mensagem>(this.API, { marca, userCreacao: this.nomeUser });
+      return this.http.post<Mensagem>(this.API, { marca, userCreacao: nomeUser });
     }
   }
 
   deletar(id: number): Observable<any> {
-    return this.http.delete<Mensagem>(`${this.API}/${id}`, { params: { userExclusao: this.nomeUser } });
+    const nomeUser = this.loginService.getUsername();
+    return this.http.delete<Mensagem>(`${this.API}/${id}`, { params: { userExclusao: nomeUser } });
   }
 }

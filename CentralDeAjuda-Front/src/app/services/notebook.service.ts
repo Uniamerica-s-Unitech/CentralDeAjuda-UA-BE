@@ -9,10 +9,10 @@ import { LoginService } from './login.service';
   providedIn: 'root'
 })
 export class NotebookService {
-  API: string = 'http://localhost:8080/api/notebook'
+  API: string = 'https://172.21.247.40/api/notebook'
   http = inject(HttpClient);
   loginService = inject(LoginService);  
-  nomeUser = this.loginService.getUsername();
+  // nomeUser = this.loginService.getUsername();
 
   constructor() { }
 
@@ -25,17 +25,19 @@ export class NotebookService {
   }
 
   save(notebook: Notebook): Observable<Mensagem> {
+    const nomeUser = this.loginService.getUsername();
     if (notebook.id) {
       // Se a pessoa já tem um ID, atualize-a
-      return this.http.put<Mensagem>(`${this.API}/${notebook.id}`, { notebook, userAlteracao: this.nomeUser });
+      return this.http.put<Mensagem>(`${this.API}/${notebook.id}`, { notebook, userAlteracao: nomeUser });
     } else {
       // Caso contrário, crie uma nova pessoa
-      return this.http.post<Mensagem>(this.API, { notebook, userCreacao: this.nomeUser });
+      return this.http.post<Mensagem>(this.API, { notebook, userCreacao: nomeUser });
     }
   }
 
   deletar(id: number): Observable<Mensagem> {
-    return this.http.delete<Mensagem>(`${this.API}/${id}`, { params: { userExclusao: this.nomeUser } });
+    const nomeUser = this.loginService.getUsername();
+    return this.http.delete<Mensagem>(`${this.API}/${id}`, { params: { userExclusao: nomeUser } });
   }
 }
 
