@@ -7,6 +7,7 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 
+import java.sql.Timestamp;
 import java.time.LocalDateTime;
 
 @Getter@Setter
@@ -25,9 +26,9 @@ public class TicketDTO{
 
     @NotNull(message = "Data inválida")
     @NotBlank(message = "A data de entrega é obrigatório")
-    private LocalDateTime dataEntrega;
+    private Timestamp dataEntrega;
 
-    private LocalDateTime dataDevolucao;
+    private Timestamp dataDevolucao;
 
     private String observacao;
 }

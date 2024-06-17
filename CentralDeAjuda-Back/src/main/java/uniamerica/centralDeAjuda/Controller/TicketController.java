@@ -1,14 +1,17 @@
 package uniamerica.centralDeAjuda.Controller;
 
+import com.fasterxml.jackson.databind.ObjectMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
+import uniamerica.centralDeAjuda.DTO.AlunoDTO;
 import uniamerica.centralDeAjuda.DTO.MensagemDTO;
 import uniamerica.centralDeAjuda.DTO.TicketDTO;
 import uniamerica.centralDeAjuda.Services.TicketService;
 
 import java.util.List;
+import java.util.Map;
 
 @RestController
 @RequestMapping("/api/ticket")
@@ -39,9 +42,11 @@ public class TicketController {
     }
 
     @PostMapping
-    public ResponseEntity<MensagemDTO> cadastrarTicket(@RequestBody TicketDTO ticketDTO) {
+    public ResponseEntity<MensagemDTO> cadastrarTicket(@RequestBody Map<String, Object> payload) {
         try{
-            return ResponseEntity.ok(ticketService.cadastrarTicket(ticketDTO));
+            TicketDTO ticketDTO = new ObjectMapper().convertValue(payload.get("ticket"), TicketDTO.class);
+            String userCreacao = (String) payload.get("userCreacao");
+            return ResponseEntity.ok(ticketService.cadastrarTicket(ticketDTO, userCreacao));
         }catch(Exception e){
             MensagemDTO mensagem = new MensagemDTO(e.getMessage(),HttpStatus.BAD_REQUEST);
             return ResponseEntity.badRequest().body(mensagem);
@@ -49,9 +54,12 @@ public class TicketController {
     }
 
     @PutMapping("/{id}")
-    public ResponseEntity<MensagemDTO> editarTicket(@PathVariable Long id, @RequestBody TicketDTO ticketDTO) {
+    public ResponseEntity<MensagemDTO> editarTicket(@PathVariable Long id, @RequestBody Map<String, Object> payload) {
         try {
-            return ResponseEntity.ok(ticketService.editarTicket(id, ticketDTO));
+            TicketDTO ticketDTO = new ObjectMapper().convertValue(payload.get("ticket"), TicketDTO.class);
+            String userAlteracao = (String) payload.get("userAlteracao");
+            String userFinalizacao = (String) payload.get("userFinalizacao");
+            return ResponseEntity.ok(ticketService.editarTicket(id, ticketDTO, userAlteracao, userFinalizacao));
         } catch(Exception e){
             MensagemDTO mensagem = new MensagemDTO(e.getMessage(),HttpStatus.BAD_REQUEST);
             return ResponseEntity.badRequest().body(mensagem);

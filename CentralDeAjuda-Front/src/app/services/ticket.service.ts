@@ -12,7 +12,6 @@ export class TicketService {
   API: string = 'https://172.21.247.40/api/ticket'
   http = inject(HttpClient);
   loginService = inject(LoginService);  
-  // nomeUser = this.loginService.getUsername();
 
   constructor() { }
 
@@ -24,12 +23,16 @@ export class TicketService {
   }
 
   save(ticket: Ticket): Observable<Mensagem> {
+    
     if (ticket.id) {
+      const nomeUser = this.loginService.getUsername();
       // console.log("Data de devolucao",ticket.dataDevolucao);
-      return this.http.put<Mensagem>(this.API+"/"+`${ticket.id}`, ticket);
+      console.log(nomeUser);
+      return this.http.put<Mensagem>(this.API+"/"+`${ticket.id}`, { ticket, userAlteracao: nomeUser });
     } else {
-      // console.log("Data de entrega",ticket.dataEntrega);
-      return this.http.post<Mensagem>(this.API, ticket);
+      const nomeUser = this.loginService.getUsername();
+       console.log(nomeUser);
+      return this.http.post<Mensagem>(this.API, { ticket, userCreacao: nomeUser });
     }
   }
 

@@ -43,7 +43,7 @@ public class TicketService {
         return ticketRepository.findHistoricoByDataDevolucao().stream().map(this::ticketToDTO).toList();
     }
 
-    public MensagemDTO cadastrarTicket(TicketDTO ticketDTO) throws Exception {
+    public MensagemDTO cadastrarTicket(TicketDTO ticketDTO, String userCreacao) throws Exception {
         Ticket ticket = toTicket(ticketDTO);
 
         Assert.notNull(ticket.getAlunoId(), "Aluno inválido!");
@@ -62,11 +62,18 @@ public class TicketService {
             throw new Exception("O notebook possui um tickey ativo");
         } else {
             ticketRepository.save(ticket);
+
+            Auditoria auditoria = new Auditoria();
+            auditoria.setTicket(ticket);
+            auditoria.setDataHoraCriacao(new Timestamp(System.currentTimeMillis()));
+            auditoria.setUserCriacao(userCreacao);
+            auditoriaRepository.save(auditoria);
+
             return new MensagemDTO("Ticket cadastrado com sucesso!", HttpStatus.CREATED);
         }
     }
 
-    public MensagemDTO editarTicket(Long id, TicketDTO ticketDTO) {
+    public MensagemDTO editarTicket(Long id, TicketDTO ticketDTO,String userAlteracao ,String userFinalizacao) {
         Ticket ticket = toTicket(ticketDTO);
 
         Assert.notNull(ticket.getAlunoId(), "Aluno inválido!");
@@ -76,9 +83,23 @@ public class TicketService {
         Assert.notNull(ticket.getDataEntrega(), "Data de entrega inválida!");
         ticketRepository.save(ticket);
         if (ticket.getDataDevolucao() == null) {
+
+            Auditoria auditoria = new Auditoria();
+            auditoria.setTicket(ticket);
+            auditoria.setDataHoraAlteracao(new Timestamp(System.currentTimeMillis()));
+            auditoria.setUserAlteracao(userAlteracao);
+            auditoriaRepository.save(auditoria);
+
             return new MensagemDTO("Ticket atualizado com sucesso!", HttpStatus.CREATED);
 
         } else {
+
+            Auditoria auditoria = new Auditoria();
+            auditoria.setTicket(ticket);
+            auditoria.setDataHoraFinalizacao(new Timestamp(System.currentTimeMillis()));
+            auditoria.setUserFinalizacao(userAlteracao);
+            auditoriaRepository.save(auditoria);
+
             return new MensagemDTO("Ticket finalizado com sucesso!", HttpStatus.CREATED);
 
         }

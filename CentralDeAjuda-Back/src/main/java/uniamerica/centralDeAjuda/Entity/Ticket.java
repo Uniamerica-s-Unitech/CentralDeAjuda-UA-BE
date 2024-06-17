@@ -7,6 +7,7 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 
+import java.sql.Timestamp;
 import java.time.LocalDateTime;
 
 @Entity
@@ -33,10 +34,10 @@ public class Ticket{
     private Notebook notebookId;
 
     @Column(name = "data_de_entrega", nullable = false)
-    private LocalDateTime dataEntrega;
+    private Timestamp dataEntrega;
 
     @Column(name = "data_de_devolucao")
-    private LocalDateTime dataDevolucao;
+    private Timestamp dataDevolucao;
 
     @Column(name = "observacao")
     private String observacao;

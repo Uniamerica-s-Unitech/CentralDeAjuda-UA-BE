@@ -27,7 +27,7 @@ export class ModeloService {
       return this.http.put<Mensagem>(`${this.API}/${modelo.id}`, { modelo, userAlteracao: nomeUser });
     } else {
       // Caso contrário, crie uma nova pessoa
-      return this.http.post<Mensagem>(`${this.API}`, { modelo, userAlteracao: nomeUser });
+      return this.http.post<Mensagem>(`${this.API}`, { modelo, userCreacao: nomeUser });
     }
   }
 
