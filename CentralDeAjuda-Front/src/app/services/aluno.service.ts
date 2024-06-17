@@ -13,7 +13,6 @@ export class AlunoService {
   API: string = 'https://172.21.247.40/api/aluno'
   http = inject(HttpClient);
   loginService = inject(LoginService);  
-  // nomeUser = this.loginService.getUsername();
   
   constructor() { }
 

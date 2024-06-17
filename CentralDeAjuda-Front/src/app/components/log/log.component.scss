@@ -1,0 +1,74 @@
+.table thead th, .table tbody td {
+    text-align: center; /* Centraliza horizontalmente */
+    vertical-align: middle; /* Centraliza verticalmente */
+}
+.main-header th {
+    font-size: 1.1em; /* Aumenta o tamanho da fonte */
+    font-weight: bold; /* Deixa o texto em negrito */
+    background-color: #e9ecef; /* Cor de fundo diferenciada */
+}
+
+.sub-header th {
+    font-size: 0.9em; /* Reduz o tamanho da fonte */
+    font-weight: 700; /* Texto normal */
+    background-color: #f8f9fa; /* Cor de fundo padrão */
+}
+
+.quadro_tabela {
+    width: 95%;
+    margin: 0 auto;
+    padding: .5rem 0;
+}
+.scroll {
+    overflow: auto;
+    height: 55vh;
+    flex-grow: 1;
+    width: 99%;
+    margin: 0 auto;
+}
+/* width */
+::-webkit-scrollbar {
+    width: 10px;
+}
+
+/* Track */
+::-webkit-scrollbar-track {
+    background: transparent;
+    border-radius: 2rem;
+}
+
+/* Handle */
+::-webkit-scrollbar-thumb {
+    background: #00A859;
+    border-radius: 2rem;
+}
+
+/* Handle on hover */
+::-webkit-scrollbar-thumb:hover {
+    background: #555;
+}
+
+.fixed-header {
+    position: sticky;
+    top: 0;
+    z-index: 1;
+
+    tr{
+        th{
+            background-color: #aaa;
+        }
+    }
+}
+.img{
+    width: 1.2rem;
+}
+
+.form-select{
+    border-color: #00A859;
+    padding: .6rem;
+    font-size: 16px;
+}
+
+.form-select:focus{
+    box-shadow: 0 0 5px #00A859;
+}

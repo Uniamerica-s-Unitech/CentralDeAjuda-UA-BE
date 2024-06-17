@@ -1,0 +1,59 @@
+<div class="container mt-2">
+    <div class="row mb-3">
+        <div class="col">
+            <h4>Audit</h4>
+            <p><strong>ID:</strong> {{audit.id}}</p>
+        </div>
+        <div class="col" *ngIf="audit.aluno != null">
+            <h4>Aluno</h4>
+            <p><strong>ID:</strong> {{audit.aluno.id}}</p>
+            <p><strong>Nome:</strong> {{audit.aluno.nome}}</p>
+            <p><strong>RA:</strong> {{audit.aluno.ra}}</p>
+        </div>
+        <div class="col" *ngIf="audit.marca != null">
+            <h4>Marca</h4>
+            <p><strong>ID:</strong> {{audit.marca.id}}</p>
+            <p><strong>Nome:</strong> {{audit.marca.nome}}</p>
+        </div>
+        <div class="col" *ngIf="audit.modelo != null">
+            <h4>Aluno</h4>
+            <p><strong>ID:</strong> {{audit.modelo.id}}</p>
+            <p><strong>Nome:</strong> {{audit.modelo.nome}}</p>
+            <p><strong>Marca:</strong> {{audit.modelo.marcaId.nome}}</p>
+        </div>
+        <div class="col" *ngIf="audit.notebook != null">
+            <h4>Notebook</h4>
+            <p><strong>ID:</strong> {{audit.notebook.id}}</p>
+            <p><strong>Patrimônio:</strong> {{audit.notebook.patrimonio}}</p>
+            <p><strong>Modelo:</strong> {{audit.notebook.modeloId.nome}}</p>
+            <p><strong>Marca:</strong> {{audit.notebook.modeloId.marcaId.nome}}</p>
+        </div>
+        <div class="col" *ngIf="audit.ticket != null">
+            <h5>Ticket</h5>
+            <p><strong>ID:</strong> {{audit.ticket.id}}</p>
+            <p><strong>Aluno ID:</strong> {{audit.ticket.alunoId.id}}</p>
+            <p><strong>Aluno Nome:</strong> {{audit.ticket.alunoId.nome}}</p>
+            <p><strong>Aluno RA:</strong> {{audit.ticket.alunoId.ra}}</p>
+            <p><strong>Notebook Patrimônio:</strong> {{audit.ticket.notebookId.patrimonio}}</p>
+            <p><strong>Modelo:</strong> {{audit.ticket.notebookId.modeloId.nome}}</p>
+            <p><strong>Marca:</strong> {{audit.ticket.notebookId.modeloId.marcaId.nome}}</p>
+            <p><strong>Data de Entrega:</strong> {{audit.ticket.dataEntrega}}</p>
+            <p><strong>Data de Devolução:</strong> {{audit.ticket.dataDevolucao}}</p>
+            <p><strong>Observação:</strong> {{audit.ticket.observacao}}</p>
+        </div>
+    </div>
+    <div class="row">
+        <div class="col">
+            <h4>Usuário</h4>
+            <p *ngIf="audit.userCriacao != null"><strong>Criação:</strong> {{audit.userCriacao}}</p>
+            <p *ngIf="audit.userAlteracao != null"><strong>Alteração:</strong> {{audit.userAlteracao}}</p>
+            <p *ngIf="audit.userExclusao != null"><strong>Exclusão:</strong> {{audit.userExclusao}}</p>
+            </div>
+            <div class="col">
+            <h4>Data/Hora</h4>
+            <p *ngIf="audit.dataHoraCriacao != null"><strong>Criação:</strong> {{audit.dataHoraCriacao | date:'dd/MM/yyyy HH:mm:ss'}}</p>
+            <p *ngIf="audit.dataHoraAlteracao != null"><strong>Alteração:</strong> {{audit.dataHoraAlteracao | date:'dd/MM/yyyy HH:mm:ss'}}</p>
+            <p *ngIf="audit.dataHoraExclusao != null"><strong>Exclusão:</strong> {{audit.dataHoraExclusao | date:'dd/MM/yyyy HH:mm:ss'}}</p>
+            </div>
+    </div>
+</div>

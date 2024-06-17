@@ -6,7 +6,8 @@
             <button *ngIf="isAdmin && isLogged" [ngClass]="{ 'active': (active == 2) }" class="mb-4" (click)="active = 2" routerLink="notebook"><img src="assets\img\notebooks.svg">Notebooks</button>
             <button *ngIf="isAdmin && isLogged" [ngClass]="{ 'active': (active == 3) }" class="mb-4" (click)="active = 3" routerLink="aluno"><img src="../../../../assets/img/aluno.png">Alunos</button>
             <button *ngIf="isAdmin && isLogged" [ngClass]="{ 'active': (active == 4) }" class="mb-4" (click)="active = 4" routerLink="cadastrar"><img src="../../../../assets/img/usuario.svg">Usuários</button>
-            <button *ngIf="isAdmin && isLogged" [ngClass]="{ 'active': (active == 5) }" class="mb-4" (click)="active = 5" routerLink="log"><img src="../../../../assets/img/usuario.svg">Log</button>
+            <button *ngIf="isAdmin && isLogged" [ngClass]="{ 'active': (active == 5) }" class="mb-4" (click)="active = 5" routerLink="log"><img src="../../../../assets/img/audit.png">Audit</button>
+            <a *ngIf="isAdmin && isLogged" class="log mb-4" href="https://172.21.247.40/kibana" target="_blank"><img src="../../../../assets/img/log.png">Log</a>
             <button *ngIf="!isLogged" class="entrar" (click)="login()"><img src="../../../../assets/img/logout.svg">Entrar</button>
             <button *ngIf="isLogged" class="sair" (click)="logout()"><img src="../../../../assets/img/logout.svg">Sair</button>
         </section>

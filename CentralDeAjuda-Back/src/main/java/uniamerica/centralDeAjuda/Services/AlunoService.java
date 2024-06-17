@@ -14,6 +14,7 @@ import uniamerica.centralDeAjuda.Repository.AlunoRepository;
 import uniamerica.centralDeAjuda.Repository.AuditoriaRepository;
 import uniamerica.centralDeAjuda.Repository.TicketRepository;
 
+import java.sql.Timestamp;
 import java.time.LocalDateTime;
 import java.util.List;
 
@@ -58,7 +59,7 @@ public class AlunoService {
 
         Auditoria auditoria = new Auditoria();
         auditoria.setAluno(aluno);
-        auditoria.setDataHoraCriacao(LocalDateTime.now());
+        auditoria.setDataHoraCriacao(new Timestamp(System.currentTimeMillis()));
         auditoria.setUserCriacao(userCreacao);
         auditoriaRepository.save(auditoria);
 
@@ -83,7 +84,7 @@ public class AlunoService {
 
         Auditoria auditoria = new Auditoria();
         auditoria.setAluno(aluno);
-        auditoria.setDataHoraAlteracao(LocalDateTime.now());
+        auditoria.setDataHoraAlteracao(new Timestamp(System.currentTimeMillis()));
         auditoria.setUserAlteracao(userAlteracao);
         auditoriaRepository.save(auditoria);
 
@@ -103,7 +104,7 @@ public class AlunoService {
 
             Auditoria auditoria = new Auditoria();
             auditoria.setAluno(alunoBanco);
-            auditoria.setDataHoraExclusao(LocalDateTime.now());
+            auditoria.setDataHoraExclusao(new Timestamp(System.currentTimeMillis()));
             auditoria.setUserExclusao(userExclusao);
             auditoriaRepository.save(auditoria);
         }

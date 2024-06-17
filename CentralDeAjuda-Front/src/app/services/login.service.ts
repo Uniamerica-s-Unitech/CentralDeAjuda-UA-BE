@@ -1,9 +1,4 @@
-import { HttpClient } from '@angular/common/http';
 import { Injectable, inject } from '@angular/core';
-import { Login } from '../models/login';
-import { Observable } from 'rxjs';
-import { User } from '../models/user';
-import { Mensagem } from '../models/mensagem';
 import { OAuthService } from 'angular-oauth2-oidc';
 import { Router } from '@angular/router';
 
@@ -52,7 +47,7 @@ export class LoginService {
 
 
 
-  // API: string = 'http://localhost:8080/api/login';
+  // API: string = 'https://172.21.247.40/api/login';
   // http = inject(HttpClient);
 
   // constructor() { }

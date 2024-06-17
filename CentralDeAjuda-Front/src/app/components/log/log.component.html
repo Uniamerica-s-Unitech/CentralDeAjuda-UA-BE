@@ -1,1 +1,93 @@
-<p>log works!</p>
+<main>
+    <article>
+      <div class="col-lg-12 d-flex align-items-center justify-content-between mt-2">
+        <div class="col-lg-5 d-flex align-items-center">
+          <select [compareWith]="byId" class="form-select form-select-sm ms-4" [(ngModel)]="filterAcao"
+                  (change)="realizarPesquisaPorAcao(filterAcao)">
+            <option [ngValue]="undefined">Filtrar por Ação</option>
+            <option [ngValue]="'criar'">Criação</option>
+            <option [ngValue]="'alterar'">Alteração</option>
+            <option [ngValue]="'excluir'">Exclusão</option>
+          </select>
+        </div>
+        <div class="col-lg-5 d-flex align-items-center">
+          <select [compareWith]="byId" class="form-select form-select-sm me-4" [(ngModel)]="filterObjeito"
+                  (change)="realizarPesquisaPorObjeito(filterObjeito)">
+            <option [ngValue]="undefined">Filtrar por Objeito</option>
+            <option [ngValue]="'aluno'">Aluno</option>
+            <option [ngValue]="'notebook'">Notebook</option>
+            <option [ngValue]="'marca'">Marca</option>
+            <option [ngValue]="'modelo'">Modelo</option>
+            <option [ngValue]="'ticket'">Ticket</option>
+          </select>
+        </div>
+      </div>
+      <section class="h-100">
+        <div class="quadro_tabela">
+          <div class="scroll">
+            <table class="table table-striped text-center align-middle">
+              <thead class="fixed-header">
+              <tr class="main-header">
+                <th scope="col">ID</th>
+                <th scope="col">Aluno</th>
+                <th scope="col">Notebook</th>
+                <th scope="col">Marca</th>
+                <th scope="col">Modelo</th>
+                <th scope="col">Ticket</th>
+                <th scope="col" colspan="2">Criação</th>
+                <th scope="col" colspan="2">Alteração</th>
+                <th scope="col" colspan="2">Exclusão</th>
+                <th scope="col">Ação</th>
+              </tr>
+              <tr class="sub-header">
+                <th></th>
+                <th></th>
+                <th></th>
+                <th></th>
+                <th></th>
+                <th></th>
+                <th scope="col">Usuário</th>
+                <th scope="col">Data</th>
+                <th scope="col">Usuário</th>
+                <th scope="col">Data</th>
+                <th scope="col">Usuário</th>
+                <th scope="col">Data</th>
+                <th></th>
+              </tr>
+              </thead>
+              <tbody>
+              <tr *ngFor="let audit of listaAuditoriaFiltrada; let i = index">
+                <td>{{ audit.id }}</td>
+                <td>{{ audit?.aluno?.id }}</td>
+                <td>{{ audit?.notebook?.id }}</td>
+                <td>{{ audit?.marca?.id }}</td>
+                <td>{{ audit?.modelo?.id }}</td>
+                <td>{{ audit?.ticket?.id }}</td>
+                <td>{{ audit?.userCriacao }}</td>
+                <td>{{ audit?.dataHoraCriacao | date:'short' }}</td>
+                <td>{{ audit?.userAlteracao }}</td>
+                <td>{{ audit?.dataHoraAlteracao | date:'short' }}</td>
+                <td>{{ audit?.userExclusao }}</td>
+                <td>{{ audit?.dataHoraExclusao | date:'short' }}</td>
+                <td><button (click)="detalhes(modalDetalhes, audit, i)">Detalhes</button></td>
+              </tr>
+              </tbody>
+            </table>
+          </div>
+        </div>
+      </section>
+    </article>
+  </main>
+  
+  <ng-template #modalDetalhes let-modal>
+    <div class="modal-header modal-style">
+      <h4 class="modal-title">Detalhes do Log:</h4>
+      <button type="button" class="btn-close" aria-label="Close" (click)="modal.dismiss('Cross click')"></button>
+    </div>
+    <div class="modal-body modal-style">
+      <app-log-detalhes [audit]="auditDetalhes"></app-log-detalhes>
+    </div>
+    <div class="modal-footer modal-style">
+      <button type="button" class="btn btn-danger" (click)="modal.close('Close click')">Close</button>
+    </div>
+  </ng-template>  

@@ -15,6 +15,7 @@ import uniamerica.centralDeAjuda.Repository.AuditoriaRepository;
 import uniamerica.centralDeAjuda.Repository.MarcaRepository;
 import uniamerica.centralDeAjuda.Repository.ModeloRepository;
 
+import java.sql.Timestamp;
 import java.time.LocalDateTime;
 import java.util.List;
 
@@ -49,7 +50,7 @@ public class MarcaService {
 
         Auditoria auditoria = new Auditoria();
         auditoria.setMarca(marca);
-        auditoria.setDataHoraCriacao(LocalDateTime.now());
+        auditoria.setDataHoraCriacao(new Timestamp(System.currentTimeMillis()));
         auditoria.setUserCriacao(userCreacao);
         auditoriaRepository.save(auditoria);
 
@@ -69,7 +70,7 @@ public class MarcaService {
 
         Auditoria auditoria = new Auditoria();
         auditoria.setMarca(marca);
-        auditoria.setDataHoraAlteracao(LocalDateTime.now());
+        auditoria.setDataHoraAlteracao(new Timestamp(System.currentTimeMillis()));
         auditoria.setUserAlteracao(userAlteracao);
         auditoriaRepository.save(auditoria);
 
@@ -90,7 +91,7 @@ public class MarcaService {
 
             Auditoria auditoria = new Auditoria();
             auditoria.setMarca(marcaBanco);
-            auditoria.setDataHoraExclusao(LocalDateTime.now());
+            auditoria.setDataHoraExclusao(new Timestamp(System.currentTimeMillis()));
             auditoria.setUserExclusao(userExclusao);
             auditoriaRepository.save(auditoria);
         }

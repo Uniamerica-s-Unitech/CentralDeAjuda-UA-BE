@@ -5,6 +5,7 @@ import jakarta.persistence.*;
 import lombok.Getter;
 import lombok.Setter;
 
+import java.sql.Timestamp;
 import java.time.LocalDateTime;
 
 @Getter @Setter
@@ -36,9 +37,9 @@ public class Auditoria {
     private String userAlteracao;
     private String userExclusao;
     private String userFinalizacao;
-    private LocalDateTime dataHoraCriacao;
-    private LocalDateTime dataHoraAlteracao;
-    private LocalDateTime dataHoraExclusao;
-    private LocalDateTime dataHoraFinalizacao;
+    private Timestamp dataHoraCriacao;
+    private Timestamp dataHoraAlteracao;
+    private Timestamp dataHoraExclusao;
+    private Timestamp dataHoraFinalizacao;
 
 }

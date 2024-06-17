@@ -15,6 +15,7 @@ import uniamerica.centralDeAjuda.Repository.ModeloRepository;
 import uniamerica.centralDeAjuda.Repository.NotebookRepository;
 import uniamerica.centralDeAjuda.Repository.TicketRepository;
 
+import java.sql.Timestamp;
 import java.time.LocalDateTime;
 import java.util.List;
 
@@ -56,7 +57,7 @@ public class NotebookService {
 
         Auditoria auditoria = new Auditoria();
         auditoria.setNotebook(notebook);
-        auditoria.setDataHoraCriacao(LocalDateTime.now());
+        auditoria.setDataHoraCriacao(new Timestamp(System.currentTimeMillis()));
         auditoria.setUserCriacao(userCreacao);
         auditoriaRepository.save(auditoria);
 
@@ -76,7 +77,7 @@ public class NotebookService {
 
         Auditoria auditoria = new Auditoria();
         auditoria.setNotebook(notebook);
-        auditoria.setDataHoraAlteracao(LocalDateTime.now());
+        auditoria.setDataHoraAlteracao(new Timestamp(System.currentTimeMillis()));
         auditoria.setUserAlteracao(userAlteracao);
         auditoriaRepository.save(auditoria);
 
@@ -97,7 +98,7 @@ public class NotebookService {
 
             Auditoria auditoria = new Auditoria();
             auditoria.setNotebook(notebookBanco);
-            auditoria.setDataHoraExclusao(LocalDateTime.now());
+            auditoria.setDataHoraExclusao(new Timestamp(System.currentTimeMillis()));
             auditoria.setUserExclusao(userExclusao);
             auditoriaRepository.save(auditoria);
         }

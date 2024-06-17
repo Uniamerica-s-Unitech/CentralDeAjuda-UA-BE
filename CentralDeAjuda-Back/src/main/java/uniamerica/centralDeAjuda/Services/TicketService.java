@@ -15,6 +15,7 @@ import uniamerica.centralDeAjuda.Repository.AuditoriaRepository;
 import uniamerica.centralDeAjuda.Repository.NotebookRepository;
 import uniamerica.centralDeAjuda.Repository.TicketRepository;
 
+import java.sql.Timestamp;
 import java.time.LocalDateTime;
 import java.util.List;
 
@@ -90,7 +91,7 @@ public class TicketService {
 
         Auditoria auditoria = new Auditoria();
         auditoria.setTicket(ticketBanco);
-        auditoria.setDataHoraExclusao(LocalDateTime.now());
+        auditoria.setDataHoraExclusao(new Timestamp(System.currentTimeMillis()));
         auditoria.setUserExclusao(userExclusao);
         auditoriaRepository.save(auditoria);
 

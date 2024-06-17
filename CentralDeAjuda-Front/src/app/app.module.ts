@@ -30,7 +30,7 @@ import { OAuthModule } from 'angular-oauth2-oidc';
 import { CadastrarDetalhesComponent } from './components/sistema/cadastrar/cadastrar-detalhes/cadastrar-detalhes.component';
 import { CadastrarListComponent } from './components/sistema/cadastrar/cadastrar-list/cadastrar-list.component';
 import { LogComponent } from './components/log/log.component';
-
+import { LogDetalhesComponent } from './components/log/log-detalhes/log-detalhes.component';
 
 @NgModule({
   declarations: [
@@ -54,7 +54,8 @@ import { LogComponent } from './components/log/log.component';
     TicketPaginaComponent,
     CadastrarDetalhesComponent,
     CadastrarListComponent,
-    LogComponent
+    LogComponent,
+    LogDetalhesComponent
     ],
   imports: [
     BrowserModule,
