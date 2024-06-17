@@ -14,7 +14,9 @@ export class Auditoria {
     userCriacao!: string;
     userAlteracao!: string;
     userExclusao!: string;
+    userFinalizacao!: string;
     dataHoraCriacao!: Date;
     dataHoraAlteracao!: Date;
     dataHoraExclusao!: Date;
+    dataHoraFinalizacao!: Date;
 }

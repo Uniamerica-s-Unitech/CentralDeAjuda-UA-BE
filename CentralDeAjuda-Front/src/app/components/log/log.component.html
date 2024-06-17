@@ -8,6 +8,7 @@
             <option [ngValue]="'criar'">Criação</option>
             <option [ngValue]="'alterar'">Alteração</option>
             <option [ngValue]="'excluir'">Exclusão</option>
+            <option [ngValue]="'finalizacao'">Finalização</option>
           </select>
         </div>
         <div class="col-lg-5 d-flex align-items-center">
@@ -37,6 +38,7 @@
                 <th scope="col" colspan="2">Criação</th>
                 <th scope="col" colspan="2">Alteração</th>
                 <th scope="col" colspan="2">Exclusão</th>
+                <th scope="col" colspan="2">Finalização</th>
                 <th scope="col">Ação</th>
               </tr>
               <tr class="sub-header">
@@ -46,6 +48,8 @@
                 <th></th>
                 <th></th>
                 <th></th>
+                <th scope="col">Usuário</th>
+                <th scope="col">Data</th>
                 <th scope="col">Usuário</th>
                 <th scope="col">Data</th>
                 <th scope="col">Usuário</th>
@@ -69,6 +73,8 @@
                 <td>{{ audit?.dataHoraAlteracao | date:'short' }}</td>
                 <td>{{ audit?.userExclusao }}</td>
                 <td>{{ audit?.dataHoraExclusao | date:'short' }}</td>
+                <td>{{ audit?.userFinalizacao }}</td>
+                <td>{{ audit?.dataHoraFinalizacao | date:'short' }}</td>
                 <td><button (click)="detalhes(modalDetalhes, audit, i)">Detalhes</button></td>
               </tr>
               </tbody>

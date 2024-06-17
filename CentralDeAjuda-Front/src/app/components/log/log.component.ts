@@ -55,6 +55,7 @@ export class LogComponent {
       const alteracao = auditoria.dataHoraAlteracao;
       const criacao = auditoria.dataHoraCriacao;
       const excluicao = auditoria.dataHoraExclusao;
+      const finalizacao = auditoria.dataHoraFinalizacao;
 
       const aluno = auditoria.aluno;
       const notebook = auditoria.notebook;
@@ -73,6 +74,8 @@ export class LogComponent {
           acaoValida = alteracao != null;
         } else if (this.filterAcao === 'excluir') {
           acaoValida = excluicao != null;
+        } else if (this.filterAcao === 'finalizacao') {
+          acaoValida = finalizacao != null;
         }
       }
 

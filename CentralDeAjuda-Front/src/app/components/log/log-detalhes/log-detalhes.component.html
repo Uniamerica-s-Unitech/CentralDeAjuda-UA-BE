@@ -37,9 +37,9 @@
             <p><strong>Notebook Patrimônio:</strong> {{audit.ticket.notebookId.patrimonio}}</p>
             <p><strong>Modelo:</strong> {{audit.ticket.notebookId.modeloId.nome}}</p>
             <p><strong>Marca:</strong> {{audit.ticket.notebookId.modeloId.marcaId.nome}}</p>
-            <p><strong>Data de Entrega:</strong> {{audit.ticket.dataEntrega}}</p>
-            <p><strong>Data de Devolução:</strong> {{audit.ticket.dataDevolucao}}</p>
-            <p><strong>Observação:</strong> {{audit.ticket.observacao}}</p>
+            <p><strong>Data de Entrega:</strong> {{audit.ticket.dataEntrega | date:'dd/MM/yyyy HH:mm:ss'}}</p>
+            <p *ngIf="audit.ticket.dataDevolucao != null"><strong>Data de Devolução:</strong> {{audit.ticket.dataDevolucao | date:'dd/MM/yyyy HH:mm:ss'}}</p>
+            <p *ngIf="audit.ticket.observacao != null"><strong>Observação:</strong> {{audit.ticket.observacao}}</p>
         </div>
     </div>
     <div class="row">
@@ -48,12 +48,14 @@
             <p *ngIf="audit.userCriacao != null"><strong>Criação:</strong> {{audit.userCriacao}}</p>
             <p *ngIf="audit.userAlteracao != null"><strong>Alteração:</strong> {{audit.userAlteracao}}</p>
             <p *ngIf="audit.userExclusao != null"><strong>Exclusão:</strong> {{audit.userExclusao}}</p>
+            <p *ngIf="audit.userFinalizacao != null"><strong>Finalização:</strong> {{audit.userFinalizacao}}</p>
             </div>
             <div class="col">
             <h4>Data/Hora</h4>
             <p *ngIf="audit.dataHoraCriacao != null"><strong>Criação:</strong> {{audit.dataHoraCriacao | date:'dd/MM/yyyy HH:mm:ss'}}</p>
             <p *ngIf="audit.dataHoraAlteracao != null"><strong>Alteração:</strong> {{audit.dataHoraAlteracao | date:'dd/MM/yyyy HH:mm:ss'}}</p>
             <p *ngIf="audit.dataHoraExclusao != null"><strong>Exclusão:</strong> {{audit.dataHoraExclusao | date:'dd/MM/yyyy HH:mm:ss'}}</p>
+            <p *ngIf="audit.dataHoraFinalizacao != null"><strong>Finalização:</strong> {{audit.dataHoraFinalizacao | date:'dd/MM/yyyy HH:mm:ss'}}</p>
             </div>
     </div>
 </div>
